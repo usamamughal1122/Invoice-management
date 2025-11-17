@@ -1,18 +1,17 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { SessionListComponent } from "../session-list/session-list.component";
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-topbar',
-  imports: [CommonModule,FormsModule, SessionListComponent],
+  imports: [CommonModule,FormsModule],
   templateUrl: './topbar.component.html',
   styleUrl: './topbar.component.css'
 })
 export class TopbarComponent {
-  isDarkMode = false; 
+  isDarkMode = false;
   currentYear = new Date().getFullYear();
   constructor(private router: Router, private toastr: ToastrService) {}
     logout() {
@@ -31,7 +30,7 @@ export class TopbarComponent {
     this.isDarkMode = !this.isDarkMode;
   }
 
- 
+
 
 
 }
