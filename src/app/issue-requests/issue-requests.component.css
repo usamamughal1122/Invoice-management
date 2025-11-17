@@ -1,0 +1,64 @@
+.requests-wrapper {
+  background: #f8f9fb;
+  color: #222;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+.table-responsive{
+    position: relative;
+  height: 70vh; 
+  overflow-y: auto;
+  overflow-x: auto;
+  border: 1px solid #e4e4e4;
+  border-radius: 12px;
+}
+.card {
+  border-radius: 12px;
+}
+
+.table-dark-header {
+  background-color: #000 !important;
+  color: #fff !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+}
+.table thead tr,
+.table thead th{
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background-color: #000 !important; 
+  color: #fff !important;           
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  border-bottom: 2px solid #333 !important;
+}
+.table-hover tbody tr:hover {
+  background-color: #f8f9fc;
+}
+
+.badge-status {
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.btn-outline-success:hover {
+  background-color: #198754;
+  color: #fff;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: #fff;
+}

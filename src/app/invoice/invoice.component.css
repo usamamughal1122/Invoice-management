@@ -1,0 +1,50 @@
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  /* Smooth transitions */
+  .btn, .form-control, .form-select, .card {
+    transition: all 0.2s ease;
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Form focus states */
+  .form-control:focus, .form-select:focus {
+    box-shadow: 0 0 0 0.15rem rgba(44, 44, 44, 0.15);
+    border-color: #2c2c2c;
+  }
+
+ /* Hide elements when converting to PDF */
+.no-print {
+  display: block;
+}
+
+/* Hide during html2canvas or print */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

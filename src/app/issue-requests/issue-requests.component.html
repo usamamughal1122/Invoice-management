@@ -1,0 +1,109 @@
+<!-- ========================================================= -->
+<!-- 📘 SECTION INFO: Issue Requests Component -->
+<!-- ========================================================= -->
+<!--
+Component Name: issue-requests.component.ts
+Purpose: Displays and manages inventory issue requests made by employees.
+
+APIs Used:
+1. GET    /api/issue-requests        → Fetch all requests
+2. POST   /api/issue-requests        → Add new request
+3. PUT    /api/issue-requests/:id    → Update request status (Approve/Reject)
+4. DELETE /api/issue-requests/:id    → Delete a request
+
+Future Enhancement:
+- Add filtering by status (Pending, Approved, Rejected)
+- Integrate pagination and date-based filters
+-->
+
+<div class="container-fluid px-4 py-4 requests-wrapper">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h4 class="fw-bold mb-0 text-dark">Issue Requests</h4>
+      <small class="text-muted">Track and manage item issue requests</small>
+    </div>
+    <button class="btn btn-primary btn-sm">
+      <i class="bi bi-plus-circle me-1"></i> New Request
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="row mb-3">
+    <div class="col-md-3">
+      <select class="form-select form-select-sm">
+        <option selected disabled>Filter by Status</option>
+        <option>Pending</option>
+        <option>Approved</option>
+        <option>Rejected</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <input type="date" class="form-control form-control-sm" />
+    </div>
+  </div>
+
+  <!-- Requests Table -->
+  <div class="card border-0 shadow-sm rounded-3">
+    <div class="card-header bg-white fw-semibold border-bottom">
+      Requests List
+      <button class="btn btn-outline-secondary btn-sm float-end">
+        <i class="bi bi-arrow-repeat"></i> Refresh
+      </button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
+          <tr class="table-dark-header">
+            <th>#</th>
+            <th>Employee</th>
+            <th>Item</th>
+            <th>Category</th>
+            <th>Request Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of [1,2,3,4,5]; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>John Doe</td>
+            <td>Dell Laptop</td>
+            <td>Laptop</td>
+            <td>2025-11-05</td>
+            <td>
+              <span class="badge-status bg-warning text-dark">Pending</span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-outline-success me-1">
+                <i class="bi bi-check2"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger me-1">
+                <i class="bi bi-x-lg"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Sarah Khan</td>
+            <td>LED Monitor</td>
+            <td>LED</td>
+            <td>2025-11-03</td>
+            <td>
+              <span class="badge-status bg-success text-white">Approved</span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-eye"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

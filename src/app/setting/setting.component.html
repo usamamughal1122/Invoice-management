@@ -1,0 +1,118 @@
+<div [ngStyle]="{'background-color': theme==='dark'?'#121212':'#f4f6fa', 'color': theme==='dark'?'#eee':'#222', 'min-height':'100vh', 'padding':'20px'}">
+
+  <!-- HEADER -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <div>
+      <h3 style="margin:0;">Settings</h3>
+      <p style="margin:0; font-size:14px; color:gray">Manage system configurations</p>
+    </div>
+
+    <button (click)="toggleTheme()" 
+            style="background:transparent; border:none; cursor:pointer; font-size:16px; color:inherit">
+      {{ theme | titlecase }} Mode
+    </button>
+  </div>
+
+  <div style="display:flex; gap:20px; flex-wrap:wrap;">
+
+    <!-- SIDEBAR -->
+    <div style="flex:1; min-width:200px;">
+      <div style="display:flex; flex-direction:column; border-radius:8px; overflow:hidden; box-shadow:0 0 5px rgba(0,0,0,0.2)">
+        <button *ngFor="let sec of sections" 
+                (click)="setSection(sec.key)"
+                [ngStyle]="{
+                  'background-color': section===sec.key?(theme==='dark'?'#3a3a3a':'#0d6efd'):(theme==='dark'?'#1a1a1a':'#fff'),
+                  'color': section===sec.key?'white':(theme==='dark'?'#eee':'#222'),
+                  'border':'none',
+                  'padding':'10px',
+                  'text-align':'left',
+                  'cursor':'pointer',
+                  'width':'100%'
+                }">
+          <i [class]="'bi '+sec.icon" style="margin-right:8px"></i> {{ sec.label }}
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTENT AREA -->
+    <div style="flex:3; min-width:300px;">
+
+      <!-- GENERAL -->
+      <div *ngIf="section==='general'" 
+           [ngStyle]="{'background-color':theme==='dark'?'#1e1e1e':'#fff','padding':'20px','border-radius':'12px','margin-bottom':'20px'}">
+        <h5>General Settings</h5>
+        <div style="margin-bottom:10px">
+          <label>Company Name</label>
+          <input type="text" [(ngModel)]="general.companyName" 
+                 [ngStyle]="inputStyle()">
+        </div>
+        <div style="margin-bottom:10px">
+          <label>Upload Logo</label>
+          <input type="file" (change)="onLogoUpload($event)" 
+                 [ngStyle]="inputStyle()">
+        </div>
+        <div style="margin-bottom:10px">
+          <label>Currency</label>
+          <select [(ngModel)]="general.currency" [ngStyle]="inputStyle()">
+            <option>PKR</option>
+            <option>USD</option>
+            <option>AED</option>
+          </select>
+        </div>
+        <button (click)="saveGeneral()" style="padding:6px 12px; margin-top:5px">Save</button>
+      </div>
+
+      <!-- INVENTORY -->
+      <div *ngIf="section==='inventory'" 
+           [ngStyle]="{'background-color':theme==='dark'?'#1e1e1e':'#fff','padding':'20px','border-radius':'12px','margin-bottom':'20px'}">
+        <h5>Inventory Settings</h5>
+        <div style="margin-bottom:10px">
+          <label>Default Pagination Limit</label>
+          <select [(ngModel)]="inventory.paginationLimit" [ngStyle]="inputStyle()">
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+          </select>
+        </div>
+        <div style="margin-bottom:10px">
+          <label>Low Stock Alert</label>
+          <input type="number" [(ngModel)]="inventory.lowStockAlert" [ngStyle]="inputStyle()">
+        </div>
+        <button (click)="saveInventory()" style="padding:6px 12px; margin-top:5px">Save</button>
+      </div>
+
+      <!-- EMPLOYEES -->
+      <div *ngIf="section==='employees'" 
+           [ngStyle]="{'background-color':theme==='dark'?'#1e1e1e':'#fff','padding':'20px','border-radius':'12px','margin-bottom':'20px'}">
+        <h5>Employee Settings</h5>
+        <div style="margin-bottom:10px">
+          <label>Default Role</label>
+          <select [(ngModel)]="employees.defaultRole" [ngStyle]="inputStyle()">
+            <option>Employee</option>
+            <option>Manager</option>
+            <option>Admin</option>
+          </select>
+        </div>
+        <div>
+          <input type="checkbox" [(ngModel)]="employees.autoApproveLeave"> Auto Approve Leave
+        </div>
+        <button (click)="saveEmployees()" style="padding:6px 12px; margin-top:5px">Save</button>
+      </div>
+
+      <!-- NOTIFICATIONS -->
+      <div *ngIf="section==='notifications'" 
+           [ngStyle]="{'background-color':theme==='dark'?'#1e1e1e':'#fff','padding':'20px','border-radius':'12px'}">
+        <h5>Notification Settings</h5>
+        <div>
+          <input type="checkbox" [(ngModel)]="notifications.lowStock"> Low Stock Alerts
+        </div>
+        <div>
+          <input type="checkbox" [(ngModel)]="notifications.email"> Email Notifications
+        </div>
+        <button (click)="saveNotifications()" class="savebtn" style="padding:6px 12px; margin-top:5px;border:none">Save</button>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,84 @@
+<div class="container-fluid px-4 py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0 text-dark">Department Management</h4>
+    <button class="btn btn-primary btn-sm shadow-sm">
+      <i class="bi bi-plus-circle me-1"></i> Add Department
+    </button>
+  </div>
+
+  <!-- Overview Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="card border-0 shadow-sm text-center py-3">
+        <h6 class="text-uppercase small mb-1 text-muted">Total Departments</h6>
+        <h2 class="fw-bold mb-0">5</h2>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card border-0 shadow-sm text-center py-3">
+        <h6 class="text-uppercase small mb-1 text-muted">Total Employees</h6>
+        <h2 class="fw-bold mb-0 text-primary">42</h2>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card border-0 shadow-sm text-center py-3">
+        <h6 class="text-uppercase small mb-1 text-muted">Active Projects</h6>
+        <h2 class="fw-bold mb-0 text-success">9</h2>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card border-0 shadow-sm text-center py-3">
+        <h6 class="text-uppercase small mb-1 text-muted">Pending Tasks</h6>
+        <h2 class="fw-bold mb-0 text-warning">12</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- Department Table -->
+  <div class="card border-0 shadow-sm rounded-3">
+    <div class="card-header bg-white fw-semibold border-bottom">
+      Department List
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Department Name</th>
+            <th>Head of Department</th>
+            <th>Total Members</th>
+            <th>Status</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dept of departmentList; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ dept.name }}</td>
+            <td>{{ dept.head }}</td>
+            <td>{{ dept.members }}</td>
+            <td>
+              <span
+                class="badge"
+                [ngClass]="{
+                  'bg-success': dept.status === 'Active',
+                  'bg-secondary': dept.status === 'Inactive'
+                }"
+              >
+                {{ dept.status }}
+              </span>
+            </td>
+            <td class="text-end">
+              <button class="btn btn-outline-primary btn-sm me-1">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-outline-danger btn-sm">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

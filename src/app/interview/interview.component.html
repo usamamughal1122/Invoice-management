@@ -1,0 +1,115 @@
+<div class="container-fluid py-4 bg-light min-vh-100 d-flex flex-column justify-content-between">
+  <!-- MAIN CONTENT -->
+  <div class="row g-4 mt-4 flex-grow-1">
+
+    <!-- LEFT: Languages -->
+    <div class="col-md-3">
+      <div class="card shadow-sm border-0 rounded-4 mb-3 hover-shadow-sm">
+        <div
+          class="card-header bg-danger text-white d-flex justify-content-between align-items-center rounded-top-4">
+          <strong><i class="bi bi-translate me-1"></i> Languages</strong>
+          <button class="btn btn-sm btn-light text-danger fw-bold" (click)="loadLanguages()">↻</button>
+        </div>
+
+        <div class="card-body scroll-card" *ngIf="!loadingLanguages; else langLoading">
+          <div *ngFor="let lang of languages"
+            class="list-group-item d-flex justify-content-between align-items-center border-0 border-bottom py-2 px-0"
+            [class.active]="selectedLanguageId === lang.languageId" (click)="onSelectLanguage(lang)"
+            style="transition: 0.3s; cursor: pointer;">
+            <div class="d-flex align-items-center">
+              <img *ngIf="lang.logo" [src]="lang.logo" width="28" height="28"
+                class="me-2 rounded-circle border border-light shadow-sm" alt="{{ lang.language }}">
+              <span class="fw-semibold">{{ lang.language }}</span>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+              <a *ngIf="lang.youtubePlayListUrl" [href]="lang.youtubePlayListUrl" target="_blank"
+                class="badge bg-danger-subtle text-danger-emphasis border border-danger rounded-pill px-3 py-1 fw-semibold text-decoration-none"
+                (click)="$event.stopPropagation()">
+                <i class="bi bi-youtube"></i>
+              </a>
+              <span class="badge bg-light text-dark border border-warning rounded-pill px-3 py-1 fw-semibold">
+                {{ getQuestionCount(lang.languageId) }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #langLoading>
+          <div class="p-3 text-center text-muted">⏳ Loading languages...</div>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- MIDDLE: Topics -->
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 rounded-4 hover-shadow-sm">
+        <div class="card-header bg-warning text-dark rounded-top-4">
+          <strong><i class="bi bi-list-task me-1"></i> Topics</strong>
+        </div>
+
+        <div class="card-body scroll-card" *ngIf="!loadingTopics; else topicsLoading">
+          <div *ngIf="topics.length; else noTopics">
+            <ul class="list-group list-group-flush">
+              <li *ngFor="let t of topics" class="list-group-item list-group-item-action fw-semibold"
+                [class.active]="selectedTopicId === t.languageTopicId" (click)="onSelectTopic(t)"
+                style="cursor:pointer">
+                {{ t.topicName }}
+              </li>
+            </ul>
+          </div>
+          <ng-template #noTopics>
+            <div class="text-center text-muted py-2">No topics for this language.</div>
+          </ng-template>
+        </div>
+        <ng-template #topicsLoading>
+          <div class="p-3 text-center text-muted">⏳ Loading topics...</div>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- RIGHT: Questions -->
+    <div class="col-md-5">
+      <div class="card shadow-sm border-0 rounded-4 hover-shadow-sm">
+        <div
+          class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
+          <strong><i class="bi bi-question-circle me-1"></i> Questions</strong>
+          <button class="btn btn-sm btn-light text-primary fw-bold" (click)="loadAllQuestions()">All</button>
+        </div>
+
+        <div class="card-body scroll-card" *ngIf="!loadingQuestions; else questionsLoading">
+          <div *ngIf="questions.length; else noQuestions">
+            <div *ngFor="let q of questions" class="mb-3 p-3 border rounded-3 bg-white shadow-sm">
+              <h6 class="fw-bold text-primary">{{ q.question }}</h6>
+              <div class="small text-muted mb-2">{{ q.topicName }}</div>
+              <div class="p-2 bg-light rounded" [innerHTML]="q.answer"></div>
+              <div class="mt-2 small text-muted"><i class="bi bi-tags"></i> {{ q.tags }}</div>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #questionsLoading>
+          <div class="p-3 text-center text-muted">⏳ Loading questions...</div>
+        </ng-template>
+        <ng-template #noQuestions>
+          <div class="p-3 text-center text-muted">No questions found.</div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="custom-footer text-white py-3 px-4 mt-4 rounded-top-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
+      <div>
+        <span class="fw-semibold">&copy; 2025 Interview Panel by <span class="text-warning">Usama Ijaz</span></span>
+      </div>
+      <ul class="list-unstyled d-flex gap-3 mb-0">
+        <li><a href="#" target="_blank" class="social-icon"><i class="bi bi-twitter"></i></a></li>
+        <li><a href="#" target="_blank" class="social-icon"><i class="bi bi-facebook"></i></a></li>
+        <li><a href="#" target="_blank" class="social-icon"><i class="bi bi-instagram"></i></a></li>
+        <li><a href="#" target="_blank" class="social-icon"><i class="bi bi-youtube"></i></a></li>
+      </ul>
+    </div>
+  </footer>
+</div>

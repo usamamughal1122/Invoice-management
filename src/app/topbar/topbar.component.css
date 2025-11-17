@@ -1,0 +1,55 @@
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar {
+  height: 60px;
+}
+
+.toggle-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background 0.3s;
+}
+
+.toggle-button:hover {
+  background: rgba(0,0,0,0.1);
+}
+
+.icon-wrapper {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.icon-wrapper svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.icon-wrapper .sun {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+.icon-wrapper .moon {
+  opacity: 0;
+  transform: rotate(-90deg);
+}
+
+.icon-wrapper.dark .sun {
+  opacity: 0;
+  transform: rotate(90deg);
+}
+
+.icon-wrapper.dark .moon {
+  opacity: 1;
+  transform: rotate(0deg);
+}

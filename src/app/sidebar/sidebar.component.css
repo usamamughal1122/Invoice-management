@@ -1,0 +1,82 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 240px;
+  background-color: #111314;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+  overflow-y: auto;
+}
+
+.sidebar-header {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 1rem;
+   border-radius: 5px;
+}
+
+.logo-text {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.logo-text i {
+  color: #007bff;
+  font-size: 20px;
+  margin-right: 5px;
+}
+.nav-link {
+  color: #ffffff;
+  padding: 10px 20px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+
+.nav-link.active {
+  color: #000000;
+  background-color: #ffffff;
+  height: 34px;
+  border-radius: 6px;
+}
+
+.bi {
+  font-size: 18px;
+}
+.slide-down {
+  animation: slide-down 0.3s ease-out;
+}
+
+.master-dropdown {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.4s ease; /* animate height smoothly */
+}
+
+.master-dropdown.open {
+  height: auto; /* auto will snap, so use max-height */
+  max-height: 500px; /* big enough to contain all items */
+}
+
+
+@keyframes slide-down {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+

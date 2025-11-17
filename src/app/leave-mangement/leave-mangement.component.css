@@ -1,0 +1,101 @@
+/* ========== TABLE DESIGN LIKE IMAGE ========== */
+
+.table-container {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.custom-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* HEADER STYLING */
+.custom-table thead {
+  background-color: #000;
+  color: #fff;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.custom-table thead th {
+  padding: 12px;
+  font-weight: 600;
+  border: none;
+}
+
+/* ROW STYLING */
+.custom-table tbody tr {
+  border-bottom: 1px solid #e9ecef;
+  transition: all 0.2s ease-in-out;
+}
+
+.custom-table tbody tr:hover {
+  background-color: #f6f6f6;
+  transform: scale(1.002);
+}
+
+.custom-table tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* CELL STYLING */
+.custom-table tbody td {
+  vertical-align: middle;
+  font-size: 13px;
+  color: #212529;
+  padding: 12px;
+}
+
+/* ACTION BUTTONS */
+.custom-table tbody td button {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #000;
+  color: #ffffff;
+  background-color: rgb(0, 0, 0);
+  transition: all 0.2s ease;
+}
+
+.custom-table tbody td button:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+/* BADGES */
+.badge {
+  font-size: 12px;
+}
+
+/* SPACING FIX */
+.tabel-size {
+  font-size: 13px;
+}
+
+/* CARD HEADER ROUNDED */
+.card-header {
+  border-top-left-radius: 8px !important;
+  border-top-right-radius: 8px !important;
+}
+
+/* OPTIONAL: SCROLL WITH FIXED HEADER */
+.table-responsive {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.custom-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #000;
+  z-index: 10;
+  color:white;
+}

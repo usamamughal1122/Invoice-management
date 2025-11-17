@@ -1,0 +1,30 @@
+/* Layout wrapper */
+.app-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+
+/* Sidebar width fix */
+app-sidebar {
+  flex-shrink: 0;
+  width: 240px;
+}
+
+/* Main area next to sidebar */
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Scrollable content */
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+ /* padding: 20px;*/
+  background-color: #f9f9f9;
+}

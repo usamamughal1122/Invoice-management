@@ -1,0 +1,13 @@
+<div class="app-container">
+  <ng-container *ngIf="!isLoginPage()">
+    <app-sidebar (toggle)="toggleSidebar()"></app-sidebar>
+  </ng-container>
+
+  <div class="main-area" [class.full-width]="isLoginPage()">
+    <app-topbar *ngIf="!isLoginPage()"></app-topbar>
+
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

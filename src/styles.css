@@ -1,0 +1,31 @@
+@import 'ngx-toastr/toastr';
+
+/* Light Theme (default) */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --primary-color: #007bff;
+  --card-bg: #f8f9fa;
+}
+
+/* Dark Theme */
+.dark-theme {
+  --bg-color: #121212;
+  --text-color: #ffffff;
+  --primary-color: #4dabf7;
+  --card-bg: #1e1e1e;
+}
+
+/* Apply globally */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.card {
+  background-color: var(--card-bg);
+}
+
+a, button {
+  color: var(--primary-color);
+}

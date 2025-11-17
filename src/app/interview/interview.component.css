@@ -1,0 +1,87 @@
+/* HEADER GRADIENT */
+.custom-header {
+  background: linear-gradient(90deg, #d00000, #ffba08, #3f37c9);
+  color: #fff;
+  border-radius: 1rem;
+  backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* FOOTER GRADIENT */
+.custom-footer {
+  background: linear-gradient(90deg, #3f37c9, #7209b7, #b5179e);
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+
+/* Nav Links */
+.nav-link {
+  text-decoration: none;
+}
+.nav-link:hover {
+  color: #ffba08 !important;
+  transform: translateY(-2px);
+}
+
+/* Social Icons */
+.social-icon {
+  font-size: 1.3rem;
+  color: #fff;
+}
+.social-icon:hover {
+  color: #ffba08;
+  transform: scale(1.2);
+  text-shadow: 0 0 8px rgba(255, 186, 8, 0.8);
+}
+
+/* CARD + LIST STYLING */
+.card-header {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+.list-group-item.active {
+  background-color: #ff4757 !important;
+  border-color: #ff4757 !important;
+  color: #fff !important;
+}
+.list-group-item:hover {
+  background-color: #ffeaa7 !important;
+}
+button.btn-light:hover {
+  background-color: #f1f2f6;
+}
+
+/* Make scrollable cards same height */
+.scroll-card {
+  max-height: 427px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
+}
+
+/* Scrollbar for Chrome */
+.scroll-card::-webkit-scrollbar {
+  width: 8px;
+}
+.scroll-card::-webkit-scrollbar-thumb {
+  background-color: #bbb;
+  border-radius: 4px;
+}
+.scroll-card::-webkit-scrollbar-thumb:hover {
+  background-color: #888;
+}
+
+/* Footer text */
+.custom-footer span {
+  font-size: 0.95rem;
+}
+
+/* Responsive header */
+@media (max-width: 768px) {
+  .custom-header nav {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}

@@ -1,0 +1,235 @@
+<style>
+  .modal-header {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border: none;
+    border-bottom: 2px solid #d4af37;
+  }
+  
+  .modal-title {
+    color: #d4af37;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  
+  .modal-subtitle {
+    color: #bbb;
+    font-size: 0.875rem;
+  }
+  
+  .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+  }
+  
+  .modal-body {
+    background: #fff;
+  }
+  
+  .section-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  .section-header {
+    color: #1a1a1a;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #d4af37;
+    display: flex;
+    align-items: center;
+  }
+  
+  .section-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    color: #d4af37;
+  }
+  
+  .detail-row {
+    display: flex;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  
+  .detail-row:last-child {
+    border-bottom: none;
+  }
+  
+  .detail-label {
+    flex: 0 0 40%;
+    color: #666;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .detail-value {
+    flex: 1;
+    color: #1a1a1a;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  
+  .quantity-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+    color: #1a1a1a;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+  
+  .status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background: #1a1a1a;
+    color: #d4af37;
+  }
+  
+  .modal-footer {
+    background: #f8f9fa;
+    border-top: 2px solid #d4af37;
+  }
+  
+  .btn-gold {
+    background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+    border: none;
+    color: #1a1a1a;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(212, 175, 55, 0.3);
+    color: #1a1a1a;
+  }
+  
+  .btn-dark-custom {
+    background: #1a1a1a;
+    border: 1px solid #d4af37;
+    color: #d4af37;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-dark-custom:hover {
+    background: #2d2d2d;
+    color: #f4d03f;
+    border-color: #f4d03f;
+  }
+</style>
+
+<div class="modal-header">
+  <div class="w-100">
+    <div class="d-flex justify-content-between align-items-start">
+      <div>
+        <h5 class="modal-title mb-1">INVENTORY DETAILS</h5>
+        <p class="modal-subtitle mb-0">Complete Item Information</p>
+      </div>
+      <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss()"></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-body p-4">
+  <!-- Product Information Section -->
+  <div class="section-card">
+    <div class="section-header">
+      <svg class="section-icon" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2zm3.564 1.426L5.596 5 8 5.961 14.154 3.5zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923z"/>
+      </svg>
+      Product Information
+    </div>
+    
+    <div class="detail-row">
+      <div class="detail-label">Item Name:</div>
+      <div class="detail-value">{{ data.name || '-' }}</div>
+    </div>
+    
+    <div class="detail-row">
+      <div class="detail-label">Brand:</div>
+      <div class="detail-value">{{ data.brand?.brand || '-' }}</div>
+    </div>
+    
+    <div class="detail-row">
+      <div class="detail-label">Category:</div>
+      <div class="detail-value">{{ data.category?.category || '-' }}</div>
+    </div>
+    
+    <div class="detail-row">
+      <div class="detail-label">Serial Number:</div>
+      <div class="detail-value">{{ data.serialNumber || '-' }}</div>
+    </div>
+    
+    <div class="detail-row">
+      <div class="detail-label">SKU (Stock Keeping Unit):</div>
+      <div class="detail-value">{{ data.sku || '-' }}</div>
+    </div>
+  </div>
+
+  <!-- Inventory & Supply Section -->
+  <div class="section-card">
+    <div class="section-header">
+      <svg class="section-icon" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z"/>
+      </svg>
+      Inventory & Supply
+    </div>
+    
+    <div class="detail-row">
+      <div class="detail-label">Quantity (Available/Total):</div>
+      <div class="detail-value">
+        <span class="quantity-badge">{{ data.quantity_available }}/{{ data?.quantity_total }}</span>
+      </div>
+    </div>
+    
+    <div class="detail-row">
+      <div class="detail-label">Supplier:</div>
+      <div class="detail-value">{{ data.supplier?.name || '-' }}</div>
+    </div>
+    
+    <div class="detail-row">
+      <div class="detail-label">Status:</div>
+      <div class="detail-value">
+        <span class="status-badge">{{ data.status || '-' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Purchase & Warranty Section -->
+  <div class="section-card">
+    <div class="section-header">
+      <svg class="section-icon" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+      </svg>
+      Purchase & Warranty
+    </div>
+    
+    <div class="detail-row">
+      <div class="detail-label">Purchase Date:</div>
+      <div class="detail-value">{{ data.purchaseDate || '-' }}</div>
+    </div>
+    
+    <div class="detail-row">
+      <div class="detail-label">Warranty Expiry:</div>
+      <div class="detail-value">{{ data.warrantyExpiry || '-' }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-dark-custom btn-sm" (click)="activeModal.dismiss()">Close</button>
+</div>

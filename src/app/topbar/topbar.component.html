@@ -1,0 +1,38 @@
+<header
+  [ngStyle]="{'height':'60px','display':'flex','align-items':'center','justify-content':'space-between','padding':'0 20px','background-color': theme==='dark'?'#1e1e1e':'#ffffff','color': theme==='dark'?'#eee':'#222','box-shadow':'0 2px 4px rgba(0,0,0,0.1)','transition':'all 0.3s'}">
+  <span style="font-weight:bold;font-size:18px;"></span>
+
+  <div style="display:flex;align-items:center;gap:15px;">
+    <!-- Theme Toggle -->
+    <button (click)="toggleTheme()" class="toggle-button">
+      <div class="icon-wrapper" [ngClass]="{'dark': isDarkMode}">
+        <!-- Sun Icon -->
+        <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="5" fill="orange" />
+          <g stroke="orange" stroke-width="2">
+            <line x1="12" y1="1" x2="12" y2="4" />
+            <line x1="12" y1="20" x2="12" y2="23" />
+            <line x1="4.2" y1="4.2" x2="6.5" y2="6.5" />
+            <line x1="17.5" y1="17.5" x2="19.8" y2="19.8" />
+            <line x1="1" y1="12" x2="4" y2="12" />
+            <line x1="20" y1="12" x2="23" y2="12" />
+            <line x1="4.2" y1="19.8" x2="6.5" y2="17.5" />
+            <line x1="17.5" y1="6.5" x2="19.8" y2="4.2" />
+          </g>
+        </svg>
+
+        <!-- Moon Icon -->
+        <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path fill="yellow" d="M21 12.79A9 9 0 0111.21 3a7 7 0 000 14 9 9 0 019.79-4.21z" />
+        </svg>
+      </div>
+    </button>
+
+
+    <span style="font-size:14px;">Admin Panel</span>
+    <button (click)="logout()"
+      [ngStyle]="{'padding':'5px 10px','border-radius':'5px','border':'none','border-color': theme==='dark'?'#eee':'#222','background-color':'transparent','color': theme==='dark'?'#eee':'#222','cursor':'pointer'}">
+      Logout
+    </button>
+  </div>
+</header>
