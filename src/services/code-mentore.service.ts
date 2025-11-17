@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class EmployeeService {
-  private API_BASE = 'http://localhost:3000';
+  private API_BASE = 'https://inventory-backend-lemon.vercel.app';
 
   constructor(private http: HttpClient) {}
 
@@ -112,6 +112,6 @@ export class EmployeeService {
    createInvoice(data: any): Observable<any> {
     return this.http.post(`${this.API_BASE}/api/invoices`, data);
   }
-  
-  
+
+
 }
