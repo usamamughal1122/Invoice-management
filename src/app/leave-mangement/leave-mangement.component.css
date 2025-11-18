@@ -1,54 +1,85 @@
-/* ========== TABLE DESIGN LIKE IMAGE ========== */
+/* ========== WHITE - GOLD - BLACK PREMIUM THEME ========== */
 
-.table-container {
-  background: #fff;
+/* PAGE BACKGROUND */
+.container-fluid {
+  background-color: #ffffff !important;
+}
+
+/* HEADER SECTION */
+h5.fw-bold {
+  color: #000;
+}
+
+.btn-primary {
+  background-color: #d4af37 !important; /* Gold */
+  border-color: #d4af37 !important;
+  color: #000 !important;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background-color: #b9902d !important; /* Dark Gold */
+}
+
+/* CARDS */
+.card {
   border-radius: 12px;
+  border: 1px solid #f0e6c8 !important; /* Light gold border */
+}
+
+.card .text-success,
+.card .text-warning,
+.card .text-danger,
+.card .text-primary {
+  color: #d4af37 !important; /* Gold Icons */
+}
+
+.card h5 {
+  color: #000 !important;
+}
+
+/* TABLE CONTAINER */
+.table-container {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #f0e6c8; /* light gold border */
   overflow: hidden;
 }
 
-.custom-table {
-  border-collapse: separate;
-  border-spacing: 0;
-  width: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-/* HEADER STYLING */
+/* TABLE HEADER */
 .custom-table thead {
-  background-color: #000;
-  color: #fff;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
+  background-color: #000 !important;
+  color: #d4af37 !important; /* Gold Text */
 }
 
 .custom-table thead th {
   padding: 12px;
   font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.5px;
   border: none;
 }
 
-/* ROW STYLING */
+/* TABLE ROWS */
 .custom-table tbody tr {
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid #f1ead6;
   transition: all 0.2s ease-in-out;
 }
 
 .custom-table tbody tr:hover {
-  background-color: #f6f6f6;
+  background-color: #fff8dc; /* Light gold tint */
   transform: scale(1.002);
 }
 
 .custom-table tbody tr:nth-child(even) {
-  background-color: #fafafa;
+  background-color: #fcfaf2; /* Light ivory */
 }
 
-/* CELL STYLING */
+/* TABLE CELLS */
 .custom-table tbody td {
   vertical-align: middle;
   font-size: 13px;
-  color: #212529;
+  color: #000;
   padding: 12px;
 }
 
@@ -59,43 +90,63 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #000;
-  color: #ffffff;
-  background-color: rgb(0, 0, 0);
+  border: 1px solid #d4af37;
+  color: #d4af37;
+  background-color: transparent;
   transition: all 0.2s ease;
 }
 
 .custom-table tbody td button:hover {
-  background-color: #000;
-  color: #fff;
+  background-color: #d4af37;
+  color: #000;
 }
 
 /* BADGES */
 .badge {
   font-size: 12px;
+  font-weight: 600;
+  border-radius: 30px;
 }
 
-/* SPACING FIX */
-.tabel-size {
-  font-size: 13px;
+.bg-warning {
+  background-color: #ffda6a !important;
+  color: #000 !important;
 }
 
-/* CARD HEADER ROUNDED */
-.card-header {
-  border-top-left-radius: 8px !important;
-  border-top-right-radius: 8px !important;
+.bg-success {
+  background-color: #d4af37 !important;
+  color: #000 !important;
 }
 
-/* OPTIONAL: SCROLL WITH FIXED HEADER */
-.table-responsive {
-  max-height: 500px;
-  overflow-y: auto;
+.bg-danger {
+  background-color: #8b0000 !important;
+  color: #fff !important;
 }
 
+/* TABLE HEADER STICKY */
 .custom-table thead th {
   position: sticky;
   top: 0;
   background-color: #000;
   z-index: 10;
-  color:white;
+}
+
+/* CARD HEADER */
+.card-header {
+  background-color: #000 !important;
+  color: #d4af37 !important;
+  border-top-left-radius: 8px !important;
+  border-top-right-radius: 8px !important;
+}
+
+/* REFRESH / NEW REQUEST BUTTONS */
+.card-header .btn {
+  background: #d4af37 !important;
+  color: #000 !important;
+  border: none !important;
+  font-weight: 600;
+}
+
+.card-header .btn:hover {
+  background: #b9902d !important;
 }

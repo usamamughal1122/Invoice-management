@@ -1,3 +1,90 @@
 .container {
   overflow-y: auto;
 }
+/* ========== FORM - WHITE / GOLD / BLACK THEME ========== */
+
+/* FORM WRAPPER */
+.container {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 25px;
+  border: 1px solid #f0e6c8; /* Light Gold Border */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* HEADING */
+h4 {
+  font-weight: 700;
+  color: #000;
+  border-left: 4px solid #d4af37; /* Gold Bar */
+  padding-left: 10px;
+}
+
+/* LABELS */
+.form-label {
+  font-weight: 600;
+  color: #000;
+  font-size: 14px;
+}
+
+/* INPUT + SELECT */
+.form-control,
+.form-select {
+  border-radius: 8px;
+  border: 1px solid #e5d9b6 !important; /* Light Gold */
+  padding: 10px;
+  font-size: 14px;
+  color: #000;
+  background-color: #fff;
+  transition: 0.2s ease;
+}
+
+/* INPUT FOCUS */
+.form-control:focus,
+.form-select:focus,
+textarea:focus {
+  border-color: #d4af37 !important; /* Gold */
+  box-shadow: 0 0 4px rgba(212, 175, 55, 0.5);
+}
+
+/* TEXTAREA */
+textarea {
+  border-radius: 10px !important;
+}
+
+/* DISABLED INPUT */
+input[readonly] {
+  background-color: #fafafa !important;
+  border-color: #ddd !important;
+  font-weight: 600;
+}
+
+/* BUTTONS */
+.btn-primary {
+  background-color: #d4af37 !important; /* Gold */
+  border-color: #d4af37 !important;
+  color: #000 !important;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 8px;
+}
+
+.btn-primary:hover {
+  background-color: #b9912d !important; /* Dark Gold */
+}
+
+.btn-outline-secondary {
+  border-radius: 8px;
+  color: #000;
+  border: 1px solid #000 !important;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+/* GAP FIX */
+.g-3 > div {
+  margin-bottom: 8px;
+}

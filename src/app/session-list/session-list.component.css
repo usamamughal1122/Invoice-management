@@ -1,112 +1,164 @@
-.table-wrapper {
-  position: relative;
-  height: 70vh; 
-  overflow-y: auto;
-  overflow-x: auto;
-  border: 1px solid #e4e4e4;
-  border-radius: 12px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+/* =========================================================
+   GLOBAL THEME — WHITE / GOLD / BLACK
+   ========================================================= */
+
+/* ---------- CARDS (Widgets) ---------- */
+.stat-card {
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #f0e6c8; /* Light Gold Border */
+  transition: 0.2s ease;
 }
 
-.widgets-height{
-  height: 145px;
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
+
+/* Widget Icon Box */
+.icon-box {
+  width: 55px;
+  height: 55px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: #000; /* Black */
+  color: #d4af37 !important; /* Gold Icon */
+  border: 2px solid #d4af37;
+}
+
+/* Widget Text */
+.stat-card h6 {
+  color: #000 !important;
+  font-weight: 600;
+}
+
+.stat-card h3 {
+  color: #000 !important;
+  font-weight: 700;
+}
+
+/* ---------- SUMMARY BADGES ---------- */
+.bg-body-secondary {
+  background: #fff4d6 !important; /* Light Gold Tint */
+  border: 1px solid #e7d18b;
+  color: #000 !important;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+/* ---------- CREATE NEW BUTTON ---------- */
+.btn-primary {
+  background: #d4af37 !important;
+  color: #000 !important;
+  border-color: #d4af37 !important;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.btn-primary:hover {
+  background: #b9912d !important; /* Dark Gold */
+}
+
+/* =========================================================
+   TABLE — PREMIUM GOLD/BLACK/WHITE
+   ========================================================= */
+
+/* TABLE WRAPPER */
+.table-wrapper {
+  border: 1px solid #f0e6c8; /* Gold Outline */
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+/* TABLE HEADER */
 .table thead tr,
 .table thead th {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  background-color: #000 !important; 
-  color: #fff !important;           
-  font-weight: 600;
+  background: #000 !important; /* Matte Black */
+  color: #d4af37 !important;   /* Gold Text */
+  font-weight: 700;
   text-transform: uppercase;
   font-size: 13px;
-  letter-spacing: 0.3px;
-  border-bottom: 2px solid #333 !important;
+  letter-spacing: 0.4px;
+  border-bottom: 2px solid #d4af37 !important; /* Gold Line */
 }
 
-
-.table thead {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+/* STICKY FIRST COLUMN */
+th:first-child,
+th:nth-child(2),
+td:first-child {
+  position: sticky;
+  left: 0;
+  background: #ffffff;
+  z-index: 4;
+  border-right: 1px solid #f3e8c2;
 }
 
-
-.table td, .table th {
-  vertical-align: middle;
-  padding: 0.75rem 1rem;
-  white-space: nowrap;
+/* STICKY ACTION COLUMN */
+th:last-child, td:last-child {
+  position: sticky;
+  right: 0;
+  background: #ffffff;
+  z-index: 4;
+  border-left: 1px solid #f3e8c2;
 }
 
+/* TABLE ROWS */
+.table td {
+  color: #000;
+  font-size: 13px;
+  padding: 10px 16px;
+}
 
 .table-hover tbody tr:hover {
-  background-color: #f5f5f5;
-  transition: 0.2s ease-in-out;
+  background-color: #fff7e0 !important; /* Soft Gold Hover */
 }
 
-
-.table td {
-  color: #212529;
-  font-size: 12px;
-}
-
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.cursor-pointer:hover {
-  text-decoration: underline;
-}
-
-
+/* BADGES */
 .bg-success-subtle {
-  background-color: #d1f7d1 !important;
+  background-color: #e5ffd6 !important;
   color: #137b13 !important;
+  border: 1px solid #b4e8aa;
 }
 
 .bg-danger-subtle {
-  background-color: #fcdcdc !important;
+  background-color: #ffe0e0 !important;
   color: #b30000 !important;
+  border: 1px solid #ffb8b8;
 }
 
-
+/* ---------- DELETE BUTTON ---------- */
 .btn-outline-black {
-  border: 1px solid #000;
-  color: #000;
-  transition: 0.2s ease-in-out;
+  border: 1px solid #000 !important;
+  color: #000 !important;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.25s ease;
 }
 
 .btn-outline-black:hover {
-  background-color: #000;
-  color: #fff;
+  background: #000 !important;
+  color: #d4af37 !important; /* Gold Icon */
 }
 
-
+/* TABLE SCROLLBAR */
 .table-wrapper::-webkit-scrollbar {
   width: 6px;
-  height: 6px;
+  height: 8px;
 }
 
 .table-wrapper::-webkit-scrollbar-thumb {
-  background-color: #b0b0b0;
+  background-color: #ccb879;
   border-radius: 3px;
 }
 
 .table-wrapper::-webkit-scrollbar-thumb:hover {
-  background-color: #707070;
-}
-th:first-child, 
-th:nth-child(2),
-td:first-child {
-    position: sticky;
-    left: 0;
-    background: #fff;
-    z-index: 4;
-}
-th:last-child, td:last-child {
-    position: sticky;
-    right: 0;
-    background: #fff;
-    z-index: 4;
+  background-color: #b89e52;
 }
