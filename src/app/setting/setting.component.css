@@ -1,70 +1,55 @@
-/* GLOBAL SMOOTH TRANSITION */
-body {
-  transition: background 0.3s, color 0.3s;
+/* INPUTS & SELECTS */
+input, select, textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-top: 4px;
+  transition: 0.2s;
+  font-size: 14px;
 }
 
-/* LIGHT THEME */
-body.light {
-  background-color: #f4f6fa;
-  color: #222;
-}
-
-body.light .card {
-  background: #fff;
-  color: #222;
-}
-
-body.light .list-group-item {
-  background: #fff;
-  color: #222;
-}
-
-body.light .list-group-item.active {
-  background: #0d6efd;
-  color: white;
-}
-
-/* DARK THEME */
-body.dark {
-  background-color: #121212;
-  color: #eee;
-}
-
-body.dark .card {
-  background: #1e1e1e;
-  color: #eee;
-}
-
-body.dark .list-group-item {
-  background: #1a1a1a;
-  color: #eee;
-}
-
-body.dark .list-group-item.active {
-  background: #3a3a3a;
-  color: white;
-}
-
-body.dark input,
-body.dark select,
-body.dark textarea {
+body.dark input, body.dark select, body.dark textarea {
   background: #222;
-  color: white;
   border-color: #555;
+  color: #fff;
 }
 
-/* Theme Toggle Button */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #d4af37;
+  box-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+}
+
+/* BUTTONS */
+.gold-btn {
+  background: #d4af37;
+  color: #111;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.gold-btn:hover {
+  background: #b38b2f;
+}
+
+/* THEME TOGGLE */
 .theme-toggle {
   background: transparent;
-  border: none;
-  font-size: 18px;
+  border: 1px solid #d4af37;
+  color: #d4af37;
+  padding: 5px 10px;
+  border-radius: 6px;
   cursor: pointer;
   transition: 0.3s;
 }
 
 .theme-toggle:hover {
-  transform: rotate(20deg);
-}
-.savebtn{
-  border: none !important;
+  background: #d4af37;
+  color: #111;
+  transform: scale(1.05);
 }

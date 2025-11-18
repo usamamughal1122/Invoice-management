@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './setting.component.css'
 })
 export class SettingComponent {
+[x: string]: any;
  section: string = 'general';
   theme: string = 'light';
 
@@ -36,7 +37,7 @@ export class SettingComponent {
     localStorage.setItem('theme', this.theme);
   }
 
-  inputStyle(){ 
+  inputStyle(){
     return {
       'background-color': this.theme==='dark'?'#222':'#fff',
       'color': this.theme==='dark'?'#eee':'#222',
