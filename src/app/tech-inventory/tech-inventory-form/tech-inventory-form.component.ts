@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -57,7 +57,7 @@ export class TechInventoryFormComponent implements OnInit {
   statuses = ['Available', 'UnAvailable', 'Repair', 'Retired', 'Lost'];
 
   employees: any[] = [];
-
+ @Output () formSubmitted = new EventEmitter<void>();
   constructor(
     private fb: FormBuilder,
     private svc: EmployeeService,
@@ -175,7 +175,8 @@ export class TechInventoryFormComponent implements OnInit {
     } else {
       this.svc.addInventory(payload).subscribe({
         next: (res) => {
-          this.activeModal.close(res);
+          //this.formSubmitted.emit();
+           this.activeModal.close(res);
           this.toastr.success('Inventory added successfully!');
         },
         error: (err) => {
@@ -203,14 +204,15 @@ export class TechInventoryFormComponent implements OnInit {
     return new Date(date).toISOString().substring(0, 10);
   }
 
-  brands() {
-    debugger;
-    this.svc.getBrands().subscribe({
-      next: (res: any) => (this.brand = res.data || []),
-      error: (err) => console.error(err),
-    });
-  }
-
+brands() {
+  this.svc.getBrands().subscribe({
+    next: (res: any) => {
+      console.log('Brands API response:', res.data);
+      this.brand = res.data || [];
+    },
+    error: (err) => console.error(err),
+  });
+}
   category() {
     this.svc.getcategory().subscribe({
       next: (res: any) => (this.categories = res.data || []),

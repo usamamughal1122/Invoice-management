@@ -1,0 +1,48 @@
+<div class="modal-header border-0"
+    style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); display: flex; justify-content: space-between; align-items: center; padding: 1rem;">
+    <h5 class="modal-title fw-bold mb-0" style="font-size: 16px; color: #ffffff;">
+        <i class="bi bi-credit-card-2-front me-2" style="color: #d4af37;"></i>
+        Payment for Invoice #{{ invoiceNumber }}
+    </h5>
+    <button type="button" class="btn-close btn-close-white" (click)="activeModal.dismiss()"></button>
+</div>
+
+<div class="modal-body p-4" style="background: #ffffff;">
+    <div class="text-center mb-4">
+        <h3 class="fw-bold" style="color: #d4af37;">{{ (amount / 100) | currency }}</h3>
+        <p class="text-muted">Total Amount Due</p>
+    </div>
+
+    <form [formGroup]="paymentForm">
+        <div class="mb-3">
+            <label class="form-label text-muted small">Cardholder Name</label>
+            <input type="text" class="form-control" formControlName="name" placeholder="John Doe"
+                style="border: 1px solid #e0e0e0; padding: 10px;">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label text-muted small">Card Details</label>
+            <div class="stripe-card">
+                <div id="card-element" class="form-control" style="padding: 10px; border: 1px solid #e0e0e0;">
+                    <!-- Stripe Card Element will be mounted here -->
+                </div>
+            </div>
+        </div>
+
+    </form>
+    <div class="alert alert-info small">
+        <i class="bi bi-info-circle me-1"></i> This is a test payment integration. No real money will be charged.
+    </div>
+</div>
+
+<div class="modal-footer border-0" style="background: #f8f8f8;">
+    <button class="btn px-3 py-2" (click)="activeModal.dismiss()"
+        style="border-radius: 5px; font-size: 14px; background: #666666; color: #ffffff; border: none;">
+        Cancel
+    </button>
+    <button class="btn px-4 py-2" (click)="pay()" [disabled]="isProcessing"
+        style="background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a; border: none; border-radius: 5px; font-size: 14px; font-weight: 600; width: 120px;">
+        <span *ngIf="!isProcessing"><i class="bi bi-lock-fill me-2"></i>Pay Now</span>
+        <span *ngIf="isProcessing">Processing...</span>
+    </button>
+</div>

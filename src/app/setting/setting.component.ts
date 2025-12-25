@@ -12,6 +12,8 @@ export class SettingComponent {
 [x: string]: any;
  section: string = 'general';
   theme: string = 'light';
+  showAdvanced: boolean = false;
+  advancedJson: string = '';
 
   sections = [
     { key: 'general', label: 'General', icon: 'bi-gear' },
@@ -28,6 +30,7 @@ export class SettingComponent {
   ngOnInit(): void {
     const savedTheme = localStorage.getItem('theme');
     if(savedTheme){ this.theme = savedTheme; }
+    this.loadFromStorage();
   }
 
   setSection(section: string){ this.section = section; }
@@ -56,5 +59,100 @@ export class SettingComponent {
   saveInventory(){ console.log('Inventory:', this.inventory); alert('Inventory saved!'); }
   saveEmployees(){ console.log('Employees:', this.employees); alert('Employees saved!'); }
   saveNotifications(){ console.log('Notifications:', this.notifications); alert('Notifications saved!'); }
+
+  // Bundle all settings into one object
+  get settingsBundle(){
+    return {
+      general: this.general,
+      inventory: this.inventory,
+      employees: this.employees,
+      notifications: this.notifications,
+      theme: this.theme
+    };
+  }
+
+  // Save all settings to localStorage (or later to backend)
+  saveAll(){
+    try{
+      localStorage.setItem('app_settings', JSON.stringify(this.settingsBundle));
+      alert('All settings saved locally');
+    }catch(e){
+      console.error(e);
+      alert('Failed to save settings');
+    }
+  }
+
+  // Export settings as downloadable JSON file
+  exportSettings(){
+    const data = JSON.stringify(this.settingsBundle, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'settings-export.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // Import settings from JSON string (applies to UI but doesn't auto-save)
+  applyImportedJson(jsonString: string){
+    try{
+      const parsed = JSON.parse(jsonString);
+      if(parsed.general) this.general = parsed.general;
+      if(parsed.inventory) this.inventory = parsed.inventory;
+      if(parsed.employees) this.employees = parsed.employees;
+      if(parsed.notifications) this.notifications = parsed.notifications;
+      if(parsed.theme) this.theme = parsed.theme;
+      alert('Imported settings applied to the UI. Click Save All to persist.');
+    }catch(e){
+      console.error(e);
+      alert('Invalid JSON');
+    }
+  }
+
+  // Handler for file import input
+  onImportFile(event: any){
+    const file = event?.target?.files?.[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const txt = e.target.result as string;
+      this.advancedJson = txt;
+      // apply immediately to UI (user can Save All to persist)
+      this.applyImportedJson(txt);
+    };
+    reader.readAsText(file);
+  }
+
+  // Fill advancedJson with current bundle
+  loadCurrentJson(){
+    this.advancedJson = JSON.stringify(this.settingsBundle, null, 2);
+  }
+
+  // Load settings from localStorage if present
+  loadFromStorage(){
+    const raw = localStorage.getItem('app_settings');
+    if(!raw) return;
+    try{
+      const parsed = JSON.parse(raw);
+      if(parsed.general) this.general = parsed.general;
+      if(parsed.inventory) this.inventory = parsed.inventory;
+      if(parsed.employees) this.employees = parsed.employees;
+      if(parsed.notifications) this.notifications = parsed.notifications;
+      if(parsed.theme) this.theme = parsed.theme;
+    }catch(e){ console.warn('Failed to parse stored settings', e); }
+  }
+
+  // Reset to defaults (simple hard reset)
+  resetSettings(){
+    if(!confirm('Reset all settings to defaults?')) return;
+    this.general = { companyName: '', logo: null as File | null, currency: 'PKR', timezone: 'Asia/Karachi' };
+    this.inventory = { paginationLimit: 10, lowStockAlert: 5, codePrefix: 'INV-' };
+    this.employees = { defaultRole: 'Employee', autoApproveLeave: false, strongPassword: true };
+    this.notifications = { lowStock: true, newEmployee: false, email: true, sms: false };
+    this.theme = 'light';
+    localStorage.removeItem('app_settings');
+    alert('Settings reset to defaults');
+  }
 
 }

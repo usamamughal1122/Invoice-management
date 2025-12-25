@@ -16,6 +16,8 @@ import { ClientComponent } from './client/client.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from '../auth.guard';
 import { SettingComponent } from './setting/setting.component';
+import { LowStockComponent } from './low-stock/low-stock.component';
+import { TransactionsComponent } from './invoice/transactions/transactions.component';
 
 export const routes: Routes = [
   // Default route (redirects to sessions)
@@ -36,6 +38,9 @@ export const routes: Routes = [
   // { path: 'departments', component: DeparmentManagmentComponent },
   {path: 'invoice', component: InvoiceComponent,canActivate: [AuthGuard]},
    {path: 'suppliers', component: SuppliersManagmentComponent,canActivate: [AuthGuard]},
+   {path: 'lowStock', component: LowStockComponent,canActivate: [AuthGuard]},
+   {path: 'transactions', component: TransactionsComponent,canActivate: [AuthGuard]},
    {path: 'settings', component: SettingComponent,canActivate: [AuthGuard]},
+
   { path: '**', redirectTo: 'login' },
 ];

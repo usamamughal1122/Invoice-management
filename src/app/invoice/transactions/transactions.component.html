@@ -1,0 +1,141 @@
+<div class="container-fluid py-4"
+  style="background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%); min-height: 100vh;">
+
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold mb-1" style="font-size: 20px; color: #1a1a1a;">
+        <i class="bi bi-credit-card-2-front me-2" style="color: #d4af37;"></i>Transaction History
+      </h2>
+      <p class="text-muted mb-0" style="font-size: 14px;">All successful payment transactions</p>
+    </div>
+    <div class="badge px-3 py-2 rounded-pill"
+      style="font-size: 15px; background: linear-gradient(135deg, #e3f6fd, #e3f6fd 100%); color: #1a1a1a;">
+      <i class="bi bi-check-circle-fill me-2"></i>{{ transactions.length }} Transactions
+    </div>
+  </div>
+
+  <!-- Transactions Table -->
+  <div class="card shadow-sm" *ngIf="transactions.length > 0"
+    style="border-radius: 12px; overflow: hidden; border: 1px solid #e8e8e8; background: #ffffff;">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0" style="font-size: 14px;">
+        <thead style="background: linear-gradient(135deg, #e3f6fd, #e3f6fd 100%);">
+          <tr>
+            <th class="py-3 px-3 border-0">
+              <i class="bi bi-hash me-2" style="color: #000000;"></i>Invoice #
+            </th>
+            <th class="py-3 px-3 border-0">
+              <i class="bi bi-person-circle me-2" style="color: #000000;"></i>Client
+            </th>
+            <th class="py-3 px-3 border-0">
+              <i class="bi bi-currency-dollar me-2" style="color: #000000;"></i>Amount
+            </th>
+            <th class="py-3 px-3 border-0">
+              <i class="bi bi-check-circle me-2" style="color: #000000;"></i>Status
+            </th>
+            <th class="py-3 px-3 border-0">
+              <i class="bi bi-calendar-event me-2" style="color: #000000;"></i>Payment Date
+            </th>
+            <th class="py-3 px-3 border-0 text-center">
+              <i class="bi bi-gear me-2" style="color: #000000;"></i>Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tx of transactions"
+            style="background: #fff; border-bottom: 1px solid #e8e8e8; transition: all 0.3s;"
+            onmouseover="this.style.background='#fafafa'"
+            onmouseout="this.style.background='#fff'">
+
+            <td class="py-3 px-3 align-middle">
+              <span class="badge px-2 py-1"
+                style="background: #e8e8e8cc; color: #000000cc; font-weight: 600;">
+                #{{ tx.invoiceNumber }}
+              </span>
+            </td>
+
+            <td class="py-3 px-3 align-middle">
+              <div class="d-flex align-items-center">
+                <div class="rounded-circle p-2 me-2"
+                  style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #e3f6fd, #e3f6fd 100%);">
+                  <i class="bi bi-person" style="font-size: 14px; color: #1a1a1a;"></i>
+                </div>
+                <span class="fw-semibold" style="color: #1a1a1a;">
+                  {{ tx.invoiceId?.client?.name || 'N/A' }}
+                </span>
+              </div>
+            </td>
+
+            <td class="py-3 px-3 align-middle">
+              <span class="fw-bold" style="font-size: 15px; color: #28a745;">
+                {{ (tx.amount / 100) | currency }}
+              </span>
+            </td>
+
+            <td class="py-3 px-3 align-middle">
+              <span class="badge px-2 py-1"
+                [ngClass]="{
+                  'bg-success': tx.status === 'SUCCESS',
+                  'bg-secondary': tx.status === 'REFUNDED',
+                  'bg-warning': tx.status === 'PENDING'
+                }">
+                <i class="bi me-1"
+                  [ngClass]="{
+                    'bi-check-circle-fill': tx.status === 'SUCCESS',
+                    'bi-arrow-counterclockwise': tx.status === 'REFUNDED',
+                    'bi-clock-fill': tx.status === 'PENDING'
+                  }"></i>
+                {{ tx.status }}
+              </span>
+            </td>
+
+            <td class="py-3 px-3 align-middle">
+              <span style="color: #666;">
+                <i class="bi bi-calendar3 me-1" style="color: #d4af37;"></i>
+                {{ tx.createdAt | date:'medium' }}
+              </span>
+            </td>
+
+            <td class="py-3 px-3 align-middle text-center">
+              <button
+                *ngIf="tx.status === 'SUCCESS'"
+                class="btn btn-sm px-3 py-2"
+                (click)="refund(tx)"
+                style="border-radius: 5px; background: #dc3545; color: #ffffff; border: none; font-weight: 600;">
+                <i class="bi bi-arrow-counterclockwise me-1"></i>Refund
+              </button>
+
+              <span *ngIf="tx.status === 'REFUNDED'"
+                class="badge bg-secondary px-3 py-2"
+                style="font-size: 13px;">
+                <i class="bi bi-check-circle me-1"></i>Refunded on {{ tx.refundedAt | date:'short' }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="transactions.length === 0" class="text-center py-5">
+    <div class="card shadow-sm mx-auto"
+      style="max-width: 500px; border-radius: 12px; border: 1px solid #e8e8e8;">
+      <div class="card-body p-5">
+        <i class="bi bi-receipt-cutoff display-1 mb-3 d-block" style="color: #d4af37;"></i>
+        <h4 class="fw-bold mb-2" style="color: #1a1a1a;">No Transactions Yet</h4>
+        <p class="text-muted mb-0">Successful payment transactions will appear here</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<ngx-spinner bdColor="rgba(256, 256, 256, 0.8)"
+  size="large"
+  color="#d4af37"
+  type="ball-scale-multiple"
+  [fullScreen]="true"
+  template="<img src='assets/stockify.png' />">
+</ngx-spinner>

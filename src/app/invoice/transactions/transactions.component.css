@@ -1,0 +1,119 @@
+/* Transactions Component Styles */
+
+.table-hover tbody tr:hover {
+  background-color: #fafafa !important;
+  cursor: pointer;
+}
+
+.badge {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.btn-sm {
+  transition: all 0.3s ease;
+}
+
+.btn-sm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.card {
+  transition: all 0.3s ease;
+}
+.table thead tr th {
+  background: linear-gradient(135deg, #e3f6fd, #e3f6fd) !important;
+  color: #000000 !important;
+
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+/* SweetAlert Custom Width */
+.swal-wide {
+  width: 600px !important;
+}
+
+/* Status Badge Animations */
+.badge {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Table Responsive */
+.table-responsive {
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+/* Loading State */
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+/* Empty State */
+.card-body i.display-1 {
+  font-size: 4rem;
+  opacity: 0.8;
+}
+
+/* Refund Button Hover Effect */
+.btn-sm:active {
+  transform: translateY(0);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .table {
+    font-size: 12px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px !important;
+  }
+
+  .badge {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+
+  .btn-sm {
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .btn-sm {
+    display: none;
+  }
+}

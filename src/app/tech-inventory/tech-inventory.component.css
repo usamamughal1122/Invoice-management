@@ -8,41 +8,43 @@
 
 /* Page Header */
 .page-header {
-  background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
-  padding: 1.5rem;
+  /* background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%); */
+  padding: 1rem;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  border: 2px solid #d4af37;
+  /* border: 2px solid #d4af37; */
   margin-bottom: 1.5rem;
 }
 
 .page-header h3 {
-  color: #d4af37;
+  color: #000000;
   font-weight: 700;
   margin: 0;
 }
 
 .page-header p {
-  color: #ffffff;
+  color: #000000;
   opacity: 0.8;
 }
 
 .page-header .btn-primary {
-  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
-  border: 2px solid #d4af37;
+  /* background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); */
+  background-color: #e3f6fd;
+  /* border: 2px solid #d4af37; */
   color: #000000;
   font-weight: 700;
   border-radius: 12px;
   padding: 0.5rem 1.2rem;
   transition: all 0.3s ease;
+  border: none;
 }
 
-.page-header .btn-primary:hover {
+/* .page-header .btn-primary:hover {
   background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
   color: #d4af37;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
-}
+} */
 
 /* Filter Bar */
 .filter-bar {
@@ -53,9 +55,9 @@
   transition: all 0.3s ease;
 }
 
-.filter-bar:hover {
+/* .filter-bar:hover {
   border-color: #d4af37 !important;
-}
+} */
 
 .filter-bar .form-control,
 .filter-bar .form-select {
@@ -64,6 +66,8 @@
   padding: 0.6rem 1rem;
   font-size: 13px;
   transition: all 0.3s ease;
+  width: 50%;
+  margin-top: 2px;
 }
 
 .filter-bar .form-control:focus,
@@ -74,26 +78,29 @@
 }
 
 .filter-bar .btn-outline-dark {
-  background: transparent;
-  border: 2px solid #1a1a1a;
   color: #1a1a1a;
   border-radius: 12px;
   font-weight: 600;
   transition: all 0.3s ease;
+  border: none;
+  background-color: #e3f6fd;
 }
 
-.filter-bar .btn-outline-dark:hover {
+/* .filter-bar .btn-outline-dark:hover {
   background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
   border-color: #d4af37;
   color: #000000;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
-}
+} */
 
 .space {
   justify-content: space-between;
 }
 
+.refesh-spacing{
+  padding-top: 24px;
+}
 /* Card wrapper for table */
 .card-modern {
   border-radius: 20px !important;
@@ -115,22 +122,22 @@
   background: linear-gradient(90deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);
 }
 
-.card-modern:hover {
+/* .card-modern:hover {
   border-color: #d4af37 !important;
   box-shadow: 0 15px 40px rgba(212, 175, 55, 0.15) !important;
-}
+} */
 
 /* Table wrapper for scroll */
 .inventory-table-wrapper {
   max-height: 70vh;
   overflow-y: auto;
-  overflow-x: auto;
+
 }
 
 /* Custom Scrollbar */
 .inventory-table-wrapper::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 5px;
+  height: 5px;
 }
 
 .inventory-table-wrapper::-webkit-scrollbar-track {
@@ -139,13 +146,14 @@
 }
 
 .inventory-table-wrapper::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
-  border-radius: 10px;
+  /* background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); */
+  background-color: black;
+  border-radius: 5px;
 }
 
-.inventory-table-wrapper::-webkit-scrollbar-thumb:hover {
+/* .inventory-table-wrapper::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #f4d03f 0%, #d4af37 100%);
-}
+} */
 
 /* Table */
 .inventory-grid {
@@ -157,8 +165,9 @@
 
 /* Table Header */
 .table-dark-header th {
-  background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
-  color: #d4af37;
+  /* background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%); */
+  background-color:#e3f6fd ;
+  color: #000000;
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -168,7 +177,7 @@
   text-align: center;
   padding: 1rem 0.75rem;
   font-weight: 700;
-  border-bottom: 3px solid #d4af37;
+  /* border-bottom: 3px solid #d4af37; */
 }
 
 /* Table Body */
@@ -238,9 +247,10 @@
 }
 
 .badge-success {
-  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+  /* background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); */
+  background-color: #e8e8e8cc;
   color: #000000;
-  border: 2px solid #d4af37;
+  /* border: 2px solid #d4af37; */
 }
 
 .badge-primary {
@@ -278,13 +288,13 @@
   transition: all 0.3s ease;
 }
 
-.btn-outline-black:hover {
+/* .btn-outline-black:hover {
   background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
   border-color: #d4af37;
   color: #000000;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-}
+} */
 
 /* Pagination */
 .pagination {
@@ -304,12 +314,12 @@
   border: 2px solid #e5e8ef;
 }
 
-.pagenation:hover {
+/* .pagenation:hover {
   background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
   color: #000000;
   border-color: #d4af37;
   transform: translateY(-2px);
-}
+} */
 
 .page-item.disabled .pagenation {
   opacity: 0.4;
@@ -319,9 +329,9 @@
 
 .pagenation-number {
   font-size: 12px;
-  color: #d4af37;
-  background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
-  border: 2px solid #d4af37;
+  color: #000000;
+  /* background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%); */
+  /* border: 2px solid #d4af37; */
   padding: 0.5rem 0.8rem;
   border-radius: 50%;
   min-width: 35px;
@@ -335,19 +345,19 @@
 }
 
 .page-item.active .pagenation-number {
-  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+  /* background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); */
   color: #000000;
-  border-color: #d4af37;
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+  /* border-color: #d4af37; */
+  /* box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4); */
   transform: scale(1.1);
 }
 
-.pagenation-number:hover {
+/* .pagenation-number:hover {
   background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
   color: #000000;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-}
+} */
 
 .pagenatio-gap {
   padding-right: 5px;
@@ -441,7 +451,7 @@
 }
 
 /* Table Cell Hover Effect */
-.inventory-grid tbody tr td:hover {
+/* .inventory-grid tbody tr td:hover {
   color: #000000;
   font-weight: 600;
-}
+} */

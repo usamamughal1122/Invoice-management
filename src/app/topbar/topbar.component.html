@@ -1,5 +1,5 @@
 <header
-  [ngStyle]="{'height':'60px','display':'flex','align-items':'center','justify-content':'space-between','padding':'0 20px','background-color': theme==='dark'?'#1e1e1e':'#ffffff','color': theme==='dark'?'#eee':'#222','box-shadow':'0 2px 4px rgba(0,0,0,0.1)','transition':'all 0.3s'}">
+  [ngStyle]="{'height':'60px','display':'flex','align-items':'center','justify-content':'space-between','padding':'0 20px' ,'color' : isDarkMode ? '#fff' : '#000', 'background-color': isDarkMode ? '#333' : '#f8f9fa', 'box-shadow': '0 2px 4px rgba(0,0,0,0.1)'}">
   <span style="font-weight:bold;font-size:18px;"></span>
 
   <div style="display:flex;align-items:center;gap:15px;">
@@ -30,9 +30,31 @@
 
 
     <span style="font-size:14px;">Admin Panel</span>
-    <button (click)="logout()"
-      [ngStyle]="{'padding':'5px 10px','border-radius':'5px','border':'none','border-color': theme==='dark'?'#eee':'#222','background-color':'transparent','color': theme==='dark'?'#eee':'#222','cursor':'pointer'}">
-      Logout
-    </button>
+    <!-- User Dropdown -->
+  <div class="user-dropdown" (click)="toggleUserMenu()" style="position:relative;cursor:pointer;">
+
+    <!-- User Email -->
+    <div style="display:flex;align-items:center;gap:5px;">
+      <i class="bi bi-person-circle"></i>
+      <span style="font-size:14px;">{{ userEmail|slice:0:8}}</span>
+      <i class="bi bi-chevron-down"></i>
+    </div>
+
+    <!-- Dropdown Menu -->
+    <div *ngIf="showUserMenu"
+      style="position:absolute;top:35px;right:0;background:#fff;border-radius:8px;box-shadow:0 4px 10px rgba(0,0,0,0.15);min-width:150px;z-index:999;">
+
+      <button (click)="logout()"
+        style="width:100%;padding:10px;border:none;background:none;cursor:pointer;text-align:left;">
+        🚪 Logout
+      </button>
+
+    </div>
+  </div>
   </div>
 </header>
+
+<ngx-spinner bdColor="rgba(256, 256, 256, 0.8)" size="large" color="#fff" type="ball-scale-multiple" [fullScreen]="true"
+  template="<img src='assets/stockify.png' />">
+</ngx-spinner>
+

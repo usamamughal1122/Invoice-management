@@ -1,70 +1,91 @@
-<nav class="sidebar">
-  <div class="sidebar-header">
-    <h5 class="logo-text"><i class="bi bi-bag-check me-2"></i> Stockify</h5>
-  </div>
+<div class="app-wrapper d-flex">
 
-  <ul class="nav flex-column mt-3">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h5 class="logo-text"><i class="bi bi-bag-check me-2"></i> Stockify</h5>
+    </div>
 
-    <!-- Dashboard -->
-    <li class="nav-item">
-      <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
-        <i class="bi bi-speedometer2 me-2"></i> Dashboard
-      </a>
-    </li>
+    <ul class="nav flex-column mt-3">
 
-    <!-- Tech Inventory -->
-    <li class="nav-item">
-      <a routerLink="/techInventory" routerLinkActive="active" class="nav-link">
-        <i class="bi bi-laptop me-2"></i> Tech Inventory
-      </a>
-    </li>
- 
-    <li class="nav-item">
-  <a class="nav-link d-flex justify-content-between align-items-center" (click)="toggleMasterData()">
-    <span><i class="bi bi-tags me-2"></i> Master Data</span>
-    <i class="bi" [ngClass]="{'bi-chevron-down': !masterDataOpen, 'bi-chevron-up': masterDataOpen}"></i>
-  </a>
-
-  <ul class="nav flex-column ms-3 mt-1 master-dropdown" [class.open]="masterDataOpen">
-    <li class="nav-item">
-      <a routerLink="/brands" routerLinkActive="active" class="nav-link">Brands</a>
-    </li>
-    <li class="nav-item">
-      <a routerLink="/categories" routerLinkActive="active" class="nav-link">Categories</a>
-    </li>
-    <li class="nav-item">
-      <a routerLink="/suppliers" routerLinkActive="active" class="nav-link">Suppliers</a>
-    </li>
-     <li class="nav-item">
-      <a routerLink="/client" routerLinkActive="active" class="nav-link">Clients</a>
-    </li>
-  </ul>
-</li>
-  <!-- invoice -->
+      <!-- Dashboard / Main -->
       <li class="nav-item">
-      <a routerLink="/invoice" routerLinkActive="active" class="nav-link">
-        <i class="bi bi-receipt me-2"></i> Invoice
-      </a>
-    </li>
+        <a class="nav-link text-start" style="cursor: default; font-weight: 600;">
+          <i class="bi bi-speedometer2 me-2"></i> Main
+        </a>
+        <ul class="nav flex-column ms-5 mt-1 master-dropdown open">
+          <li class="nav-item">
+            <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">Dashboard</a>
+          </li>
+        </ul>
+      </li>
 
-    <!-- Employees -->
-    <li class="nav-item">
-      <a routerLink="/sessions" routerLinkActive="active" class="nav-link">
-        <i class="bi bi-people me-2"></i> Employees
-      </a>
-    </li>
+      <!-- Inventory -->
+      <li class="nav-item">
+        <a class="nav-link text-start" style="cursor: default; font-weight: 600;">
+          <span><i class="bi bi-laptop me-2"></i> Inventory</span>
+        </a>
+        <ul class="nav flex-column ms-5 mt-1 master-dropdown open">
+          <li class="nav-item">
+            <a routerLink="/techInventory" routerLinkActive="active" class="nav-link">Products</a>
+          </li>
+        </ul>
 
-    <!-- Leave Management -->
-    <li class="nav-item">
-      <a routerLink="/leaveManagement" routerLinkActive="active" class="nav-link">
-        <i class="bi bi-calendar-check me-2"></i> Leave Management
-      </a>
-    </li>
-     
-     <li class="nav-item">
-      <a routerLink="/settings" routerLinkActive="active" class="nav-link">
-        <i class="bi bi-gear-check me-2"></i> Setting
-      </a>
-    </li>
-  </ul>
-</nav>
+        <ul class="nav flex-column ms-5 mt-1 master-dropdown open">
+          <li class="nav-item">
+            <a routerLink="/lowStock" routerLinkActive="active" class="nav-link">Low Stocks</a>
+          </li>
+        </ul>
+      </li>
+
+      <!-- Master Data -->
+      <li class="nav-item">
+         <a class="nav-link text-start" style="cursor: default; font-weight: 600;">
+          <span><i class="bi bi-tags me-2"></i> Master Data</span>
+        </a>
+        <ul class="nav flex-column ms-5 mt-1 master-dropdown open">
+          <li class="nav-item"><a routerLink="/brands" routerLinkActive="active" class="nav-link">Brands</a></li>
+          <li class="nav-item"><a routerLink="/categories" routerLinkActive="active" class="nav-link">Categories</a></li>
+          <li class="nav-item"><a routerLink="/suppliers" routerLinkActive="active" class="nav-link">Suppliers</a></li>
+          <li class="nav-item"><a routerLink="/client" routerLinkActive="active" class="nav-link">Clients</a></li>
+        </ul>
+      </li>
+
+      <!-- Sales / Invoices -->
+      <li class="nav-item">
+         <a class="nav-link text-start" style="cursor: default; font-weight: 600;">
+          <span><i class="bi bi-receipt me-2"></i> Sales</span>
+        </a>
+        <ul class="nav flex-column ms-5 mt-1 master-dropdown open">
+          <li class="nav-item"><a routerLink="/invoice" routerLinkActive="active" class="nav-link">Invoices</a></li>
+        </ul>
+
+        <ul class="nav flex-column ms-5 mt-1 master-dropdown open">
+          <li class="nav-item"><a routerLink="/transactions" routerLinkActive="active" class="nav-link">Transactions</a></li>
+        </ul>
+      </li>
+
+      <!-- Employees -->
+      <li class="nav-item">
+         <a class="nav-link text-start" style="cursor: default; font-weight: 600;">
+          <span><i class="bi bi-people me-2"></i> Employees</span>
+        </a>
+        <ul class="nav flex-column ms-5 mt-1 master-dropdown open">
+          <li class="nav-item"><a routerLink="/sessions" routerLinkActive="active" class="nav-link">Employee List</a></li>
+          <li class="nav-item"><a routerLink="/leaveManagement" routerLinkActive="active" class="nav-link">Leave Management</a></li>
+        </ul>
+      </li>
+
+      <!-- Settings -->
+      <li class="nav-item">
+        <a class="nav-link text-start" style="cursor: default; font-weight: 600;">
+          <span><i class="bi bi-gear-check me-2"></i> Settings</span>
+        </a>
+        <ul class="nav flex-column ms-5 mt-1 master-dropdown open">
+          <li class="nav-item"><a routerLink="/settings" routerLinkActive="active" class="nav-link">App Settings</a></li>
+        </ul>
+      </li>
+
+    </ul>
+  </nav>
+</div>

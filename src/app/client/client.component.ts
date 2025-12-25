@@ -22,6 +22,8 @@ activeClients: string[] = ['Ali Khan', 'Sara Ahmed', 'John Doe'];
   ) {
     this.clientForm = this.fb.group({
       name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', Validators.required],
     });
   }
 
@@ -44,6 +46,8 @@ activeClients: string[] = ['Ali Khan', 'Sara Ahmed', 'John Doe'];
       },
     });
   }
+
+  
 
   removeClient(index: number) {
     this.clientsList.splice(index, 1);

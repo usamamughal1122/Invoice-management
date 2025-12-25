@@ -1,398 +1,331 @@
-<div class="container-fluid py-4" style="background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%); min-height: 100vh; font-size: 14px;">
+<div class="container-fluid py-4"
+  style="background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%); min-height: 100vh; font-size: 14px; padding: 20px;">
 
   <!-- Header Section -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
       <h2 class="fw-bold mb-1" style="font-size: 20px; color: #1a1a1a;">
-        <i class="bi bi-receipt-cutoff me-2" style="color: #d4af37;"></i>Create Invoice
+        <i class="bi bi-receipt-cutoff me-2" style="color: #d4af37;"></i>Invoice Management
       </h2>
-      <p class="text-muted mb-0" style="font-size: 14px;">Generate professional invoices for your clients</p>
+      <p class="text-muted mb-0" style="font-size: 14px;">Manage all your invoices in one place</p>
     </div>
-    <div class="badge px-3 py-2 rounded-pill" style="font-size: 15px; background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a;">
-      <i class="bi bi-calendar3 me-2"></i>{{ today | date:'mediumDate' }}
-    </div>
-  </div>
-
-  <!-- Main Invoice Card -->
-  <div class="card shadow-sm mb-4" style="border-radius: 12px; overflow: hidden; border: 1px solid #e8e8e8; background: #ffffff;">
-
-    <!-- Card Header -->
-    <div class="card-header border-0" style="padding: 1.5rem; background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);">
-      <div class="row g-3">
-        <div class="col-lg-5">
-          <label class="form-label fw-semibold mb-2" style="font-size: 14px; color: #ffffff;">
-            <i class="bi bi-person-badge me-2" style="color: #d4af37;"></i>Select Client
-          </label>
-          <div class="input-group shadow-sm">
-            <span class="input-group-text" style="background: #ffffff; border: 1px solid #d4af37;">
-              <i class="bi bi-search" style="font-size: 14px; color: #d4af37;"></i>
-            </span>
-            <select class="form-select py-2" [(ngModel)]="selectedClient" style="border: 1px solid #d4af37; font-size: 14px;">
-              <option value="Choose a client">-- Choose a client --</option>
-              <option *ngFor="let c of clients" [value]="c._id">{{ c.name }}</option>
-            </select>
-            <button class="btn px-3" (click)="openAddClient(addClientModal)" style="background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a; border: none; font-size: 14px; font-weight: 600;">
-              <i class="bi bi-plus-circle me-2"></i>New Client
-            </button>
-          </div>
-        </div>
-
-        <div class="col-lg-2 col-md-4">
-          <label class="form-label fw-semibold mb-2" style="font-size: 14px; color: #ffffff;">
-            <i class="bi bi-percent me-2" style="color: #d4af37;"></i>Tax Rate
-          </label>
-          <div class="input-group shadow-sm">
-            <input type="number" [(ngModel)]="taxPercent" class="form-control py-2"
-                   (input)="updateTotals()" placeholder="0" style="border: 1px solid #d4af37; border-radius: 5px; font-size: 14px;"/>
-            <span class="input-group-text position-absolute end-0 me-2"
-                  style="z-index: 10; margin-top: 5px; background: transparent; border: none; color: #d4af37; font-weight: 600; font-size: 15px;">%</span>
-          </div>
-        </div>
-
-        <div class="col-lg-2 col-md-4">
-          <label class="form-label fw-semibold mb-2" style="font-size: 14px; color: #ffffff;">
-            <i class="bi bi-calendar-check me-2" style="color: #d4af37;"></i>Purchase Date
-          </label>
-          <input type="date" [(ngModel)]="purchaseDate" class="form-control shadow-sm py-2"
-                 style="border: 1px solid #d4af37; border-radius: 5px; font-size: 14px;"/>
-        </div>
-
-        <div class="col-lg-3 col-md-4">
-          <label class="form-label fw-semibold mb-2" style="font-size: 14px; color: #ffffff;">
-            <i class="bi bi-shield-check me-2" style="color: #d4af37;"></i>Warranty Expiry
-          </label>
-          <input type="date" [(ngModel)]="wrantyExpiry" class="form-control shadow-sm py-2"
-                 style="border: 1px solid #d4af37; border-radius: 5px; font-size: 14px;"/>
-        </div>
-      </div>
-
-      <div class="text-end mt-3">
-        <button class="btn shadow-sm px-3 py-2" (click)="openInventoryModal(inventoryModal)"
-                style="background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a; border: none; border-radius: 5px; font-size: 14px; font-weight: 600;">
-          <i class="bi bi-plus-circle-fill me-2"></i>Add Item to Invoice
-        </button>
-      </div>
-    </div>
-
-    <!-- Items Table Section -->
-    <div class="card-body p-3">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="fw-bold mb-0" style="font-size: 14px; color: #1a1a1a;">
-          <i class="bi bi-cart3 me-2" style="color: #d4af37;"></i>Invoice Items
-        </h5>
-        <span class="badge rounded-pill px-2 py-1" style="font-size: 15px; background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a;">
-          {{ invoiceItems.length }} Items
-        </span>
-      </div>
-
-      <div class="table-responsive" style="border-radius: 8px; overflow: hidden; border: 1px solid #e8e8e8;">
-        <table class="table table-hover mb-0" style="border-collapse: separate; border-spacing: 0; font-size: 14px;">
-          <thead style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); color: #ffffff;">
-            <tr>
-              <th class="py-2 px-3 border-0">
-                <i class="bi bi-box-seam me-2" style="color: #d4af37;"></i>Item Name
-              </th>
-              <th class="py-2 px-3 border-0">
-                <i class="bi bi-tag me-2" style="color: #d4af37;"></i>Unit Price
-              </th>
-              <th class="py-2 px-3 border-0" style="width: 120px;">
-                <i class="bi bi-hash me-2" style="color: #d4af37;"></i>Quantity
-              </th>
-              <th class="py-2 px-3 border-0">
-                <i class="bi bi-calculator me-2" style="color: #d4af37;"></i>Subtotal
-              </th>
-              <th class="py-2 px-3 border-0 text-center" style="width: 80px;">
-                <i class="bi bi-trash me-2" style="color: #d4af37;"></i>Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of invoiceItems; let i = index"
-                style="background: #fff; border-bottom: 1px solid #e8e8e8; transition: all 0.3s;"
-                onmouseover="this.style.background='#fafafa'"
-                onmouseout="this.style.background='#fff'">
-              <td class="py-2 px-3 align-middle">
-                <div class="d-flex align-items-center">
-                  <div class="rounded p-1 me-2" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);">
-                    <i class="bi bi-box" style="font-size: 15px; color: #1a1a1a;"></i>
-                  </div>
-                  <span class="fw-semibold" style="color: #1a1a1a;">{{ item.name }}</span>
-                </div>
-              </td>
-              <td class="py-2 px-3 align-middle">
-                <span class="badge px-2 py-1" style="background: #f8f8f8; color: #1a1a1a; border: 1px solid #d4af37;">{{ item.price | currency }}</span>
-              </td>
-              <td class="py-2 px-3 align-middle">
-                <input type="number" class="form-control form-control-sm"
-                       [(ngModel)]="item.quantity"
-                       (input)="onQuantityChange(item, item.quantity)"
-                       style="border-radius: 4px; border: 1px solid #d4af37; font-size: 14px;"/>
-              </td>
-              <td class="py-2 px-3 align-middle">
-                <span class="fw-bold" style="color: #1a1a1a;">{{ item.subtotal | currency }}</span>
-              </td>
-              <td class="py-2 px-3 align-middle text-center">
-                <button class="btn btn-sm"
-                        (click)="removeItem(i)"
-                        style="width: 28px; height: 28px; padding: 0; font-size: 15px; border-radius: 4px; background: #1a1a1a; color: #d4af37; border: none;">
-                  <i class="bi bi-x-lg"></i>
-                </button>
-              </td>
-            </tr>
-            <tr *ngIf="invoiceItems.length === 0">
-              <td colspan="5" class="text-center py-4 text-muted">
-                <i class="bi bi-inbox display-6 d-block mb-2" style="font-size: 32px; color: #d4af37;"></i>
-                <p class="mb-0" style="font-size: 14px;">No items added yet. Click "Add Item" to get started.</p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Totals Card -->
-      <div class="row mt-3">
-        <div class="col-lg-8"></div>
-        <div class="col-lg-4">
-          <div class="card shadow-sm" style="border-radius: 8px; background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border: 1px solid #d4af37;">
-            <div class="card-body p-3">
-              <div class="d-flex justify-content-between mb-2 pb-2" style="border-bottom: 1px solid #404040;">
-                <span style="font-size: 14px; color: #cccccc;">Subtotal:</span>
-                <span class="fw-bold" style="font-size: 13px; color: #ffffff;">{{ subtotal | currency }}</span>
-              </div>
-              <div class="d-flex justify-content-between mb-2 pb-2" style="border-bottom: 1px solid #404040;">
-                <span style="font-size: 14px; color: #cccccc;">Tax ({{ taxPercent }}%):</span>
-                <span class="fw-bold" style="font-size: 13px; color: #ffffff;">{{ taxAmount | currency }}</span>
-              </div>
-              <div class="d-flex justify-content-between align-items-center">
-                <span class="fw-bold" style="font-size: 13px; color: #d4af37;">Total Amount:</span>
-                <span class="fw-bold" style="font-size: 16px; color: #d4af37;">{{ total | currency }}</span>
-              </div>
-            </div>
-          </div>
-
-          <button class="btn w-100 mt-2 shadow-sm py-2"
-                  (click)="saveInvoice()"
-                  style="background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a; border: none; border-radius: 5px; font-size: 14px; font-weight: 600;">
-            <i class="bi bi-check-circle-fill me-2"></i>Save Invoice
-          </button>
-        </div>
-      </div>
+    <div class="d-flex align-items-center gap-3">
+      <button class="btn px-4 py-2 shadow-sm" (click)="openCreateInvoiceModal(createInvoiceModal)"
+        style="background: linear-gradient(135deg, #e3f6fd, #e3f6fd 100%); color: #1a1a1a; border: none; border-radius: 8px; font-size: 14px; font-weight: 600;">
+        <i class="bi bi-plus-circle-fill me-2"></i>Create New Invoice
+      </button>
     </div>
   </div>
 
   <!-- Invoices List Section -->
-  <div class="invoice-list mt-4" *ngIf="invoice.length > 0">
+  <div class="invoice-list" *ngIf="invoice.length > 0">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h4 class="fw-bold mb-0" style="font-size: 16px; color: #1a1a1a;">
-        <i class="bi bi-file-earmark-text me-2" style="color: #d4af37;"></i>Recent Invoices
+        <i class="bi bi-file-earmark-text me-2" style="color: #d4af37;"></i>All Invoices
       </h4>
-      <span class="badge px-3 py-2 rounded-pill" style="font-size: 15px; background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a;">
-        {{ invoice.length }} Total
+      <div class="badge px-3 py-2 rounded-pill"
+        style="font-size: 15px; background: linear-gradient(135deg, #e3f6fd, #e3f6fd 100%); color: #1a1a1a;margin-left: 70%;">
+        <i class="bi bi-calendar3 me-2"></i>{{ today | date:'mediumDate' }}
+      </div>
+      <span class="badge px-3 py-2 rounded-pill"
+        style="font-size: 15px; background: linear-gradient(135deg, #e3f6fd, #e3f6fd 100%); color: #000000;">
+        {{ invoice.length }} Invoices
       </span>
     </div>
 
-    <div class="row g-3">
-     <div class="col-12" *ngFor="let inv of invoice; let idx = index">
-   <div class="card shadow-sm" #invoiceCard style="border-radius: 12px; overflow: hidden; border: 1px solid #e8e8e8; background: #ffffff;">
-
-    <!-- Invoice Header -->
-    <div class="card-header border-0 py-3" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);">
-      <div class="row align-items-center" style="font-size: 14px;">
-        <div class="col-md-2">
-          <div>
-            <small class="d-block mb-1" style="font-size: 12px; color: #cccccc;">Invoice Number</small>
-            <h6 class="mb-0 fw-bold" style="font-size: 13px; color: #d4af37;">#{{ inv.invoiceNumber }}</h6>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div>
-            <small class="d-block mb-1" style="font-size: 12px; color: #cccccc;">Client Name</small>
-            <h6 class="mb-0" style="font-size: 14px; color: #ffffff;">
-              <i class="bi bi-person-circle me-2" style="color: #d4af37;"></i>{{ inv.client?.name }}
-            </h6>
-          </div>
-        </div>
-        <div class="col-md-2">
-          <div>
-            <small class="d-block mb-1" style="font-size: 12px; color: #cccccc;">Invoice Date</small>
-            <h6 class="mb-0" style="font-size: 14px; color: #ffffff;">
-              <i class="bi bi-calendar-event me-2" style="color: #d4af37;"></i>{{ inv.purchaseDates | date:'mediumDate' }}
-            </h6>
-          </div>
-        </div>
-        <div class="col-md-2">
-          <div class="badge px-3 py-2" style="font-size: 14px; background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a;">
-            {{ inv.total | currency }}
-          </div>
-        </div>
-        <div class="col-md-3 text-end">
-          <button class="btn btn-sm px-3 py-2"
-                  (click)="downloadPDF(invoiceCard, inv.invoiceNumber)"
-                  style="border-radius: 5px; font-size: 14px; background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a; border: none; font-weight: 600;">
-            <i class="bi bi-download me-2"></i>Download PDF
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Invoice Body -->
-    <div class="card-body p-3">
-      <div class="table-responsive" style="border-radius: 8px; overflow: hidden; border: 1px solid #e8e8e8;">
-        <table class="table table-hover mb-0" style="font-size: 14px;">
-          <thead style="background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f0 100%);">
+    <!-- Invoice Table -->
+    <div class="card shadow-sm"
+      style="border-radius: 12px; overflow: hidden; border: 1px solid #e8e8e8; background: #ffffff;">
+      <div class="table-responsive">
+        <table class=" table table-hover mb-0" style="font-size: 14px; background: linear-gradient(135deg, #e3f6fd, #e3f6fd 100%); color: #000000;">
+          <thead class="background">
             <tr>
-              <th class="py-2 px-3 border-0" style="color: #1a1a1a;">Item</th>
-              <th class="py-2 px-3 border-0" style="color: #1a1a1a;">Price</th>
-              <th class="py-2 px-3 border-0" style="color: #1a1a1a;">Quantity</th>
-              <th class="py-2 px-3 border-0" style="color: #1a1a1a;">Subtotal</th>
-              <th class="py-2 px-3 border-0" style="color: #1a1a1a;">Warranty Expiry</th>
+              <th class="py-3 px-3 border-0">
+                <i class="bi bi-hash me-2" style="color: #000000;"></i>Invoice #
+              </th>
+              <th class="py-3 px-3 border-0">
+                <i class="bi bi-person-circle me-2" style="color: #000000;"></i>Client
+              </th>
+              <th class="py-3 px-3 border-0">
+                <i class="bi bi-calendar-event me-2" style="color: #000000;"></i>Date
+              </th>
+              <th class="py-3 px-3 border-0">
+                <i class="bi bi-check-circle me-2" style="color: #010101;"></i>Status
+              </th>
+              <th class="py-3 px-3 border-0">
+                <i class="bi bi-cart3 me-2" style="color: #000000;"></i>Items
+              </th>
+              <th class="py-3 px-3 border-0">
+                <i class="bi bi-currency-dollar me-2" style="color: #000000;"></i>Total
+              </th>
+              <th class="py-3 px-3 border-0 text-center">
+                <i class="bi bi-gear me-2" style="color: #000000;"></i>Actions
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of inv.items">
-              <td class="py-2 px-3">
-                <i class="bi bi-box-seam me-2" style="color: #d4af37;"></i>{{ item.name }}
+            <tr *ngFor="let inv of invoice; let idx = index"
+              style="background: #fff; border-bottom: 1px solid #e8e8e8; transition: all 0.3s;"
+              onmouseover="this.style.background='#fafafa'" onmouseout="this.style.background='#fff'">
+              <td class="py-3 px-3 align-middle">
+                <span class="badge px-2 py-1" style="background: #e8e8e8cc; color: #000000cc; font-weight: 600;">
+                  #{{ inv.invoiceNumber }}
+                </span>
               </td>
-              <td class="py-2 px-3">{{ item.price | currency }}</td>
-              <td class="py-2 px-3">
-                <span class="badge px-2 py-1" style="background: #f8f8f8; color: #1a1a1a; border: 1px solid #d4af37;">{{ item.quantity }}</span>
+              <td class="py-3 px-3 align-middle">
+                <div class="d-flex align-items-center">
+                  <div class="rounded-circle p-2 me-2"
+                    style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;background: linear-gradient(135deg, #e3f6fd, #e3f6fd 100%);">
+                    <i class="bi bi-person" style="font-size: 14px; color: #1a1a1a;"></i>
+                  </div>
+                  <span class="fw-semibold" style="color: #1a1a1a;">{{ inv.client?.name }}</span>
+                </div>
               </td>
-              <td class="py-2 px-3 fw-bold">{{ item.subtotal | currency }}</td>
-              <td class="py-2 px-3">
-                <i class="bi bi-shield-check me-2" style="color: #d4af37;"></i>
-                {{ inv.warrantyExpirys | date:'mediumDate' }}
+              <td class="py-3 px-3 align-middle">
+                <span style="color: #666;">{{ inv.purchaseDates | date:'mediumDate' }}</span>
               </td>
+              <td class="py-3 px-3 align-middle">
+                <span class="badge px-2 py-1" [ngStyle]="{'background': inv.statuses === 'Paid' ? '#28a745' :
+                   inv.statuses === 'Pending' ? '#ffc107' : 
+                   inv.statuses === 'Overdue' ? '#dc3545' :
+                  '#6c757d', 'color': '#ffffff'}">
+                  {{ inv.statuses }}
+                </span>
+              </td>
+              <td class="py-3 px-3 align-middle">
+                <span class="badge px-2 py-1" style="background: #f8f8f8; color: #1a1a1a; border: 1px solid #d4af37;">
+                  {{ inv.items?.length || 0 }} items
+                </span>
+              </td>
+              <td class="py-3 px-3 align-middle">
+                <span class="fw-bold" style="font-size: 15px; color: #000000;"> {{ (inv.total / 100) | currency }}</span>
+              </td>
+              <td class="py-3 px-3 align-middle text-center">
+                <!-- <button class="btn btn-sm px-2 py-2 me-2" (click)="sendInvoiceEmail(inv)"
+                style="border-radius: 5px; background: #d4af37; color: #1a1a1a; border: none;">
+                <i class="bi bi-envelope-fill"></i>
+              </button> -->
+
+                <button class="btn btn-sm px-3" (click)="openInvoiceDetailsModal(invoiceDetailsModal, inv)"
+                  style="border-radius: 5px; background: #e8e8e8cc; color: #000000cc; border: none;">
+                  <i class="bi bi-eye-fill me-1"></i>View
+                </button>
+              </td>
+
             </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- Invoice Summary -->
-      <div class="row mt-3">
-        <div class="col-md-8"></div>
-        <div class="col-md-4">
-          <div class="card shadow-sm" style="border-radius: 8px; background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f0 100%); border: 1px solid #d4af37;">
-            <div class="card-body p-3" style="font-size: 14px;">
-              <div class="d-flex justify-content-between mb-2">
-                <span style="color: #666666;">Subtotal:</span>
-                <span class="fw-semibold" style="color: #1a1a1a;">{{ inv.subTotal | currency }}</span>
+      <!-- Pagination -->
+      <div class="d-flex justify-content-between align-items-center px-3 py-3 border-top">
+        <div class="text-muted small">
+          Showing page <strong>{{ page }}</strong> of <strong>{{ totalPages }}</strong>
+        </div>
+
+        <nav>
+          <ul class="pagination mb-0">
+            <li class="page-item" [class.disabled]="page === 1">
+              <a class="px-3 pagenation" (click)="prevPage()">
+                << </a>
+            </li>
+
+            <ng-container *ngFor="let p of [].constructor(totalPages); let i = index">
+              <li class="page-item pagenatio-gap" [class.active]="page === i + 1">
+                <a class="page-link rounded-pill pagenation-number" (click)="page = i + 1; goToPage(i+1)">
+                  {{ i + 1 }}
+                </a>
+              </li>
+            </ng-container>
+
+            <li class="page-item" [class.disabled]="page === totalPages">
+              <a class="px-3 pagenation" (click)="nextPage()">>></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="invoice.length === 0" class="text-center py-5">
+    <div class="card shadow-sm mx-auto" style="max-width: 500px; border-radius: 12px; border: 1px solid #e8e8e8;">
+      <div class="card-body p-5">
+        <i class="bi bi-inbox display-1 mb-3 d-block" style="color: #d4af37;"></i>
+        <h4 class="fw-bold mb-2" style="color: #1a1a1a;">No Invoices Yet</h4>
+        <p class="text-muted mb-4">Get started by creating your first invoice</p>
+        <button class="btn px-4 py-2" (click)="openCreateInvoiceModal(createInvoiceModal)"
+          style="background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a; border: none; border-radius: 8px; font-size: 14px; font-weight: 600;">
+          <i class="bi bi-plus-circle-fill me-2"></i>Create Your First Invoice
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Create Invoice Modal component -->
+<ng-template #createInvoiceModal let-modal>
+  <app-invoice-model [modal]="modal" (invoiceCreated)="onInvoiceCreated()"></app-invoice-model>
+</ng-template>
+
+<!-- Invoice Details Modal -->
+<ng-template #invoiceDetailsModal let-modal>
+  <div class="modal-header border-0" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+           padding: 1rem;">
+
+    <div style="display: flex; align-items: center;">
+      <h5 class="modal-title fw-bold mb-0" style="font-size: 16px; color: #ffffff;">
+        <i class="bi bi-file-earmark-text-fill me-2" style="color: #d4af37;"></i>
+        Invoice Details - #{{ selectedInvoiceForView?.invoiceNumber }}
+      </h5>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <h5 class="modal-title fw-bold mb-0" style="font-size: 16px; color: #d4af37;">
+        <i class="bi bi-check-circle me-2"></i>{{ selectedInvoiceForView?.statuses }}
+      </h5>
+
+      <button type="button" class="btn-close btn-close-white" (click)="modal.dismiss()"></button>
+    </div>
+  </div>
+
+  <div class="modal-body p-0" style="max-height: 70vh; overflow-y: auto;" #invoiceDetailsContent>
+    <div class="p-4" style="background: #ffffff;">
+
+      <!-- Invoice Header Info -->
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <div class="card shadow-sm" style="border-radius: 8px; border: 1px solid #e8e8e8;">
+            <div class="card-body p-3">
+              <small class="d-block mb-2" style="font-size: 12px; color: #666;">Client Information</small>
+              <h6 class="mb-2 fw-bold" style="font-size: 15px; color: #1a1a1a;">
+                <i class="bi bi-person-circle me-2" style="color: #d4af37;"></i>{{
+                selectedInvoiceForView?.client?.name }}
+              </h6>
+              <div class="mt-2" style="font-size: 13px; color: #666;">
+                <div><i class="bi bi-envelope me-2" style="color: #d4af37;"></i>{{
+                  selectedInvoiceForView?.client?.email || 'N/A' }}</div>
+                <div><i class="bi bi-telephone me-2" style="color: #d4af37;"></i>{{
+                  selectedInvoiceForView?.client?.phone || 'N/A' }}</div>
               </div>
-              <div class="d-flex justify-content-between mb-2">
-                <span style="color: #666666;">Tax ({{ inv.taxPercent }}%):</span>
-                <span class="fw-semibold" style="color: #1a1a1a;">{{ inv.taxAmount | currency }}</span>
-              </div>
-              <hr class="my-2" style="border-color: #d4af37;">
-              <div class="d-flex justify-content-between">
-                <span class="fw-bold" style="color: #1a1a1a;">Total:</span>
-                <span class="fw-bold" style="font-size: 14px; color: #d4af37;">{{ inv.total | currency }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card shadow-sm" style="border-radius: 8px; border: 1px solid #e8e8e8;">
+            <div class="card-body p-3">
+              <small class="d-block mb-2" style="font-size: 12px; color: #666;">Invoice Information</small>
+              <div style="font-size: 13px; color: #1a1a1a;">
+                <div class="mb-2">
+                  <i class="bi bi-calendar-event me-2" style="color: #d4af37;"></i>
+                  <strong>Date:</strong> {{ selectedInvoiceForView?.purchaseDates | date:'mediumDate' }}
+                </div>
+                <div class="mb-2">
+                  <i class="bi bi-shield-check me-2" style="color: #d4af37;"></i>
+                  <strong>Due Date:</strong> {{ selectedInvoiceForView?.warrantyExpirys | date:'mediumDate' }}
+                </div>
+                <div>
+                  <i class="bi bi-percent me-2" style="color: #d4af37;"></i>
+                  <strong>Tax Rate:</strong> {{ selectedInvoiceForView?.taxPercent }}%
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-    </div>
-  </div>
-</div>
 
-<!-- Add Client Modal -->
-<ng-template #addClientModal let-modal>
-  <div class="modal-header border-0" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);">
-    <h5 class="modal-title fw-bold" style="font-size: 14px; color: #ffffff;">
-      <i class="bi bi-person-plus-fill me-2" style="color: #d4af37;"></i>Add New Client
-    </h5>
-    <button type="button" class="btn-close btn-close-white" (click)="modal.dismiss()"></button>
-  </div>
-  <div class="modal-body p-4" style="background: #ffffff;">
-    <form [formGroup]="addClientForm">
-      <label class="form-label fw-semibold mb-2" style="font-size: 14px; color: #1a1a1a;">
-        <i class="bi bi-person me-2" style="color: #d4af37;"></i>Client Name
-      </label>
-      <input type="text" formControlName="name" class="form-control py-2"
-             placeholder="Enter client name" style="border: 1px solid #d4af37; border-radius: 5px; font-size: 14px;"/>
-      <div class="alert alert-danger mt-3 mb-0" role="alert"
-           *ngIf="addClientForm.get('name')?.touched && addClientForm.get('name')?.invalid"
-           style="border-radius: 5px; font-size: 14px; background: #fff5f5; border: 1px solid #ff4444; color: #cc0000;">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>Name is required
+      <!-- Items Table -->
+      <div class="mb-4">
+        <h6 class="fw-bold mb-3" style="font-size: 14px; color: #1a1a1a;">
+          <i class="bi bi-cart3 me-2" style="color: #d4af37;"></i>Invoice Items
+        </h6>
+        <div class="table-responsive" style="border-radius: 8px; overflow: hidden; border: 1px solid #e8e8e8;">
+          <table class="table table-hover mb-0" style="font-size: 13px;">
+            <thead style="background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f0 100%);">
+              <tr>
+                <th class="py-2 px-3 border-0" style="color: #1a1a1a;">Item Name</th>
+                <th class="py-2 px-3 border-0" style="color: #1a1a1a;">Unit Price</th>
+                <th class="py-2 px-3 border-0" style="color: #1a1a1a;">Quantity</th>
+                <th class="py-2 px-3 border-0" style="color: #1a1a1a;">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of selectedInvoiceForView?.items">
+                <td class="py-2 px-3">
+                  <i class="bi bi-box-seam me-2" style="color: #d4af37;"></i>{{ item.name }}
+                </td>
+                <td class="py-2 px-3">{{ (item.price / 100) | currency }}</td>
+                <td class="py-2 px-3">
+                  <span class="badge px-2 py-1" style="background: #f8f8f8; color: #1a1a1a; border: 1px solid #d4af37;">
+                    {{ item.quantity }}
+                  </span>
+                </td>
+                <td class="py-2 px-3 fw-bold">{{ (item.subtotal / 100) | currency }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </form>
-  </div>
-  <div class="modal-footer border-0" style="background: #f8f8f8;">
-    <button class="btn px-3 py-2" (click)="modal.dismiss()" style="border-radius: 5px; font-size: 14px; background: #666666; color: #ffffff; border: none;">
-      <i class="bi bi-x-circle me-2"></i>Cancel
-    </button>
-    <button class="btn px-3 py-2" (click)="saveClient(modal)"
-            [disabled]="addClientForm.invalid" style="background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a; border: none; border-radius: 5px; font-size: 14px; font-weight: 600;">
-      <i class="bi bi-check-circle me-2"></i>Save Client
-    </button>
-  </div>
-</ng-template>
 
-<!-- Inventory Modal -->
-<ng-template #inventoryModal let-modal>
-  <div class="modal-header border-0" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);">
-    <h5 class="modal-title fw-bold" style="font-size: 14px; color: #ffffff;">
-      <i class="bi bi-box-seam-fill me-2" style="color: #d4af37;"></i>Select Inventory Item
-    </h5>
-    <button type="button" class="btn-close btn-close-white" (click)="modal.dismiss()"></button>
-  </div>
-  <div class="modal-body p-0">
-    <div class="table-responsive">
-      <table class="table table-hover mb-0" style="font-size: 14px;">
-        <thead style="background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f0 100%);">
-          <tr>
-            <th class="py-2 px-3">
-              <i class="bi bi-box me-2" style="color: #d4af37;"></i>Item Name
-            </th>
-            <th class="py-2 px-3">
-              <i class="bi bi-stack me-2" style="color: #d4af37;"></i>Available
-            </th>
-            <th class="py-2 px-3">
-              <i class="bi bi-tag me-2" style="color: #d4af37;"></i>Price
-            </th>
-            <th class="py-2 px-3"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let inv of inventoryList" style="transition: all 0.3s;">
-            <td class="py-2 px-3">
-              <div class="d-flex align-items-center">
-                <div class="rounded p-1 me-2" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);">
-                  <i class="bi bi-box" style="font-size: 15px; color: #1a1a1a;"></i>
-                </div>
-                <span class="fw-semibold">{{ inv.name }}</span>
+      <!-- Invoice Summary -->
+      <div class="row">
+        <div class="col-md-8"></div>
+        <div class="col-md-4">
+          <div class="card shadow-sm"
+            style="border-radius: 8px; background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border: 1px solid #d4af37;">
+            <div class="card-body p-3">
+              <div class="d-flex justify-content-between mb-2 pb-2" style="border-bottom: 1px solid #404040;">
+                <span style="font-size: 13px; color: #cccccc;">Subtotal:</span>
+                <span class="fw-bold" style="font-size: 13px; color: #ffffff;">{{ (selectedInvoiceForView?.subTotal / 100) | currency }}</span>
               </div>
-            </td>
-            <td class="py-2 px-3">
-              <span class="badge px-2 py-1" style="background: #f8f8f8; color: #1a1a1a; border: 1px solid #d4af37;">
-                {{ inv.quantity_available }} units
-              </span>
-            </td>
-            <td class="py-2 px-3">
-              <span class="fw-bold" style="color: #1a1a1a;">{{ inv.price | currency:'PKR' }}</span>
-            </td>
-            <td class="py-2 px-3">
-              <button class="btn btn-sm px-3 py-1"
-                      (click)="selectInventoryItem(inv, modal)"
-                      style="border-radius: 4px; font-size: 15px; background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a; border: none; font-weight: 600;">
-                <i class="bi bi-plus-circle me-1"></i>Add
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <div class="d-flex justify-content-between mb-2 pb-2" style="border-bottom: 1px solid #404040;">
+                <span style="font-size: 13px; color: #cccccc;">Tax ({{ selectedInvoiceForView?.taxPercent }}%):</span>
+                <span class="fw-bold" style="font-size: 13px; color: #ffffff;">{{ (selectedInvoiceForView?.taxAmount / 100) | currency }}</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="fw-bold" style="font-size: 14px; color: #d4af37;">Total Amount:</span>
+                <span class="fw-bold" style="font-size: 17px; color: #d4af37;">{{ (selectedInvoiceForView?.total / 100) | currency }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
+
+  <div class="modal-footer border-0 no-print" style="background: #f8f8f8;">
+    <button class="btn px-3 py-2" (click)="modal.dismiss()"
+      style="border-radius: 5px; font-size: 14px; background: #666666; color: #ffffff; border: none;">
+      <i class="bi bi-x-circle me-2"></i>Close
+    </button>
+    <button class="btn px-3 py-2" (click)="downloadModalPDF(selectedInvoiceForView._id)"
+      style="background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a; border: none; border-radius: 5px; font-size: 14px; font-weight: 600;">
+      <i class="bi bi-download me-2"></i>Download PDF
+    </button>
+
+    <button class="btn btn-sm px-3 py-3 me-3" (click)="sendInvoiceEmail(selectedInvoiceForView)"
+      style="border-radius: 5px; background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a; border: none;">
+      <i class="bi bi-envelope-fill"></i>
+    </button>
+    <button *ngIf="selectedInvoiceForView?.statuses !== 'Paid'" class="btn btn-sm px-3 py-2 ms-2"
+      (click)="openPaymentModal(selectedInvoiceForView)"
+      style="border-radius: 5px; background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: #ffffff; border: none; font-weight: 600;">
+      <i class="bi bi-credit-card-2-front me-2"></i>Pay Now
+    </button>
+     <span  *ngIf="selectedInvoiceForView?.statuses === 'Paid'"
+      class="py-3 px-3 align-middle badge bg-success">
+      Paid
+   </span>
+
+  </div>
 </ng-template>
 
-<ngx-spinner
-  bdColor="rgba(256, 256, 256, 0.8)"
-  size="large"
-  color="#d4af37"
-  type="ball-scale-multiple"
-  [fullScreen]="true"
-  template="<img src='assets/stockify.png' />"
->
+<ngx-spinner bdColor="rgba(256, 256, 256, 0.8)" size="large" color="#d4af37" type="ball-scale-multiple"
+  [fullScreen]="true" template="<img src='assets/stockify.png' />">
 </ngx-spinner>

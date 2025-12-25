@@ -1,0 +1,138 @@
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Smooth transitions */
+.btn, .form-control, .form-select, .card {
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+/* Form focus states */
+.form-control:focus, .form-select:focus {
+  box-shadow: 0 0 0 0.15rem rgba(212, 175, 55, 0.25);
+  /* border-color: #d4af37; */
+}
+
+/* Input group styling */
+.input-group-text {
+  transition: all 0.3s ease;
+}
+
+.form-control:focus + .input-group-text,
+.form-select:focus + .input-group-text {
+  /* border-color: #d4af37; */
+  background: #fffbf5;
+}
+
+/* Table hover effects */
+.table-hover tbody tr:hover {
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.1);
+}
+
+/* List group item hover */
+.list-group-item-action:hover {
+  background: linear-gradient(135deg, #fffbf5 0%, #fff8e8 100%);
+  /* border-color: #d4af37 !important; */
+  transform: translateX(5px);
+}
+
+/* Badge animations */
+.badge {
+  transition: all 0.3s ease;
+}
+
+/* Custom button styles */
+.btn:active {
+  transform: translateY(0px);
+}
+
+/* Modal animations */
+.modal-content {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Input number spinner hiding */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+/* Disabled state styling */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Card body padding adjustments */
+.card-body {
+  position: relative;
+}
+
+/* Alert styling */
+.alert {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .modal-body {
+    max-height: 60vh !important;
+  }
+  
+  .table-responsive {
+    font-size: 12px;
+  }
+  
+  .btn {
+    font-size: 12px !important;
+    padding: 0.4rem 0.8rem !important;
+  }
+}

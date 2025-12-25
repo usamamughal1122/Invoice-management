@@ -3,15 +3,17 @@
   background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
 }
-
+.background-light{
+  background: #e3f6fd;
+}
 /* Header Section */
 .header-section {
-  background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+  /* background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%); */
   backdrop-filter: blur(10px);
-  padding: 1.5rem;
-  border-radius: 16px;
+  padding: 11px;
+  border-radius: 6px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  border: 2px solid #d4af37;
+  /* border: 1px solid #d4af37; */
 }
 
 .header-section h4 {
@@ -21,26 +23,23 @@
 }
 
 .header-section small {
-  color: #ffffff;
+  color: #000000;
   opacity: 0.8;
 }
 
 .btn-outline-primary {
   background: transparent;
-  border: 2px solid #d4af37;
-  color: #d4af37;
+  /* border: 2px solid #d4af37; */
+  color: #000000;
   border-radius: 12px;
   padding: 0.5rem 1.2rem;
   font-weight: 600;
   transition: all 0.3s ease;
+  border: none;
+  background-color: #e3f6fd;
 }
 
-.btn-outline-primary:hover {
-  background: #d4af37;
-  color: #000000;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
-}
+
 
 /* Summary Cards */
 .summary-card {
@@ -54,24 +53,8 @@
   transition: all 0.3s ease;
   height: 100px;
   border: 2px solid transparent;
-  position: relative;
+  /* position: relative; */
   overflow: hidden;
-}
-
-.summary-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #d4af37 0%, #f4d03f 100%);
-}
-
-.summary-card:hover {
-  border-color: #d4af37;
-  box-shadow: 0 12px 32px rgba(212, 175, 55, 0.2);
-  transform: translateY(-4px);
 }
 
 .card-icon {
@@ -83,8 +66,8 @@
   justify-content: center;
   font-size: 12px;
   flex-shrink: 0;
-  background: linear-gradient(135deg, var(--card-color), var(--card-color-light));
-  color: white;
+  /* background: linear-gradient(135deg, var(--card-color), var(--card-color-light)); */
+  color: rgb(0, 0, 0);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
 
@@ -133,25 +116,21 @@
   transition: all 0.3s ease;
 }
 
-.modern-card:hover {
-  border-color: #d4af37;
-  box-shadow: 0 15px 40px rgba(212, 175, 55, 0.15);
-}
 
 .modern-card-header {
-  background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
-  color: #d4af37;
+  /* background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%); */
+  color: #000000;
   padding: 0.5rem 1rem;
   font-weight: 700;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border: none;
-  border-bottom: 3px solid #d4af37;
+  /* border-bottom: 3px solid #d4af37; */
 }
 
 .modern-card-header i {
-  color: #d4af37;
+  color: #000000;
 }
 
 .btn-refresh {
@@ -183,10 +162,6 @@
   transition: overflow 0.3s ease;
 }
 
-.table-responsive:hover {
-  overflow-x: auto;
-}
-
 .modern-table {
   width: 100%;
   margin: 0;
@@ -194,14 +169,15 @@
 }
 
 .modern-table thead {
-  background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
-  border-bottom: 3px solid #d4af37;
+  background-color: #e3f6fd;
+  /* background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%); */
+  /* border-bottom: 3px solid #d4af37; */
 }
 
 .modern-table thead th {
   padding: 1.2rem 1.5rem;
   font-weight: 700;
-  color: #d4af37;
+  color: #000000;
   text-transform: uppercase;
   font-size: 0.75rem;
   letter-spacing: 1px;
@@ -231,13 +207,6 @@
   background: white;
 }
 
-.table-row-hover:hover {
-  background: linear-gradient(90deg, #fffbf0 0%, #fff9e6 50%, #fffbf0 100%);
-  transform: scale(1.01);
-  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.1);
-  border-left: 3px solid #d4af37;
-}
-
 /* Badges */
 .modern-badge {
   padding: 0px 12px;
@@ -253,9 +222,10 @@
 }
 
 .badge-success {
-  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+  /* background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); */
   color: #000000;
-  border: 2px solid #d4af37;
+  /* border: 2px solid #d4af37; */
+  background-color: #e8e8e8cc;
 }
 
 .badge-info {
@@ -290,9 +260,9 @@
 
 /* Action Button */
 .btn-view {
-  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+  /* background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); */
   color: #000000;
-  border: 2px solid #d4af37;
+  /* border: 2px solid #d4af37; */
   border-radius: 12px;
   padding: 0.4rem 1rem;
   font-size: 12px;
@@ -301,6 +271,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  border: none;
+
 }
 
 .btn-view:hover {
@@ -430,7 +402,8 @@
   opacity: 0;
   transition: opacity 0.3s ease;
 }
-
-.modern-card:hover::before {
-  opacity: 1;
+.chart-container {
+  position: relative;
+  height: 320px;
+  width: 100%;
 }

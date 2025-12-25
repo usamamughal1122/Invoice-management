@@ -1,9 +1,9 @@
 <div class="dashboard-wrapper container-fluid px-4 py-4">
 
-  <!-- HEADER -->
+  <!-- HEADER SECTION -->
   <div class="header-section d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
     <div>
-      <h4 class="fw-bold text-white mb-0">Inventory Management</h4>
+      <p class="fw-bold text-dark mb-0">Inventory Management</p>
       <small class="">Overview of assets, usage, and employees</small>
     </div>
     <button class="btn btn-outline-primary btn-sm" (click)="reloadDashboard()">
@@ -11,89 +11,170 @@
     </button>
   </div>
 
-  <!-- TOP SUMMARY CARDS -->
-  <div class="row g-4 mb-4">
-    <!-- Total Assets -->
-    <div class="col-md-6 col-lg-3">
+  <!-- SECTION 1: FINANCIAL OVERVIEW (Sales & Purchase) -->
+  <div class="section-divider">
+    <h6 class="text-dark-50"><i class="bi bi-cash-coin me-2"></i>Financial Overview</h6>
+  </div>
+  <div class="row g-4">
+    <div class="col-md-4">
       <div class="summary-card card-primary">
+        <div class="card-icon"><i class="bi bi-cart-check"></i></div>
+        <div class="card-content">
+          <h6 class="card-label">Total Sales</h6>
+          <h5 appCountUp [target]="totalSales" [duration]="900"></h5>
+          <p class="card-description">Revenue from all sales</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="summary-card card-info">
+        <div class="card-icon"><i class="bi bi-bag-check"></i></div>
+        <div class="card-content">
+          <h6 class="card-label">Total Purchase</h6>
+          <h5 appCountUp [target]="totalPurchase" [duration]="900"></h5>
+          <p class="card-description">Total procurement costs</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="summary-card card-success">
         <div class="card-icon"><i class="bi bi-box-seam"></i></div>
         <div class="card-content">
-          <h6 class="card-label">Total Stock</h6>
-          <h2 class="card-value">{{ dashboardList.length || 0 }}</h2>
-          <p class="card-description">All registered inventory items</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Available -->
-    <div class="col-md-6 col-lg-3">
-      <div class="summary-card card-info">
-        <div class="card-icon"><i class="bi bi-box"></i></div>
-        <div class="card-content">
-          <h6 class="card-label">Available Stock</h6>
-          <h2 class="card-value">{{ countStatus('Available') }}</h2>
-          <p class="card-description">Ready for assignment</p>
-        </div>
-      </div>
-    </div>
-
-   <!-- Un Avaialable -->
-    <div class="col-md-6 col-lg-3">
-      <div class="summary-card card-success">
-        <div class="card-icon"><i class="bi bi-people"></i></div>
-        <div class="card-content">
-          <h6 class="card-label">UnAvaiable</h6>
-          <h2 class="card-value">{{ countStatus('UnAvailable') }}</h2>
-          <p class="card-description">Items currently in use</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Under Repair -->
-    <div class="col-md-6 col-lg-3">
-      <div class="summary-card card-warning">
-        <div class="card-icon"><i class="bi bi-tools"></i></div>
-        <div class="card-content">
-          <h6 class="card-label">Under Maintenance</h6>
-          <h2 class="card-value">{{ countStatus('Repair') }}</h2>
-          <p class="card-description">Currently being serviced</p>
+          <h6 class="card-label">Sold Items</h6>
+          <h5 appCountUp [target]="totalSoldItems" [duration]="900"></h5>
+          <p class="card-description">Total items sold</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- TOP 20 PRODUCTS -->
-  <div class="modern-card mb-4 shadow-sm" *ngIf="dashboardList.length > 0">
-    <div class="modern-card-header d-flex justify-content-between align-items-center">
-      <span><i class="bi bi-star me-2"></i>Top Products</span>
-      <button class="btn btn-refresh btn-sm" (click)="reloadTopProducts()">
-        <i class="bi bi-arrow-clockwise"></i> Refresh
-      </button>
+  <!-- SECTION 2: STOCK OVERVIEW -->
+  <div class="section-divider">
+    <h6 class="text-white-50"><i class="bi bi-box-seam me-2"></i>Stock Overview</h6>
+  </div>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="summary-card card-primary">
+        <div class="card-icon"><i class="bi bi-boxes"></i></div>
+        <div class="card-content">
+          <h6 class="card-label">Total Stock</h6>
+          <h5 appCountUp [target]="dashboardList.length || 0" [duration]="700"></h5>
+          <p class="card-description">All inventory items</p>
+        </div>
+      </div>
     </div>
 
-    <div class="table-responsive">
-      <table class="modern-table table mb-0 align-middle">
+    <div class="col-md-4">
+      <div class="summary-card card-info">
+        <div class="card-icon"><i class="bi bi-check-circle"></i></div>
+        <div class="card-content">
+          <h6 class="card-label">Available Stock</h6>
+          <h5 appCountUp [target]="countStatus('Available')" [duration]="700"></h5>
+          <p class="card-description">Ready for assignment</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="summary-card card-warning">
+        <div class="card-icon"><i class="bi bi-x-circle"></i></div>
+        <div class="card-content">
+          <h6 class="card-label">Unavailable Stock</h6>
+          <h5 appCountUp [target]="countStatus('UnAvailable')" [duration]="700"></h5>
+          <p class="card-description">Out of stock items</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: ANALYTICS & CHARTS -->
+  <div class="section-divider">
+    <h6 class="text-dark-50 mt-4"><i class="bi bi-graph-up me-2"></i>Analytics & Insights</h6>
+  </div>
+  <div class="row g-4 mb-5">
+    <!-- Status Distribution Chart - Small -->
+    <div class="col-lg-6 col-md-6">
+      <div class="modern-card h-100 shadow-sm">
+        <div class="modern-card-header">
+          <span><i class="bi bi-pie-chart me-2"></i>Status</span>
+          <p>{{statusChartData.labels?.length}}</p>
+        </div>
+        <div class="chart-container" style="height: 200px; padding: 15px;">
+          <canvas baseChart
+            [data]="statusChartData"
+            [type]="'doughnut'"
+            [options]="doughnutChartOptions">
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brand Distribution Chart - Small -->
+    <div class="col-lg-6 col-md-6">
+      <div class="modern-card h-100 shadow-sm">
+        <div class="modern-card-header">
+          <span><i class="bi bi-diagram-3 me-2"></i>Brands</span>
+          <p>{{brandChartData.labels?.length}}</p>
+        </div>
+        <div class="chart-container" style="height: 200px; padding: 15px;">
+          <canvas baseChart
+            [data]="brandChartData"
+            [type]="'pie'"
+            [options]="pieChartOptions">
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Distribution Chart - Medium -->
+    <div class=" col-12">
+      <div class="modern-card h-100 shadow-sm">
+        <div class="modern-card-header">
+          <span><i class="bi bi-bar-chart me-2"></i>Top Categories</span>
+          <p>{{categoryChartData.labels?.length}}</p>
+        </div>
+        <div class="chart-container" style="height: 200px; padding: 15px;">
+          <canvas baseChart
+            [data]="categoryChartData"
+            [type]="'bar'"
+            [options]="barChartOptions">
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: TOP PRODUCTS & RECENT INVOICES (SIDE BY SIDE) -->
+  <div class="section-divider mb-3">
+    <h6 class="text-dark-50"><i class="bi bi-star me-2"></i>Top Products & Recent Invoices</h6>
+  </div>
+  
+  <div class="row g-4 mb-5">
+    <!-- LEFT: TOP PRODUCTS -->
+    <div class="col-lg-8 col-md-12">
+      <div class="modern-card h-100 shadow-sm">
+        <div class="modern-card-header">
+          <span><i class="bi bi-trophy me-2"></i>Top Performing Products</span>
+        </div>
+        <div class="table-responsive">
+         <table class="modern-table table mb-0 align-middle">
         <thead>
+
           <tr>
             <th style="width: 5%">#</th>
             <th style="width: 20%">Name</th>
             <th style="width: 15%">Brand</th>
-            <th style="width: 15%">Category</th>
-            <th style="width: 10%">Qty (Avail/Total)</th>
-            <th style="width: 15%">Supplier</th>
             <th style="width: 15%">Status</th>
-            <th style="width: 15%">Last Updated</th>
             <th style="width: 10%">Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of topProducts| slice:0:5; let i = index" class="table-row-hover">
+          <tr *ngFor="let item of topProducts | slice:0:5; let i = index" class="table-row-hover">
             <td>{{ i + 1 }}</td>
             <td><strong>{{ item.name }}</strong></td>
             <td>{{ item.brand?.brand }}</td>
-            <td>{{item.category?.category }}</td>
-            <td>{{ item.quantity_available }}/{{ item.quantity_total }}</td>
-            <td>{{ item.supplier?.name }}</td>
             <td>
               <span class="modern-badge"
                 [ngClass]="{
@@ -106,7 +187,6 @@
                 {{ item.status }}
               </span>
             </td>
-            <td>{{ item.updatedAt | date:'mediumDate' }}</td>
             <td>
               <button class="btn-view btn-sm" (click)="viewItem(item)">
                 <i class="bi bi-eye"></i> View
@@ -123,16 +203,130 @@
           </tr>
         </tbody>
       </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: RECENT INVOICES -->
+    <div class="col-lg-4 col-md-12">
+      <div class="modern-card h-100 shadow-sm">
+        <div class="modern-card-header d-flex justify-content-between align-items-center">
+          <span><i class="bi bi-receipt me-2"></i>Recent Invoices</span>
+          <span class="badge bg-black" appCountUp [target]="invoices.length || 0" [duration]="600"></span>
+        </div>
+        
+        <!-- Invoice Summary Stats -->
+        <div class="invoice-summary p-3  border-bottom background-light">
+          <div class="row g-2">
+            <div class="col-4 text-center">
+              <small class="text-muted d-block" style="font-size: 0.7rem;">TOTAL AMOUNT</small>
+              <h6 class="mb-0 fw-bold text-dark" appCountUp [target]="getTotalInvoiceAmount()" currency="PKR" [decimals]="0" [duration]="900"></h6>
+            </div>
+            <div class="col-4 text-center border-start border-end">
+              <small class="text-success d-block" style="font-size: 0.7rem;">PAID</small>
+              <h6 class="mb-0 fw-bold text-success" appCountUp [target]="getPaidAmount()" currency="PKR" [decimals]="0" [duration]="900"></h6>
+            </div>
+            <div class="col-4 text-center">
+              <small class="text-warning d-block" style="font-size: 0.7rem;">UNPAID</small>
+              <h6 class="mb-0 fw-bold text-warning" appCountUp [target]="getUnpaidAmount()" currency="PKR" [decimals]="0" [duration]="900"></h6>
+            </div>
+          </div>
+        </div>
+
+        <div class="invoice-list-container" style="max-height: 350px; overflow-y: auto; padding: 15px; scrollbar-width: thin; scrollbar-color: #000000 #f1f1f1;">
+          
+          <!-- Invoice Card -->
+          <div *ngFor="let invoice of invoices | slice:0:10" 
+              class="invoice-card mb-3 p-3 border rounded-3 shadow-sm bg-white position-relative"
+              [ngClass]="{'transformed': isMouseOver, 'shadow-sm': isMouseOver}"
+              (mouseenter)="isMouseOver = true"
+              (mouseleave)="isMouseOver = false">
+            
+       
+            <span class="position-absolute top-0 end-0 m-2 badge"
+                  [ngClass]="{
+                    'bg-warning text-dark': invoice.statuses === 'Pending',
+                    'bg-success': invoice.statuses === 'Paid',
+                    'bg-danger': invoice.statuses === 'Cancelled',
+                    'bg-info': invoice.statuses === 'Processing'
+                  }">
+              {{ invoice.statuses }}
+            </span>
+
+            <!-- Invoice Header -->
+            <div class="d-flex align-items-center mb-2">
+              <div class="invoice-icon me-3 d-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10" 
+                   style="width: 45px; height: 45px;">
+                <i class="bi bi-file-earmark-text text-primary fs-5"></i>
+              </div>
+              <div class="flex-grow-1">
+                <h6 class="mb-0 fw-bold text-dark">{{ invoice.invoiceNumber }}</h6>
+                <small class="text-muted">
+                  <i class="bi bi-calendar3 me-1"></i>
+                  {{ invoice.createdAt | date:'MMM d, y' }}
+                </small>
+              </div>
+            </div>
+
+            <!-- Client Info -->
+            <div class="client-info mb-2 ps-2 border-start border-primary border-3">
+              <div class="d-flex align-items-center mb-1">
+                <i class="bi bi-person-circle me-2 text-primary"></i>
+                <strong class="text-dark">{{ invoice.client?.name }}</strong>
+              </div>
+              <div class="d-flex align-items-center">
+                <i class="bi bi-envelope me-2 text-muted"></i>
+                <small class="text-muted">{{ invoice.client?.email }}</small>
+              </div>
+            </div>
+
+            <!-- Invoice Details -->
+            <div class="invoice-details d-flex justify-content-between align-items-center pt-2 border-top">
+              <div>
+                <small class="text-muted d-block">Total Amount</small>
+                <h5 class="mb-0 text-black fw-bold">{{ invoice.total | currency:'PKR':'symbol':'1.0-0' }}</h5>
+              </div>
+              <div class="text-end">
+                <small class="text-muted d-block">Items</small>
+                <span class="badge bg-secondary fs-6">{{ invoice.items?.length || 0 }}</span>
+              </div>
+            </div>
+
+            <!-- Optional: Tax Info -->
+            <div class="mt-2 pt-2 border-top" *ngIf="invoice.taxAmount > 0">
+              <div class="d-flex justify-content-between">
+                <small class="text-muted">Subtotal:</small>
+                <small>{{ invoice.subTotal | currency:'PKR':'symbol':'1.0-0' }}</small>
+              </div>
+              <div class="d-flex justify-content-between">
+                <small class="text-muted">Tax ({{ invoice.taxPercent }}%):</small>
+                <small>{{ invoice.taxAmount | currency:'PKR':'symbol':'1.0-0' }}</small>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="invoices.length === 0" class="text-center py-5">
+            <i class="bi bi-receipt fs-1 text-muted"></i>
+            <p class="text-muted mt-2">No invoices found</p>
+          </div>
+
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- BOTTOM SECTION -->
-  <div class="row g-4">
-    <!-- RECENT INVENTORY -->
+  <!-- SECTION 5: RECENT ACTIVITY -->
+  <div class="section-divider mb-3">
+    <h6 class="text-dark-50"><i class="bi bi-clock-history me-2"></i>Recent Activity</h6>
+  </div>
+  <div class="row g-4 mb-4">
+    <!-- Recent Inventory -->
     <div class="col-lg-6 col-md-12">
       <div class="modern-card h-100 shadow-sm">
         <div class="modern-card-header">
-          <span><i class="bi bi-clock-history me-2"></i>Recent Inventory</span>
+          <span><i class="bi bi-box me-2"></i>Recent Products</span>
         </div>
         <div class="table-responsive">
           <table class="modern-table table mb-0 align-middle">
@@ -163,7 +357,7 @@
                 <td>{{ item.quantity_available }}</td>
               </tr>
               <tr *ngIf="dashboardList.length === 0">
-                <td colspan="5">
+                <td colspan="4">
                   <div class="empty-state">
                     <i class="bi bi-inbox"></i>
                     <p>No recent inventory</p>
@@ -176,7 +370,7 @@
       </div>
     </div>
 
-    <!-- EMPLOYEE OVERVIEW -->
+    <!-- Employee Overview -->
     <div class="col-lg-6 col-md-12">
       <div class="modern-card h-100 shadow-sm">
         <div class="modern-card-header">
@@ -189,7 +383,6 @@
                 <th>#</th>
                 <th>Name</th>
                 <th>Department</th>
-                <th>Designation</th>
                 <th>Salary</th>
                 <th>Status</th>
               </tr>
@@ -199,7 +392,6 @@
                 <td>{{ i + 1 }}</td>
                 <td><strong>{{ emp.name }}</strong></td>
                 <td>{{ emp.department }}</td>
-                <td>{{ emp.designation }}</td>
                 <td>{{ emp.salary | currency:'PKR':'symbol':'1.0-0' }}</td>
                 <td>
                   <span class="modern-badge"
@@ -209,7 +401,7 @@
                 </td>
               </tr>
               <tr *ngIf="recentRequests.length === 0">
-                <td colspan="6">
+                <td colspan="5">
                   <div class="empty-state">
                     <i class="bi bi-inbox"></i>
                     <p>No employee data available</p>
@@ -227,18 +419,13 @@
 
 <!-- Hidden component to fetch employee data -->
 <app-session-list (employeList)="AllEmployes($event)" style="display: none"></app-session-list>
+
 <ngx-spinner
   bdColor="rgba(256, 256, 256, 0.8)"
   size="large"
   color="#fff"
   type="ball-scale-multiple"
   [fullScreen]="true"
-    template="<img src='assets/stockify.png' />"
-
+  template="<img src='assets/stockify.png' />"
 >
-  <!-- Centered Logo -->
-  <div class="spinner-logo" *ngIf="isLoading">
-
-    <img src="data:image/png;base64,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" class="centered-logo" />
-  </div>
 </ngx-spinner>

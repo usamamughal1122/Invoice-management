@@ -1,0 +1,76 @@
+.margin-top{
+  margin-top: 100px;
+}
+.lowstock-card {
+  /* background: #000; */
+  border-radius: 16px;
+  /* border: 1px solid #d4af37; */
+}
+
+.text-gold {
+  color: #000000;
+}
+
+.summary-box {
+  background: #ffffff;
+  /* border: 1px solid #444; */
+}
+
+.info-pill {
+  background: #e3f6fd;
+  padding: 2px 25px;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #333;
+}
+
+.info-pill .label {
+  font-size: 11px;
+  color: #aaa;
+  display: block;
+}
+
+.info-pill .value {
+  font-size: 18px;
+  color: gold;
+  font-weight: 600;
+}
+
+
+
+.table {
+  background: #000;
+}
+
+.table td, .table th {
+  color: #000000;
+  font-size: 14px;
+}
+
+.qty-badge {
+  background: #d2d2d2;
+  color: #000;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.btn-gold {
+  background: #d6d6d6;
+  color: #000;
+  border: none;
+}
+
+.btn-gold:hover {
+  background: #b8962e;
+}
+
+.black-bg {
+  background: #000;
+}
+
+.black-input {
+  background: #111;
+  color: white;
+  border: 1px solid #d4af37;
+}

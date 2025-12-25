@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, DoCheck, effect, Input, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -9,8 +9,24 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './dashboard-model.component.html',
   styleUrl: './dashboard-model.component.css'
 })
-export class DashboardModelComponent {
-@Input() data: any; // receive inventory item
+export class DashboardModelComponent  {
+ dataSignals = signal<any>(null); // receive inventory item
 
-  constructor(public activeModal: NgbActiveModal) {}
+   count = signal(0);
+   normalCount = 0;
+  constructor(public activeModal: NgbActiveModal) {
+    effect(() => {
+      console.log('counts',this.count());
+    })
+  }
+
+
+   increament(){
+   // this.normalCount=this.normalCount+1;
+    this.count.set(this.count()+1);
+   }
+   
+
+
+
 }

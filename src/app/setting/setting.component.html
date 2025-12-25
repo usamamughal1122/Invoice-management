@@ -7,9 +7,25 @@
       <p style="margin:0; font-size:14px; color:gray">Manage system configurations</p>
     </div>
 
-    <button (click)="toggleTheme()" class="theme-toggle">
-      {{ theme | titlecase }} Mode
-    </button>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <button (click)="toggleTheme()" class="theme-toggle">
+        {{ theme | titlecase }} Mode
+      </button>
+
+      <button (click)="saveAll()" class="gold-btn" title="Save all settings">Save All</button>
+      <button (click)="exportSettings()" class="gold-btn" title="Export settings">Export</button>
+
+      <label class="gold-btn" style="cursor:pointer; display:inline-block; padding:6px 10px; background:#fff; border:1px solid #d4af37;">
+        Import
+        <input type="file" accept="application/json" (change)="onImportFile($event)" style="display:none">
+      </label>
+
+      <button (click)="resetSettings()" class="theme-toggle" title="Reset to defaults">Reset</button>
+
+      <button (click)="showAdvanced = !showAdvanced" class="theme-toggle" title="Toggle advanced JSON view">
+        {{ showAdvanced ? 'Close Advanced' : 'Advanced' }}
+      </button>
+    </div>
   </div>
 
   <div style="display:flex; gap:20px; flex-wrap:wrap;">
@@ -116,6 +132,24 @@
             </div>
 
           </ng-container>
+        </div>
+      </div>
+
+      <!-- ADVANCED JSON EDITOR -->
+      <div *ngIf="showAdvanced" [ngStyle]="{
+               'background-color': theme==='dark'?'#151515':'#fffef8',
+               'padding':'20px',
+               'border-radius':'12px',
+               'margin-bottom':'20px',
+               'box-shadow':'0 3px 10px rgba(0,0,0,0.06)'
+             }">
+        <h5 style="color:#d4af37; margin-bottom:10px;">Advanced (JSON)</h5>
+        <p style="font-size:13px; color:gray; margin-top:0;">Edit the full settings JSON. Use Import/Export to move settings between environments. Changes here must be saved with <strong>Save All</strong>.</p>
+        <textarea [(ngModel)]="advancedJson" rows="12" [ngStyle]="inputStyle()"></textarea>
+        <div style="display:flex; gap:8px; margin-top:10px;">
+          <button class="gold-btn" (click)="applyImportedJson(advancedJson)">Apply to UI</button>
+          <button class="gold-btn" (click)="exportSettings()">Export Current</button>
+          <button class="theme-toggle" (click)="loadCurrentJson()">Load Current JSON</button>
         </div>
       </div>
     </div>

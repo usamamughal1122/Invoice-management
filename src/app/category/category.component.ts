@@ -30,6 +30,7 @@ export class CategoryComponent {
         this.spinner.hide();
         this.categoryForm.reset();
         this.toastr.success('Category added successfully');
+        this.fetchBrands()
       },
       error: (err) => {
         this.spinner.hide();
@@ -40,7 +41,14 @@ export class CategoryComponent {
     this.categoryForm.markAllAsTouched();
   }
 }
-
+fetchBrands() {
+  this.svc.getcategory().subscribe({
+    next: (res: any) => {
+      this.categoriesList = res.data || [];
+    },
+    error: (err) => console.error(err)
+  });
+}
 
     removeCategory() {
       

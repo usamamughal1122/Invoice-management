@@ -23,7 +23,6 @@ export class AppComponent {
   }
 
  isLoginPage(): boolean {
-  console.log('Current URL:', this.router.url); // Add this to debug
   return this.router.url === '/login';
 }
 }

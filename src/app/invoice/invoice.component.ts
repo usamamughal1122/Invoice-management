@@ -1,41 +1,44 @@
-import { Component, ElementRef } from '@angular/core';
-import { InvoiceFormComponent } from './invoice-form/invoice-form.component';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { EmployeeService } from '../../services/code-mentore.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { InvoiceModelComponent } from './invoice-model/invoice-model.component';
+
+
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import Swal from 'sweetalert2';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { StripePaymentComponent } from './stripe-payment/stripe-payment.component';
+
 @Component({
   selector: 'app-invoice',
-  imports: [CommonModule,FormsModule,NgxSpinnerModule,ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, NgxSpinnerModule, ReactiveFormsModule,NgSelectModule,InvoiceModelComponent],
   templateUrl: './invoice.component.html',
-  styleUrl: './invoice.component.css'
+  styleUrl: './invoice.component.css',
 })
-export class InvoiceComponent {
-   clients: any[] = [];
-  inventoryList: any[] = [];
-  invoiceItems: any[] = [];
+export class InvoiceComponent implements OnInit {
+
+ // Data Arrays
   invoice: any[] = [];
-
-  selectedClient: any = null;
-  taxPercent = 0;
-
-  purchaseDate: any = null;
-  wrantyExpiry: any = null;
-
-  subtotal = 0;
-  taxAmount = 0;
-  total = 0;
-
-  addClientForm!: FormGroup;
- today: any = new Date();
+  selectedInvoiceForView: any = null;
+  
+  // Pagination
+  page: number = 1;
+  limit: number = 5;
+  totalPages: number = 0;
+  today: any = new Date();
 
   constructor(
-    private fb: FormBuilder,
     private svc: EmployeeService,
     private modal: NgbModal,
     private spinner: NgxSpinnerService,
@@ -43,246 +46,230 @@ export class InvoiceComponent {
   ) {}
 
   ngOnInit(): void {
-    this.loadClients();
-    this.loadInventory();
-    this.loadInvoice();
-
-    this.addClientForm = this.fb.group({
-      name: ['', Validators.required],
-    });
+    this.getInvoices();
   }
 
-  // ============================
-  //  Load Clients with Spinner
-  // ============================
-  loadClients() {
+  getInvoices() {
     this.spinner.show();
-    this.svc.getClients().subscribe({
-      next: (res) => {
-        this.clients = res.data;
-        this.spinner.hide();
-      },
-      error: (err) => {
-        console.error(err);
-        this.spinner.hide();
-      }
-    });
-  }
-
-  // ==============================
-  //  Load Inventory with Spinner
-  // ==============================
-  loadInventory() {
-    this.spinner.show();
-    this.svc.getInventory().subscribe({
-      next: (res) => {
-        this.inventoryList = res.data;
-        this.spinner.hide();
-      },
-      error: (err) => {
-        console.error(err);
-        this.spinner.hide();
-      }
-    });
-  }
-
-  // ============================
-  //  Load Invoices with Spinner
-  // ============================
-  loadInvoice() {
-    this.spinner.show();
-    this.svc.getInvoices().subscribe({
+    this.svc.getInvoices(this.page, this.limit).subscribe({
       next: (res) => {
         this.invoice = res.data;
+        this.totalPages = res.totalPages;
         this.spinner.hide();
       },
       error: (err) => {
         console.error(err);
         this.spinner.hide();
+        this.toastr.error('Error loading invoices');
       }
     });
   }
 
-  // ============================
-  //  Open Add Client Modal
-  // ============================
-  openAddClient(modalRef: any) {
-    this.addClientForm.reset();
-    this.modal.open(modalRef, { centered: true });
+  // email
+sendInvoiceEmail(inv: any) {
+  console.log("Full Invoice Object:", inv);
+
+  const invoiceId =
+    inv?._id ||
+    inv?.id ||
+    inv?.invoiceId ||
+    inv?.invoice_id;
+
+  console.log("Extracted Invoice ID:", invoiceId);
+
+  if (!invoiceId) {
+    this.toastr.error("Invoice ID not found!");
+    return;
   }
 
-  saveClient(modalRef: any) {
-    if (this.addClientForm.invalid) return;
+  this.svc.sendInvoiceEmail(invoiceId).subscribe({
+    next: () => this.toastr.success("Invoice email sent!"),
+    error: (err) => {
+      console.error(err);
+      this.toastr.error("Error sending email!");
+    }
+  });
+}
 
-    this.spinner.show();
-    this.svc.addClient(this.addClientForm.value).subscribe({
-      next: (res) => {
-        this.spinner.hide();
-        this.loadClients();
-        this.selectedClient = res.data._id;
-        modalRef.close();
-        Swal.fire('Success', 'Client added successfully!', 'success');
+
+
+  // Pagination
+  goToPage(p: number) {
+    this.page = p;
+    this.getInvoices();
+  }
+
+  prevPage() {
+    if (this.page > 1) this.goToPage(this.page - 1);
+  }
+
+  nextPage() {
+    if (this.page < this.totalPages) this.goToPage(this.page + 1);
+  }
+
+  // Open Create Invoice Modal
+  openCreateInvoiceModal(modalRef: any) {
+    this.modal.open(modalRef, { 
+      size: 'xl', 
+      centered: true,
+      backdrop: 'static',
+      keyboard: false
+    });
+  }
+
+  // Handle invoice created callback
+  onInvoiceCreated() {
+    this.getInvoices();
+  }
+
+  // Open Invoice Details Modal
+  openInvoiceDetailsModal(modalRef: any, invoice: any) {
+    this.selectedInvoiceForView = invoice;
+    this.modal.open(modalRef, { 
+      size: 'xl', 
+      centered: true,
+      backdrop: 'static',
+      keyboard: false
+    });
+  }
+// only Frountend Pdf genrate not backend inveloved
+
+  // downloadModalPDF(modalContent: HTMLDivElement) {
+  //   this.spinner.show();
+
+  //   setTimeout(() => {
+  //     const buttons = modalContent.querySelectorAll('.no-print');
+  //     buttons.forEach((btn: any) => btn.style.display = 'none');
+
+  //     html2canvas(modalContent, {
+  //       scale: 2,
+  //       useCORS: true,
+  //       logging: false,
+  //       backgroundColor: '#ffffff'
+  //     }).then(canvas => {
+  //       const imgData = canvas.toDataURL('image/png');
+  //       const pdf = new jsPDF('p', 'mm', 'a4');
+  //       const pdfWidth = pdf.internal.pageSize.getWidth();
+  //       const pdfHeight = pdf.internal.pageSize.getHeight();
+  //       const ratio = Math.min(
+  //         pdfWidth / canvas.width, 
+  //         pdfHeight / canvas.height
+  //       );
+  //       const imgX = (pdfWidth - canvas.width * ratio) / 2;
+
+  //       pdf.addImage(
+  //         imgData, 'PNG', imgX, 10, 
+  //         canvas.width * ratio, canvas.height * ratio
+  //       );
+  //       pdf.save(`invoice-${this.selectedInvoiceForView.invoiceNumber}.pdf`);
+
+  //       buttons.forEach((btn: any) => btn.style.display = '');
+  //       this.spinner.hide();
+  //       this.toastr.success('PDF downloaded successfully!');
+  //     }).catch(err => {
+  //       console.error('PDF error:', err);
+  //       this.spinner.hide();
+  //       this.toastr.error('Error generating PDF');
+  //     });
+  //   }, 300);
+  // }
+
+  downloadModalPDF(invoiceId: string) {
+    this.svc.downloadPDF(invoiceId).subscribe(
+      (res: Blob) => {
+        // Create a temporary URL and trigger download
+        const blob = new Blob([res], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `invoice_${invoiceId}.pdf`;
+        link.click();
+
+        window.URL.revokeObjectURL(url);
       },
-      error: () => {
-        this.spinner.hide();
-        Swal.fire('Error', 'Failed to add client', 'error');
+      err => {
+        console.error('Download failed', err);
       }
-    });
+    );
   }
 
-  // ============================
-  //  Open Inventory Modal
-  // ============================
-  openInventoryModal(modalRef: any) {
-    this.spinner.show();
-    setTimeout(() => {
-      this.modal.open(modalRef, { size: 'lg', centered: true });
+// Pay Now button se call hoga
+openPaymentModal(invoice: any) {
+  console.log('Invoice Total:', invoice.total); // 👈 Check this value
+  console.log('Invoice Object:', invoice);
+  if (invoice.statuses === 'Paid') {
+    this.toastr.info('Invoice already paid');
+    return;
+  }
+
+  const modalRef = this.modal.open(StripePaymentComponent, {
+    centered: true,
+    backdrop: 'static'
+  });
+
+  // Pass all required data including invoiceId
+  modalRef.componentInstance.amount = invoice.total;
+  modalRef.componentInstance.invoiceNumber = invoice.invoiceNumber;
+  modalRef.componentInstance.invoiceId = invoice._id; // 👈 ADD THIS
+
+  modalRef.result.then((result) => {
+    if (result?.success) {
+      this.updateInvoiceStatus(invoice._id);
+    }
+  });
+}
+
+
+
+updateInvoiceStatus(invoiceId: string) {
+  this.spinner.show();
+
+  // Pehle se bani API use ho rahi hai
+  this.svc.updateInvoice(invoiceId, {
+    statuses: 'Paid' // 👈 sirf ye change
+  }).subscribe({
+    next: () => {
       this.spinner.hide();
-    }, 400);
-  }
+      this.toastr.success('Payment Successful');
 
-  // ============================
-  //  Select Inventory Item
-  // ============================
-  selectInventoryItem(item: any, modalRef: any) {
-    const exists = this.invoiceItems.find(x => x._id === item._id);
-    if (exists) {
-      Swal.fire('Warning', 'Item already added.', 'warning');
-      return;
-    }
+      // Invoice list refresh
+      this.getInvoices();
 
-    this.invoiceItems.push({
-      _id: item._id,
-      name: item.name,
-      availableQty: item.quantity_available,
-      price: item.price,
-      quantity: 0,
-      subtotal: item.price,
-      purchaseDate: item.purchaseDate,
-      warrantyExpiry: item.warrantyExpiry
-    });
-
-    this.updateTotals();
-    modalRef.close();
-  }
-
-  onQuantityChange(item: any, qty: number) {
-    if (qty > item.availableQty) {
-      Swal.fire('Warning', `Only ${item.availableQty} available`, 'warning');
-      item.quantity = item.availableQty;
-    }
-    item.subtotal = item.price * item.quantity;
-    this.updateTotals();
-  }
-
-  removeItem(i: number) {
-    Swal.fire({
-      title: 'Remove this item?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, remove it!',
-    }).then(result => {
-      if (result.isConfirmed) {
-        this.invoiceItems.splice(i, 1);
-        this.updateTotals();
-        Swal.fire('Removed!', 'Item removed.', 'success');
+      // View modal me status update
+      if (this.selectedInvoiceForView?._id === invoiceId) {
+        this.selectedInvoiceForView.statuses = 'Paid';
       }
-    });
-  }
-
-  updateTotals() {
-    this.subtotal = this.invoiceItems.reduce((a, b) => a + b.subtotal, 0);
-    this.taxAmount = (this.subtotal * this.taxPercent) / 100;
-    this.total = this.subtotal + this.taxAmount;
-  }
-
-  // ============================
-  //  Create Invoice (with spinner)
-  // ============================
-  saveInvoice() {
-    if (!this.selectedClient) {
-      Swal.fire('Error', 'Please select a client', 'error');
-      return;
+    },
+    error: () => {
+      this.spinner.hide();
+      this.toastr.error('Failed to update payment status');
     }
-    if (this.invoiceItems.length === 0) {
-      Swal.fire('Error', 'Please add at least one item', 'error');
-      return;
-    }
+  });
+}
 
-    const payload = {
-      client: this.selectedClient,
-      taxPercent: this.taxPercent,
-      purchaseDates: this.purchaseDate,
-      warrantyExpirys: this.wrantyExpiry,
-      items: this.invoiceItems.map(i => ({
-        inventory: i._id,
-        price: i.price,
-        quantity: i.quantity,
-        purchaseDate: this.purchaseDate,
-        warrantyExpiry: this.wrantyExpiry
-      }))
-    };
 
+  processPaymentSuccess(invoiceId: string, token: any) {
     this.spinner.show();
-
-    this.svc.createInvoice(payload).subscribe({
+    // Simulate backend payment verification and status update
+    // In a real app, you would send the token to your backend here
+    
+    this.svc.updateInvoice(invoiceId, { statuses: 'Paid' }).subscribe({
       next: (res) => {
-        setTimeout(() => {
-          this.spinner.hide();
-          Swal.fire('Success', 'Invoice created successfully!', 'success');
-
-          this.invoiceItems = [];
-          this.taxPercent = 0;
-          this.purchaseDate = null;
-          this.wrantyExpiry = null;
-          this.selectedClient = null;
-          this.updateTotals();
-
-          this.loadClients();
-          this.loadInvoice();
-
-          this.toastr.success('Invoice created successfully!');
-          this.modal.dismissAll();
-        }, 300);
+        this.spinner.hide();
+        this.toastr.success('Payment successful! Invoice marked as Paid.');
+        
+        // Update local state and close details modal if open
+        this.getInvoices();
+        if (this.selectedInvoiceForView && this.selectedInvoiceForView._id === invoiceId) {
+          this.selectedInvoiceForView.statuses = 'Paid';
+        }
       },
       error: (err) => {
         this.spinner.hide();
-        Swal.fire('Error', err.error?.message || 'Error saving invoice', 'error');
-        this.toastr.error('Error saving invoice');
+        console.error(err);
+        this.toastr.error('Error updating invoice status');
       }
     });
   }
-
-  // ============================
-  //  Download PDF
-  // ============================
-  downloadPDF(invoiceCard: HTMLDivElement, invoiceNumber: string) {
-    const downloadBtn = invoiceCard.querySelector('button');
-
-    if (downloadBtn) downloadBtn.style.display = 'none';
-
-    html2canvas(invoiceCard, { scale: 2 }).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-
-      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-
-      const imgX = (pdfWidth - imgWidth * ratio) / 2;
-      const imgY = 0;
-
-      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-      pdf.save(`invoice-${invoiceNumber}.pdf`);
-
-      if (downloadBtn) downloadBtn.style.display = 'inline-block';
-    });
-  }
-
 }
-  
-

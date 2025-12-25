@@ -29,3 +29,94 @@ body {
 a, button {
   color: var(--primary-color);
 }
+
+/* Smooth transitions when toggling theme */
+body, .card, .modern-card, .modern-table, header, .sidebar, .table, .invoice-card {
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+/* Dark-theme specific tweaks for better contrast */
+.dark-theme {
+  --bg-color: #0f1112; /* near-black */
+  --text-color: #e8e8e8;
+  --muted-color: #bfc3c6;
+  --primary-color: #f0c419; /* keep accent yellow */
+  --card-bg: #151718; /* slightly lighter than body */
+  --table-head-bg: rgba(255,255,255,0.03);
+  --table-row-bg: rgba(255,255,255,0.01);
+  --table-border: rgba(255,255,255,0.04);
+}
+
+/* Apply variables to common elements */
+.dark-theme body,
+.dark-theme .container-fluid,
+.dark-theme .modern-card,
+.dark-theme .card,
+.dark-theme .modern-table,
+.dark-theme .table,
+.dark-theme .sidebar {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.dark-theme .modern-card,
+.dark-theme .card {
+  background-color: var(--card-bg);
+}
+
+/* Table tweaks */
+.modern-table thead th {
+  background: var(--table-head-bg);
+  color: var(--text-color);
+  border-bottom: 1px solid var(--table-border);
+}
+
+.modern-table tbody tr {
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+  color: var(--text-color);
+}
+
+.modern-table tbody tr td,
+.modern-table tbody tr th {
+  border-bottom: 1px solid var(--table-border);
+  color: var(--muted-color);
+}
+
+.modern-table tbody tr td strong,
+.modern-table tbody tr td b {
+  color: var(--text-color);
+}
+
+/* Badges and buttons readability */
+.dark-theme .modern-badge,
+.dark-theme .badge {
+  color: #111; /* light badge backgrounds likely need dark text */
+}
+
+.dark-theme .badge.bg-black {
+  background: #111;
+  color: #fff;
+}
+
+.dark-theme .btn-outline-primary {
+  border-color: rgba(255,255,255,0.12);
+  color: var(--text-color);
+}
+
+/* Invoice card contrast */
+.dark-theme .invoice-card {
+  background-color: #121314;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* Sidebar adjustments */
+.dark-theme .sidebar {
+  background-color: #0b0c0d;
+  color: var(--text-color);
+}
+
+/* Small utility for text that should remain bright */
+.dark-theme .text-bright {
+  color: var(--text-color) !important;
+}
+

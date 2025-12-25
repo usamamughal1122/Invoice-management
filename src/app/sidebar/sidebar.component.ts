@@ -10,9 +10,17 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   
 })
 export class SidebarComponent {
+dashboardOpen = false;
+inventoryOpen = false;
 masterDataOpen = false;
+invoiceOpen = false;
+employeesOpen = false;
+settingsOpen = false;
 
-  toggleMasterData() {
-    this.masterDataOpen = !this.masterDataOpen;
-  }
+toggleDashboard() { this.dashboardOpen = !this.dashboardOpen; }
+toggleInventory() { this.inventoryOpen = !this.inventoryOpen; }
+toggleMasterData() { this.masterDataOpen = !this.masterDataOpen; }
+toggleInvoice() { this.invoiceOpen = !this.invoiceOpen; }
+toggleEmployees() { this.employeesOpen = !this.employeesOpen; }
+toggleSettings() { this.settingsOpen = !this.settingsOpen; }
 }

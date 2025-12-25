@@ -42,7 +42,7 @@ export class ProductFormComponent implements OnInit {
 
     // If editing, fill form
     if (this.employeeData) {
-      debugger
+      
       this.isEditMode = true;
       this.employeeForm.patchValue(this.employeeData);
     }

@@ -36,7 +36,6 @@ export class InterviewComponent implements OnInit {
     this.loadingLanguages = true;
     this.svc.getAllLanguages().subscribe(res => {
       this.loadingLanguages = false;
-      debugger
       if (res.result) 
         this.languages = res.data;
       else this.errorMessage = res.message || 'Failed to load Languages';
@@ -53,7 +52,7 @@ loadTopicsByLanguage(languageId: number) {
   this.loadingTopics = true;
   this.svc.getLanguageTopics().subscribe(res => {
     this.loadingTopics = false;
-     debugger
+     
     if (res.result) {
       // Filter topics that belong to this language
 
@@ -76,7 +75,7 @@ loadQuestionsByTopic(topicId: number) {
   this.svc.getQuestionsByTopicId(topicId).subscribe(res => {
     this.loadingQuestions = false;
     if (res.result) {
-       debugger
+       
       this.questions = res.data;
     } else {
       this.questions = [];

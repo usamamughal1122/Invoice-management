@@ -77,13 +77,14 @@
 /* TABLE HEADER */
 .table thead tr,
 .table thead th {
-  background: #000 !important; /* Matte Black */
+  /* background: #000 !important; Matte Black */
   color: #d4af37 !important;   /* Gold Text */
   font-weight: 700;
   text-transform: uppercase;
   font-size: 13px;
   letter-spacing: 0.4px;
   border-bottom: 2px solid #d4af37 !important; /* Gold Line */
+  border-radius: 21px;
 }
 
 /* STICKY FIRST COLUMN */

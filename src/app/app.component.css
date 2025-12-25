@@ -9,7 +9,7 @@
 /* Sidebar width fix */
 app-sidebar {
   flex-shrink: 0;
-  width: 240px;
+  width: 214px;
 }
 
 /* Main area next to sidebar */

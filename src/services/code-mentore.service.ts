@@ -1,117 +1,279 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EmployeeService {
-  private API_BASE = 'https://inventory-backend-lemon.vercel.app';
+  private API_BASE = 'http://localhost:3000'; 
 
   constructor(private http: HttpClient) {}
 
+  private getRole(): string {
+    return localStorage.getItem('role') || 'vendor';
+  }
+
+  private getUserIdParam(): HttpParams | null {
+    const role = this.getRole();
+    const uid = localStorage.getItem('uid');
+    if (role === 'vendor') {
+      return new HttpParams().set('userId', uid || '');
+    }
+    return null;
+  }
+
+  // Basic error handler
+  private handleError(op = 'request') {
+    return (err: any) => {
+      console.error(`${op} failed:`, err);
+      return throwError(() => err);
+    };
+  }
+
+  // Roles / Products
   getRoles(): Observable<any> {
-    return this.http.get<any>(`${this.API_BASE}/api/products`);
+    const params = this.getUserIdParam();
+    return this.http
+      .get<any>(`${this.API_BASE}/api/products`, params ? { params } : {})
+      .pipe(catchError(this.handleError('getRoles')));
   }
 
   addEmployee(payload: any): Observable<any> {
-    return this.http.post<any>(`${this.API_BASE}/api/products`, payload);
+    if (this.getRole() === 'vendor') payload.userId = localStorage.getItem('uid');
+    return this.http
+      .post<any>(`${this.API_BASE}/api/products`, payload)
+      .pipe(catchError(this.handleError('addEmployee')));
   }
 
   updateEmployee(id: string, payload: any): Observable<any> {
-    return this.http.put<any>(`${this.API_BASE}/api/products/${id}`, payload);
+    return this.http
+      .put<any>(`${this.API_BASE}/api/products/${id}`, payload)
+      .pipe(catchError(this.handleError('updateEmployee')));
   }
 
   deleteProduct(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.API_BASE}/api/products/${id}`);
+    const params = this.getUserIdParam();
+    return this.http
+      .delete<any>(`${this.API_BASE}/api/products/${id}`, params ? { params } : {})
+      .pipe(catchError(this.handleError('deleteProduct')));
   }
 
   category(): Observable<any> {
-    return this.http.get<any>(`${this.API_BASE}/api/product-categories`);
+    const params = this.getUserIdParam();
+    return this.http
+      .get<any>(`${this.API_BASE}/api/product-categories`, params ? { params } : {})
+      .pipe(catchError(this.handleError('category')));
   }
 
-
-  // leaveMnagement
-
+  // Leave Management
   getAllLeaves(): Observable<any> {
-    return this.http.get<any>(`${this.API_BASE}/api/leave-management`);
+    const params = this.getUserIdParam();
+    return this.http
+      .get<any>(`${this.API_BASE}/api/leave-management`, params ? { params } : {})
+      .pipe(catchError(this.handleError('getAllLeaves')));
   }
 
   addLeaves(payload: any): Observable<any> {
-    return this.http.post<any>(`${this.API_BASE}/api/leave-management`, payload);
+    if (this.getRole() === 'vendor') payload.userId = localStorage.getItem('uid');
+    return this.http
+      .post<any>(`${this.API_BASE}/api/leave-management`, payload)
+      .pipe(catchError(this.handleError('addLeaves')));
   }
 
   updateLeaves(id: string, payload: any): Observable<any> {
-    return this.http.put<any>(`${this.API_BASE}/api/leave-management/${id}`, payload);
+    return this.http
+      .put<any>(`${this.API_BASE}/api/leave-management/${id}`, payload)
+      .pipe(catchError(this.handleError('updateLeaves')));
   }
 
-
-  // tech inventory
-
- getInventory(page: number = 1, limit: number = 10): Observable<any> {
-  return this.http.get<any>(`${this.API_BASE}/api/tech-inventory?page=${page}&limit=${limit}`);
-}
-
+  // Tech Inventory
+  getInventory(page: number = 1, limit: number = 10): Observable<any> {
+    let params = this.getUserIdParam() || new HttpParams();
+    params = params.set('page', page.toString()).set('limit', limit.toString());
+    return this.http
+      .get<any>(`${this.API_BASE}/api/tech-inventory`, { params })
+      .pipe(catchError(this.handleError('getInventory')));
+  }
 
   addInventory(payload: any): Observable<any> {
-    return this.http.post<any>(`${this.API_BASE}/api/tech-inventory`, payload);
+    if (this.getRole() === 'vendor') payload.userId = localStorage.getItem('uid');
+    return this.http
+      .post<any>(`${this.API_BASE}/api/tech-inventory`, payload)
+      .pipe(catchError(this.handleError('addInventory')));
   }
 
   updateInventory(id: string, payload: any): Observable<any> {
-    return this.http.put<any>(`${this.API_BASE}/api/tech-inventory/${id}`, payload);
+    return this.http
+      .put<any>(`${this.API_BASE}/api/tech-inventory/${id}`, payload)
+      .pipe(catchError(this.handleError('updateInventory')));
   }
 
   deleteInventory(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.API_BASE}/api/tech-inventory/${id}`);
+    const params = this.getUserIdParam();
+    return this.http
+      .delete<any>(`${this.API_BASE}/api/tech-inventory/${id}`, params ? { params } : {})
+      .pipe(catchError(this.handleError('deleteInventory')));
   }
 
-  // brands
-
+  // Brands
   getBrands(): Observable<any> {
-    return this.http.get<any>(`${this.API_BASE}/api/tech-inventory-brands`);
+    const params = this.getUserIdParam();
+    return this.http
+      .get<any>(`${this.API_BASE}/api/tech-inventory-brands`, params ? { params } : {})
+      .pipe(catchError(this.handleError('getBrands')));
   }
 
   addBrands(payload: any): Observable<any> {
-    return this.http.post<any>(`${this.API_BASE}/api/tech-inventory-brands`, payload);
+    if (this.getRole() === 'vendor') payload.userId = localStorage.getItem('uid');
+    return this.http
+      .post<any>(`${this.API_BASE}/api/tech-inventory-brands`, payload)
+      .pipe(catchError(this.handleError('addBrands')));
   }
 
   getcategory(): Observable<any> {
-    return this.http.get<any>(`${this.API_BASE}/api/tech-inventory-category`);
+    const params = this.getUserIdParam();
+    return this.http
+      .get<any>(`${this.API_BASE}/api/tech-inventory-category`, params ? { params } : {})
+      .pipe(catchError(this.handleError('getcategory')));
   }
 
   addCategory(payload: any): Observable<any> {
-    return this.http.post<any>(`${this.API_BASE}/api/tech-inventory-category`, payload);
+    if (this.getRole() === 'vendor') payload.userId = localStorage.getItem('uid');
+    return this.http
+      .post<any>(`${this.API_BASE}/api/tech-inventory-category`, payload)
+      .pipe(catchError(this.handleError('addCategory')));
   }
 
-  // suppliers
-
+  // Suppliers
   allSuppliers(): Observable<any> {
-    return this.http.get<any>(`${this.API_BASE}/api/tech-inventory-supplier`);
+    const params = this.getUserIdParam();
+    return this.http
+      .get<any>(`${this.API_BASE}/api/tech-inventory-supplier`, params ? { params } : {})
+      .pipe(catchError(this.handleError('allSuppliers')));
   }
 
   addSupplier(payload: any): Observable<any> {
-    return this.http.post<any>(`${this.API_BASE}/api/tech-inventory-supplier`, payload);
+    if (this.getRole() === 'vendor') payload.userId = localStorage.getItem('uid');
+    return this.http
+      .post<any>(`${this.API_BASE}/api/tech-inventory-supplier`, payload)
+      .pipe(catchError(this.handleError('addSupplier')));
   }
 
-  // client
-
+  // Clients
   getClients(): Observable<any> {
-  return this.http.get(`${this.API_BASE}/api/tech-inventory-client`);
+    const params = this.getUserIdParam();
+    return this.http
+      .get<any>(`${this.API_BASE}/api/tech-inventory-client`, params ? { params } : {})
+      .pipe(catchError(this.handleError('getClients')));
   }
 
- addClient(data: any): Observable<any> {
-  return this.http.post(`${this.API_BASE}/api/tech-inventory-client`, data);
- }
+  addClient(data: any): Observable<any> {
+    if (this.getRole() === 'vendor') data.userId = localStorage.getItem('uid');
+    return this.http
+      .post<any>(`${this.API_BASE}/api/tech-inventory-client`, data)
+      .pipe(catchError(this.handleError('addClient')));
+  }
+
+  // Invoices
+  getInvoices(page: number = 1, limit: number = 10): Observable<any> {
+    let params = this.getUserIdParam() || new HttpParams();
+    params = params.set('page', page.toString()).set('limit', limit.toString());
+    return this.http
+      .get<any>(`${this.API_BASE}/api/invoices`, { params })
+      .pipe(catchError(this.handleError('getInvoices')));
+  }
+
+  createInvoice(data: any): Observable<any> {
+    if (this.getRole() === 'vendor') data.userId = localStorage.getItem('uid');
+    return this.http
+      .post<any>(`${this.API_BASE}/api/invoices`, data)
+      .pipe(catchError(this.handleError('createInvoice')));
+  }
+
+  updateInvoice(id: string, payload: any): Observable<any> {
+    return this.http
+      .put<any>(`${this.API_BASE}/api/invoices/${id}`, payload)
+      .pipe(catchError(this.handleError('updateInvoice')));
+  }
+
+  downloadPDF(id: string): Observable<any> {
+    return this.http
+      .get<any>(`${this.API_BASE}/api/invoices/${id}/download`, { responseType: 'blob' as 'json' })
+      .pipe(catchError(this.handleError('downloadPDF')));
+  }
+
+  sendInvoiceEmail(id: string) {
+    return this.http
+      .post<any>(`${this.API_BASE}/api/invoices/${id}/send-email`, {})
+      .pipe(catchError(this.handleError('sendInvoiceEmail')));
+  }
+
+  // Low stock
+  getLowStock(page: number = 1, limit: number = 10) {
+    let params = this.getUserIdParam() || new HttpParams();
+    params = params.set('page', page.toString()).set('limit', limit.toString()).set('lowStock', 'true');
+    return this.http
+      .get<any>(`${this.API_BASE}/api/tech-inventory`, { params })
+      .pipe(catchError(this.handleError('getLowStock')));
+  }
+
+  updateQty(id: string, qty: number) {
+    return this.http
+      .put<any>(`${this.API_BASE}/api/tech-inventory/${id}`, { quantity_available: qty })
+      .pipe(catchError(this.handleError('updateQty')));
+  }
+
+  deleteItem(id: string) {
+    const params = this.getUserIdParam();
+    return this.http
+      .delete<any>(`${this.API_BASE}/api/tech-inventory/${id}`, params ? { params } : {})
+      .pipe(catchError(this.handleError('deleteItem')));
+  }
 
 
-  // invoice
-
-  getInvoices(): Observable<any> {
-  return this.http.get(`${this.API_BASE}/api/invoices`);
+// Get all transactions (only SUCCESS status)
+getTransactions(): Observable<any> {
+  const params = this.getUserIdParam();
+  return this.http
+    .get<any>(`${this.API_BASE}/api/transactions`, params ? { params } : {})
+    .pipe(catchError(this.handleError('getTransactions')));
 }
-   createInvoice(data: any): Observable<any> {
-    return this.http.post(`${this.API_BASE}/api/invoices`, data);
-  }
+
+// Get single transaction
+getTransactionById(id: string): Observable<any> {
+  const params = this.getUserIdParam();
+  return this.http
+    .get<any>(`${this.API_BASE}/api/transactions/${id}`, params ? { params } : {})
+    .pipe(catchError(this.handleError('getTransactionById')));
+}
+
+// Refund transaction
+refundTransaction(transactionId: string): Observable<any> {
+  return this.http
+    .post<any>(`${this.API_BASE}/api/refund/${transactionId}`, {})
+    .pipe(catchError(this.handleError('refundTransaction')));
+}
+
+// Create payment intent (already exists, keep as is)
+createPaymentIntent(invoiceId: string): Observable<any> {
+  return this.http
+    .post<any>(`${this.API_BASE}/api/create-payment-intent`, {
+      invoiceId
+    })
+    .pipe(catchError(this.handleError('createPaymentIntent')));
+}
+
+// Confirm payment (already exists, keep as is)
+confirmPayment(paymentIntentId: string, invoiceId: string): Observable<any> {
+  return this.http
+    .post<any>(`${this.API_BASE}/api/confirm-payment`, { 
+      paymentIntentId, 
+      invoiceId 
+    })
+    .pipe(catchError(this.handleError('confirmPayment')));
+}
 
 
 }

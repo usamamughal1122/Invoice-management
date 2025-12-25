@@ -1,40 +1,71 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-topbar',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule, NgxSpinnerModule],
   templateUrl: './topbar.component.html',
-  styleUrl: './topbar.component.css'
+  styleUrl: './topbar.component.css',
 })
-export class TopbarComponent {
+export class TopbarComponent implements OnInit {
   isDarkMode = false;
   currentYear = new Date().getFullYear();
-  constructor(private router: Router, private toastr: ToastrService) {}
-    logout() {
-    localStorage.removeItem('token');
-    this.router.navigate(['/login']);
-    this.toastr.success('Logged out successfully');
+  constructor(
+    private router: Router,
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService,
+    private themeSvc: ThemeService
+  ) {}
+
+  @Input() theme: 'light' | 'dark' = 'light';
+  @Output() themeChange = new EventEmitter<'light' | 'dark'>();
+
+  userEmail: string = '';
+  showUserMenu = false;
+
+  ngOnInit() {
+    this.userEmail = localStorage.getItem('email') || '';
+    // subscribe to global theme
+    this.themeSvc.theme.subscribe(t => {
+      this.theme = t;
+      this.isDarkMode = t === 'dark';
+    });
   }
-  @Input() theme: 'light'|'dark' = 'light';
-  @Output() themeChange = new EventEmitter<'light'|'dark'>();
 
-
+  toggleUserMenu() {
+    this.showUserMenu = !this.showUserMenu;
+  }
 
   toggleTheme() {
-    this.theme = this.theme==='dark'?'light':'dark';
+    // Use global theme service to toggle site-wide
+    this.themeSvc.toggle();
+    // Emit so parent components (if using Input/Output) remain in sync
+    const newTheme = this.theme === 'dark' ? 'light' : 'dark';
+    this.theme = newTheme;
     this.themeChange.emit(this.theme);
-    this.isDarkMode = !this.isDarkMode;
   }
 
+  logout() {
+    this.spinner.show();
 
+    // Remove localStorage data
+    localStorage.clear();
+    localStorage.removeItem('token');
+    localStorage.removeItem('uid');
+    localStorage.removeItem('email');
 
-
+    setTimeout(() => {
+      this.spinner.hide();
+      this.router.navigate(['/login']);
+      this.toastr.success('Logged out successfully');
+    }, 3000);
+  }
 }
-
 
 // 🧹 Delete all products (backend only)
 // app.delete("/api/products", async (req, res) => {

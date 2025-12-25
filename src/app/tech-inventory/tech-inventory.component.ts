@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-tech-inventory',
-  imports: [CommonModule,FormsModule,NgxPaginationModule,NgxSpinnerModule],
+  imports: [CommonModule, FormsModule, NgxPaginationModule, NgxSpinnerModule],
   templateUrl: './tech-inventory.component.html',
   styleUrl: './tech-inventory.component.css'
 })
@@ -26,7 +26,7 @@ allInventoryList: any[] = [];
 statusList: string[] = ['Available', 'UnAvailable', 'Repair', 'Retired', 'Lost'];
 searchTerm = '';
 selectedCategory = '';
-page: number = 0;
+page: number = 1;
 limit: number = 5;
 totalPages: number = 0;
 isLoading = true;
@@ -55,7 +55,25 @@ allTechInventory() {
     this.allInventoryList = res.data;  
     this.totalPages = res.totalPages;
     this.inventoryList = [...this.allInventoryList]; // clone for display
+    
   });
+}
+
+refreshList() {
+  this.page = 1;
+  this.allTechInventory();
+}
+goToPage(p: number) {
+  this.page = p;
+  this.allTechInventory();
+}
+
+prevPage() {
+  if (this.page > 1) this.goToPage(this.page - 1);
+}
+
+nextPage() {
+  if (this.page < this.totalPages) this.goToPage(this.page + 1);
 }
 
 onPrevPageClick() {
@@ -86,6 +104,9 @@ editItem(product: any) {
 }
 
 openProductModal(product: any = null) {
+  this.brands();
+  this.category();
+  this.allSuppliers();
     this.modalRef = this.modalService.open(TechInventoryFormComponent, {
       size: 'xl',
       backdrop: 'static',
@@ -106,7 +127,7 @@ openProductModal(product: any = null) {
   }
 
 deleteItem(id: string) {
-  debugger
+  
   Swal.fire({
     title: 'Are you sure?',
     text: `You are about to delete this item`,

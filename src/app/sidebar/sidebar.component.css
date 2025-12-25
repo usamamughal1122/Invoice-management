@@ -1,102 +1,148 @@
-/* ===== WHITE + GOLD + BLACK SIDEBAR WITH DARK BACKGROUND ===== */
+/* ===== REFINED SIDEBAR DESIGN ===== */
 
 .sidebar {
   position: fixed;
   left: 0;
   top: 0;
   height: 100vh;
-  width: 250px;
-  background: #111111; /* Dark sidebar background */
-  border-right: 1px solid #2a2a2a;
-  color: #ffffff;
+  width: 220px; /* Smaller width */
+  background: #1f4756; /* Subtle dark background */
+  border-right: 1px solid #2d2d2d;
+  color: #e0e0e0;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 1.25rem 0.75rem;
   overflow-y: auto;
   transition: all 0.3s ease;
 }
 
 /* Header */
 .sidebar-header {
-  text-align: center;
-  padding-bottom: 15px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+  padding: 0 0.5rem 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
 }
 
 .logo-text {
   color: #ffffff;
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
 .logo-text i {
-  color: #d4af37; /* GOLD ICON */
-  font-size: 22px;
+  color: #ffffff;
+  font-size: 20px;
 }
 
 /* Nav links */
 .nav-link {
   color: #ffffff;
-  padding: 10px 14px;
-  font-size: 15px;
+  padding: 9px 12px;
+  font-size: 14px;
   display: flex;
   align-items: center;
-  border-radius: 10px;
-  margin-bottom: 4px;
-  transition: 0.25s;
+  border-radius: 6px;
+  margin-bottom: 3px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-weight: 500;
 }
 
-/* Hover Effect */
-.nav-link:hover {
-  background: rgba(212, 175, 55, 0.15); /* soft gold tint */
+/* Hover Effect - More subtle */
+/* .nav-link:hover {
+  background: rgba(212, 175, 55, 0.08);
   color: #ffffff;
-  transform: translateX(4px);
-}
+  transform: translateX(2px);
+} */
 
-/* Active Link */
+/* Active Link - Clean and elegant */
 .nav-link.active {
-  background: #d4af37; /* solid gold */
-  color: #111111 !important; /* dark text on gold */
-  box-shadow: 0 3px 10px rgba(212, 175, 55, 0.3);
-  transform: translateX(4px);
+  /* background: linear-gradient(135deg, #d4af37 0%, #c9a131 100%); */
+  color: #1a1a1a !important;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.25);
+  font-weight: 600;
+  background-color: #ffffff;
 }
 
 /* Icons */
 .nav-link i {
-  font-size: 18px;
+  font-size: 17px;
   margin-right: 10px;
-  color: #d4af37; /* gold icons */
+  color: #ffffff;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover i {
+  color: #ffffff;
+}
+
+.nav-link.active i {
+  color: #1a1a1a;
 }
 
 /* Dropdown Section */
 .master-dropdown {
-  height: 0;
+  max-height: 0;
   overflow: hidden;
-  padding-left: 10px;
-  border-left: 2px solid rgba(212, 175, 55, 0.4);
-  margin-left: 10px;
-  transition: height 0.3s ease;
+  padding-left: 8px;
+  border-left: 2px solid rgba(212, 175, 55, 0.25);
+  margin-left: 12px;
+  transition: max-height 0.4s ease, padding 0.4s ease;
 }
 
 .master-dropdown.open {
-  height: auto;
-  max-height: 500px;
+  max-height: 400px;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 /* Sub links */
 .master-dropdown .nav-link {
-  padding: 8px 12px;
-  font-size: 14px;
+  padding: 2px 20px;
+  font-size: 13px;
   color: #ffffff;
+  font-weight: 500;
+  border-radius: 2px; /* Optional: same as parent nav-link */
 }
 
+/* .master-dropdown .nav-link:hover {
+  color: #ffffff;
+  background: rgba(212, 175, 55, 0.06);
+} */
+
+/* Active only for sublinks (Dashboard, Products etc.) */
 .master-dropdown .nav-link.active {
-  background: #d4af37;
-  color: #111111 !important;
+  /* background: linear-gradient(135deg, #d4af37 0%, #c9a131 100%); */
+  color: #1a1a1a !important;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.25);
 }
 
-/* Chevron animated */
-.bi-chevron-down, .bi-chevron-up {
+/* Chevron animation */
+.bi-chevron-down,
+.bi-chevron-up {
   transition: transform 0.3s ease;
+  font-size: 13px;
+  color: #d4af37;
 }
+
+/* Scrollbar styling */
+.sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.3);
+  border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.5);
+}
+
+

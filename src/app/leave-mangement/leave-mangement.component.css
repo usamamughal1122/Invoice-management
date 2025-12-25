@@ -127,8 +127,9 @@ h5.fw-bold {
 .custom-table thead th {
   position: sticky;
   top: 0;
-  background-color: #000;
+  /* background-color: #000; */
   z-index: 10;
+  color: #d4af37;
 }
 
 /* CARD HEADER */

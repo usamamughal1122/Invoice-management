@@ -35,8 +35,8 @@ export class ThemeService {
     // Remove previous Bootstrap theme
     this.renderer.setAttribute(document.documentElement, 'data-bs-theme', theme);
 
-    // Optional: Also add a .dark class for custom CSS
-    document.body.classList.toggle('dark', theme === 'dark');
+  // Optional: Also add a .dark-theme class for custom CSS (matches styles.css)
+  document.body.classList.toggle('dark-theme', theme === 'dark');
 
     // Save preference
     if (save) localStorage.setItem('theme', theme);
