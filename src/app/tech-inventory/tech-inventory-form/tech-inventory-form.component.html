@@ -1,129 +1,144 @@
-<form [formGroup]="inventoryForm" (ngSubmit)="onSubmit()" class="scrollable-form">
+<div class="form-container">
 
-<div class="scrollable-form" style="max-height: 500px; overflow-y: auto; padding-right: 10px;"></div>
-  <div class="row g-3">
-
-    <!-- Item Name -->
-    <div class="col-md-4">
-      <label class="form-label">Item Name <span class="text-danger">*</span></label>
-      <input formControlName="name" class="form-control form-control-sm"/>
-      <small class="text-danger" *ngIf="inventoryForm.get('name')?.touched && inventoryForm.get('name')?.invalid">
-        Item Name is required
-      </small>
-    </div>
-
-    <!-- Brand -->
-    <div class="col-md-4">
-      <label class="form-label">Brand <span class="text-danger">*</span></label>
-      <select formControlName="brand" class="form-select form-select-sm">
-        <option value="">Select Brand</option>
-        <option *ngFor="let b of brand" [value]="b._id">{{b.brand}}</option>
-      </select>
-      <small class="text-danger" *ngIf="inventoryForm.get('brand')?.touched && inventoryForm.get('brand')?.invalid">
-        Brand is required
-      </small>
-    </div>
-
-    <!-- Category -->
-    <div class="col-md-4">
-      <label class="form-label">Category <span class="text-danger">*</span></label>
-      <select formControlName="category" class="form-select form-select-sm">
-        <option value="">Select Category</option>
-        <option *ngFor="let c of categories" [value]="c._id">{{c.category}}</option>
-      </select>
-      <small class="text-danger" *ngIf="inventoryForm.get('category')?.touched && inventoryForm.get('category')?.invalid">
-        Category is required
-      </small>
-    </div>
-
-    <!-- Serial Number (Auto-generated, but editable) -->
-    <div class="col-md-4">
-      <label class="form-label">Serial Number</label>
-      <input formControlName="serialNumber" class="form-control form-control-sm" placeholder="Auto-generated"/>
-      <small class="text-muted">Auto-generated based on Brand & Category</small>
-    </div>
-    <!-- SKU -->
-    <div class="col-md-4">
-      <label class="form-label">SKU(Stock Keeping Unit) <span class="text-danger">*</span></label>
-      <input 
-        formControlName="sku" 
-        class="form-control form-control-sm" 
-        placeholder="Auto-generated SKU"
-        readonly
-      />
-      <small class="text-muted">SKU is auto-generated based on Brand & Category</small>
-    </div>
-
-   <!-- Total Quantity -->
-<div class="col-md-2">
-  <label class="form-label">Total Qty <span class="text-danger">*</span></label>
-  <input type="number" formControlName="quantity_total" class="form-control form-control-sm" min="0" />
-</div>
-
-<!-- Available Quantity -->
-<div class="col-md-2">
-  <label class="form-label">Available Qty <span class="text-danger">*</span></label>
-  <input type="number" formControlName="quantity_available" class="form-control form-control-sm" min="0" />
-</div>
-
-
-    <!-- Price -->
-
-    <div class="col-md-2">
-      <label class="form-label">Price <span class="text-danger">*</span></label>
-      <input type="number" formControlName="price" class="form-control form-control-sm" />
-    </div>
-
-    <!-- Suppliers To -->
-    <div class="col-md-4">
-      <label class="form-label">Supplier <span class="text-danger">*</span></label>
-      <select formControlName="supplier" class="form-select form-select-sm">
-        <option value="">Select Suppliers</option>
-        <option *ngFor="let c of suppliers" [value]="c._id">{{c.name}}</option>
-      </select>
-      <small class="text-danger" *ngIf="inventoryForm.get('supplier')?.touched && inventoryForm.get('supplier')?.invalid">
-        Suppliers is required
-      </small>
-    </div>
-
-    <!-- Department -->
-    <div class="col-md-3">
-      <label class="form-label">Department</label>
-      <select formControlName="department" class="form-select form-select-sm">
-        <option value="">Select Department</option>
-        <option *ngFor="let d of departments" [value]="d">{{d}}</option>
-      </select>
-    </div>
-
-    <!-- Purchase Date -->
-    <div class="col-md-4">
-      <label class="form-label">Purchase Date <span class="text-danger">*</span></label>
-      <input type="date" formControlName="purchaseDate" class="form-control form-control-sm"/>
-      <small class="text-danger" *ngIf="inventoryForm.get('purchaseDate')?.touched && inventoryForm.get('purchaseDate')?.invalid">
-        Purchase Date is required
-      </small>
-    </div>
-
-    <!-- Warranty Expiry -->
-    <div class="col-md-4">
-      <label class="form-label">Warranty Ends</label>
-      <input type="date" formControlName="warrantyExpiry" class="form-control form-control-sm"/>
-    </div>
-
-    <!-- Status -->
-    <div class="col-md-4">
-      <label class="form-label">Status <span class="text-danger">*</span></label>
-      <select formControlName="status" class="form-select form-select-sm">
-        <option value="">Select Status</option>
-        <option *ngFor="let s of statuses" [value]="s">{{s}}</option>
-      </select>
-    </div>
-
+  <!-- Form Header -->
+  <div class="form-header">
+    <h4 class="form-title">Add Inventory Item</h4>
+    <p class="form-subtitle">
+      Enter item details to manage inventory efficiently
+    </p>
   </div>
 
-  <div class="mt-4 text-end">
-    <button type="submit" class="btn btn-dark btn-sm px-4" [disabled]="inventoryForm.invalid">Save</button>
-    <button type="button" (click)="onBack()" class="btn btn-secondary btn-sm px-4 ms-2">Cancel</button>
-  </div>
+  <!-- Form -->
+  <form
+    [formGroup]="inventoryForm"
+    (ngSubmit)="onSubmit()"
+    class="scrollable-form"
+  >
+    <div class="row g-3">
 
-</form>
+      <!-- Item Name -->
+      <div class="col-md-4">
+        <label class="form-label">Item Name <span class="text-danger">*</span></label>
+        <input formControlName="name" class="form-control form-control-sm" />
+        <small class="text-danger"
+          *ngIf="inventoryForm.get('name')?.touched && inventoryForm.get('name')?.invalid">
+          Item Name is required
+        </small>
+      </div>
+
+      <!-- Brand -->
+      <div class="col-md-4">
+        <label class="form-label">Brand <span class="text-danger">*</span></label>
+        <select formControlName="brand" class="form-select form-select-sm">
+          <option value="">Select Brand</option>
+          <option *ngFor="let b of brand" [value]="b._id">{{ b.brand }}</option>
+        </select>
+      </div>
+
+      <!-- Category -->
+      <div class="col-md-4">
+        <label class="form-label">Category <span class="text-danger">*</span></label>
+        <select formControlName="category" class="form-select form-select-sm">
+          <option value="">Select Category</option>
+          <option *ngFor="let c of categories" [value]="c._id">{{ c.category }}</option>
+        </select>
+      </div>
+
+      <!-- Serial -->
+      <div class="col-md-4">
+        <label class="form-label">Serial Number</label>
+        <input
+          formControlName="serialNumber"
+          class="form-control form-control-sm"
+          placeholder="Auto-generated"
+        />
+        <small class="text-muted">Auto-generated</small>
+      </div>
+
+      <!-- SKU -->
+      <div class="col-md-4">
+        <label class="form-label">SKU <span class="text-danger">*</span></label>
+        <input
+          formControlName="sku"
+          class="form-control form-control-sm"
+          readonly
+        />
+      </div>
+
+      <!-- Quantity -->
+      <div class="col-md-2">
+        <label class="form-label">Total Qty *</label>
+        <input type="number" formControlName="quantity_total" class="form-control form-control-sm" />
+      </div>
+
+      <div class="col-md-2">
+        <label class="form-label">Available Qty *</label>
+        <input type="number" formControlName="quantity_available" class="form-control form-control-sm" />
+      </div>
+
+      <!-- Price -->
+      <div class="col-md-2">
+        <label class="form-label">Price *</label>
+        <input type="number" formControlName="price" class="form-control form-control-sm" />
+      </div>
+
+      <!-- Supplier -->
+      <div class="col-md-4">
+        <label class="form-label">Supplier *</label>
+        <select formControlName="supplier" class="form-select form-select-sm">
+          <option value="">Select Supplier</option>
+          <option *ngFor="let s of suppliers" [value]="s._id">{{ s.name }}</option>
+        </select>
+      </div>
+
+      <!-- Department -->
+      <div class="col-md-3">
+        <label class="form-label">Department</label>
+        <select formControlName="department" class="form-select form-select-sm">
+          <option value="">Select Department</option>
+          <option *ngFor="let d of departments" [value]="d">{{ d }}</option>
+        </select>
+      </div>
+
+      <!-- Dates -->
+      <div class="col-md-4">
+        <label class="form-label">Purchase Date *</label>
+        <input type="date" formControlName="purchaseDate" class="form-control form-control-sm" />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Warranty Ends</label>
+        <input type="date" formControlName="warrantyExpiry" class="form-control form-control-sm" />
+      </div>
+
+      <!-- Status -->
+      <div class="col-md-4">
+        <label class="form-label">Status *</label>
+        <select formControlName="status" class="form-select form-select-sm">
+          <option value="">Select Status</option>
+          <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <button
+        type="submit"
+        class="btn btn-dark btn-sm px-4"
+        [disabled]="inventoryForm.invalid"
+      >
+        Save
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary btn-sm px-4 ms-2"
+        (click)="onBack()"
+      >
+        Cancel
+      </button>
+    </div>
+
+  </form>
+</div>

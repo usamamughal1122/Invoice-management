@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -35,8 +35,8 @@ export class LoginComponent {
   private firebaseLoginUrl = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAAbwOCJ67SvhV1Rbq3wLdH35LVEbP51nk';
 
   constructor(
-    private http: HttpClient, 
-    private router: Router, 
+    private auth: AuthService,
+    private router: Router,
     private toastr: ToastrService
   ) {}
 
@@ -58,7 +58,7 @@ export class LoginComponent {
     this.agreeToTerms = false;
   }
 
-  //  Signup 
+  //  Signup
   onSignUp() {
     if (!this.agreeToTerms) {
       this.toastr.warning('Please agree to Terms & Conditions');
@@ -72,19 +72,19 @@ export class LoginComponent {
       displayName: `${this.firstName} ${this.lastName}`.trim()
     };
 
-    this.http.post(this.firebaseSignUpUrl, signUpData).subscribe({
+    this.auth.signUp(this.email, this.password, `${this.firstName} ${this.lastName}`.trim()).subscribe({
       next: (res: any) => {
         this.toastr.success('Signup Successful! Please login.');
         this.isLoginMode = true;
         this.resetFields();
       },
-      error: (err) => {
-        this.toastr.error(err.error.error.message || 'Signup failed');
+      error: (err: any) => {
+        this.toastr.error(err.error?.error?.message || 'Signup failed');
       }
     });
   }
 
-  //  Login 
+  //  Login
   onLogin() {
     if (!this.email || !this.password) {
       this.toastr.warning('Please enter email and password');
@@ -93,14 +93,11 @@ export class LoginComponent {
 
     const loginData = { email: this.email, password: this.password, returnSecureToken: true };
 
-   this.http.post(this.firebaseLoginUrl, loginData).subscribe({
+   this.auth.login(this.email, this.password).subscribe({
   next: (res: any) => {
     if (res.idToken) {
-      localStorage.setItem('token', res.idToken);
-      localStorage.setItem('uid', res.localId); 
-      localStorage.setItem('email', this.email);
+      // role assignment remains in component
       const superAdmin = this.superAdmin;
-      // Role assignment
       if (this.email === superAdmin[0].email || this.email === superAdmin[1].email) {
         localStorage.setItem('role', 'superadmin');
       } else {
@@ -111,8 +108,8 @@ export class LoginComponent {
       this.router.navigate(['/dashboard']);
     }
   },
-  error: (err) => {
-    this.toastr.error(err.error.error.message || 'Login failed');
+  error: (err: any) => {
+    this.toastr.error(err.error?.error?.message || 'Login failed');
   }
  });
 
@@ -123,9 +120,9 @@ export class LoginComponent {
   }
  onGoogleLogin() {
    throw new Error('Method not implemented.');
- } 
+ }
 
-  //  Logout 
+  //  Logout
   logout() {
     localStorage.clear();
     localStorage.removeItem('token');

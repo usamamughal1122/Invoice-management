@@ -34,8 +34,8 @@
 
 /* Form focus states */
 .form-control:focus, .form-select:focus {
-  box-shadow: 0 0 0 0.15rem rgba(212, 175, 55, 0.25);
-  /* border-color: #d4af37; */
+  box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+  /* border-color: #0d6efd; */
 }
 
 /* Input group styling */
@@ -45,19 +45,19 @@
 
 .form-control:focus + .input-group-text,
 .form-select:focus + .input-group-text {
-  /* border-color: #d4af37; */
-  background: #fffbf5;
+  /* border-color: #0d6efd; */
+  background: #eaf8ff;
 }
 
 /* Table hover effects */
 .table-hover tbody tr:hover {
-  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.1);
+  box-shadow: 0 2px 8px rgba(13,110,253,0.06);
 }
 
 /* List group item hover */
 .list-group-item-action:hover {
-  background: linear-gradient(135deg, #fffbf5 0%, #fff8e8 100%);
-  /* border-color: #d4af37 !important; */
+  background: linear-gradient(135deg, #eaf8ff 0%, #e3f6fd 100%);
+  /* border-color: #0d6efd !important; */
   transform: translateX(5px);
 }
 
@@ -126,11 +126,11 @@ input[type="number"]::-webkit-outer-spin-button {
   .modal-body {
     max-height: 60vh !important;
   }
-  
+
   .table-responsive {
     font-size: 12px;
   }
-  
+
   .btn {
     font-size: 12px !important;
     padding: 0.4rem 0.8rem !important;

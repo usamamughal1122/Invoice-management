@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class EmployeeService {
-  private API_BASE = 'http://localhost:3000'; 
+  private API_BASE = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
 
@@ -233,47 +233,37 @@ export class EmployeeService {
   }
 
 
-// Get all transactions (only SUCCESS status)
-getTransactions(): Observable<any> {
-  const params = this.getUserIdParam();
+getTransactions(page: number = 1, limit: number = 10): Observable<any> {
+  let params = this.getUserIdParam() || new HttpParams();
+  params = params.set('page', page.toString()).set('limit', limit.toString());
+
   return this.http
-    .get<any>(`${this.API_BASE}/api/transactions`, params ? { params } : {})
+    .get<any>(`${this.API_BASE}/api/transactions`, { params })
     .pipe(catchError(this.handleError('getTransactions')));
 }
 
-// Get single transaction
-getTransactionById(id: string): Observable<any> {
-  const params = this.getUserIdParam();
+// Partial refund (item-wise)
+partialRefund(payload: any): Observable<any> {
   return this.http
-    .get<any>(`${this.API_BASE}/api/transactions/${id}`, params ? { params } : {})
-    .pipe(catchError(this.handleError('getTransactionById')));
+    .post<any>(`${this.API_BASE}/api/transactions/partial-refund`, payload)
+    .pipe(catchError(this.handleError('partialRefund')));
 }
 
-// Refund transaction
-refundTransaction(transactionId: string): Observable<any> {
-  return this.http
-    .post<any>(`${this.API_BASE}/api/refund/${transactionId}`, {})
-    .pipe(catchError(this.handleError('refundTransaction')));
-}
-
-// Create payment intent (already exists, keep as is)
+// Create payment intent for Stripe
 createPaymentIntent(invoiceId: string): Observable<any> {
   return this.http
-    .post<any>(`${this.API_BASE}/api/create-payment-intent`, {
-      invoiceId
-    })
+    .post<any>(`${this.API_BASE}/api/create-payment-intent`, { invoiceId })
     .pipe(catchError(this.handleError('createPaymentIntent')));
 }
 
-// Confirm payment (already exists, keep as is)
+// Confirm payment with backend
 confirmPayment(paymentIntentId: string, invoiceId: string): Observable<any> {
   return this.http
-    .post<any>(`${this.API_BASE}/api/confirm-payment`, { 
-      paymentIntentId, 
-      invoiceId 
+    .post<any>(`${this.API_BASE}/api/confirm-payment`, {
+      paymentIntentId,
+      invoiceId
     })
     .pipe(catchError(this.handleError('confirmPayment')));
 }
-
 
 }

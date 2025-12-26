@@ -3,6 +3,7 @@
 /* PAGE BACKGROUND */
 .container-fluid {
   background-color: #ffffff !important;
+  padding: 40px;
 }
 
 /* HEADER SECTION */
@@ -11,27 +12,30 @@ h5.fw-bold {
 }
 
 .btn-primary {
-  background-color: #d4af37 !important; /* Gold */
-  border-color: #d4af37 !important;
+  background-color: #e3f6fd !important; /* Gold */
+  /* border-color: #d4af37 !important; */
+  border: none;
   color: #000 !important;
   font-weight: 600;
 }
 
-.btn-primary:hover {
-  background-color: #b9902d !important; /* Dark Gold */
-}
 
 /* CARDS */
 .card {
   border-radius: 12px;
-  border: 1px solid #f0e6c8 !important; /* Light gold border */
+
 }
 
 .card .text-success,
 .card .text-warning,
 .card .text-danger,
 .card .text-primary {
-  color: #d4af37 !important; /* Gold Icons */
+  color: #000000 !important; /* Gold Icons */
+}
+.table thead tr th {
+  background: linear-gradient(135deg, #e3f6fd, #e3f6fd) !important;
+  color: #000000 !important;
+
 }
 
 .card h5 {
@@ -90,8 +94,8 @@ h5.fw-bold {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #d4af37;
-  color: #d4af37;
+  /* border: 1px solid #d4af37; */
+  color: #000000;
   background-color: transparent;
   transition: all 0.2s ease;
 }
@@ -114,13 +118,13 @@ h5.fw-bold {
 }
 
 .bg-success {
-  background-color: #d4af37 !important;
+  background-color: #ebd48c !important;
   color: #000 !important;
 }
 
 .bg-danger {
-  background-color: #8b0000 !important;
-  color: #fff !important;
+  background-color: #e98484 !important;
+  color: #000000 !important;
 }
 
 /* TABLE HEADER STICKY */
@@ -134,15 +138,16 @@ h5.fw-bold {
 
 /* CARD HEADER */
 .card-header {
-  background-color: #000 !important;
-  color: #d4af37 !important;
+  margin-bottom: 10px !important;
+  background-color: #1f4756 !important;
+  color: #000000 !important;
   border-top-left-radius: 8px !important;
   border-top-right-radius: 8px !important;
 }
 
 /* REFRESH / NEW REQUEST BUTTONS */
 .card-header .btn {
-  background: #d4af37 !important;
+  background: #e3f6fd !important;
   color: #000 !important;
   border: none !important;
   font-weight: 600;

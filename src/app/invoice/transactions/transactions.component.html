@@ -1,5 +1,5 @@
 <div class="container-fluid py-4"
-  style="background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%); min-height: 100vh;">
+  style="background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%); min-height: 100vh; padding: 20px;">
 
   <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-4">
@@ -45,12 +45,10 @@
         <tbody>
           <tr *ngFor="let tx of transactions"
             style="background: #fff; border-bottom: 1px solid #e8e8e8; transition: all 0.3s;"
-            onmouseover="this.style.background='#fafafa'"
-            onmouseout="this.style.background='#fff'">
+            onmouseover="this.style.background='#fafafa'" onmouseout="this.style.background='#fff'">
 
             <td class="py-3 px-3 align-middle">
-              <span class="badge px-2 py-1"
-                style="background: #e8e8e8cc; color: #000000cc; font-weight: 600;">
+              <span class="badge px-2 py-1" style="background: #e8e8e8cc; color: #000000cc; font-weight: 600;">
                 #{{ tx.invoiceNumber }}
               </span>
             </td>
@@ -68,26 +66,35 @@
             </td>
 
             <td class="py-3 px-3 align-middle">
-              <span class="fw-bold" style="font-size: 15px; color: #28a745;">
-                {{ (tx.amount / 100) | currency }}
-              </span>
+              <div class="d-flex flex-column">
+                <span class="fw-bold" style="font-size: 15px; color: #28a745;">
+                  {{ (tx.amount / 100) | currency }}
+                </span>
+                <small *ngIf="tx.refundedAmount && tx.refundedAmount > 0" style="color: #dc3545; font-size: 12px;">
+                  <i class="bi bi-dash-circle me-1"></i>
+                  {{ (tx.refundedAmount / 100) | currency }} refunded
+                </small>
+              </div>
             </td>
 
-            <td class="py-3 px-3 align-middle">
-              <span class="badge px-2 py-1"
-                [ngClass]="{
-                  'bg-success': tx.status === 'SUCCESS',
-                  'bg-secondary': tx.status === 'REFUNDED',
-                  'bg-warning': tx.status === 'PENDING'
-                }">
-                <i class="bi me-1"
-                  [ngClass]="{
-                    'bi-check-circle-fill': tx.status === 'SUCCESS',
-                    'bi-arrow-counterclockwise': tx.status === 'REFUNDED',
-                    'bi-clock-fill': tx.status === 'PENDING'
-                  }"></i>
-                {{ tx.status }}
-              </span>
+            <td class="py-3 px-3 align-middle actions-cell">
+              <span class="badge px-2 py-1 status-badge"
+                          [ngClass]="{
+                            'bg-success': tx.status === 'SUCCESS',
+                            'bg-secondary': tx.status === 'REFUNDED',
+                            'bg-warning text-dark': tx.status === 'PARTIALLY_REFUNDED',
+                            'bg-info': tx.status === 'PENDING',
+                            'bg-danger': tx.status === 'FAILED'
+                          }">
+                      <i class="bi me-1" [ngClass]="{
+                        'bi-check-circle-fill': tx.status === 'SUCCESS',
+                        'bi-arrow-counterclockwise': tx.status === 'REFUNDED',
+                        'bi-dash-circle-fill': tx.status === 'PARTIALLY_REFUNDED',
+                        'bi-clock-fill': tx.status === 'PENDING',
+                        'bi-x-circle-fill': tx.status === 'FAILED'
+                      }"></i>
+                      {{ tx.status === 'PARTIALLY_REFUNDED' ? 'PARTIAL REFUND' : tx.status }}
+                </span>
             </td>
 
             <td class="py-3 px-3 align-middle">
@@ -97,31 +104,81 @@
               </span>
             </td>
 
-            <td class="py-3 px-3 align-middle text-center">
-              <button
-                *ngIf="tx.status === 'SUCCESS'"
-                class="btn btn-sm px-3 py-2"
-                (click)="refund(tx)"
-                style="border-radius: 5px; background: #dc3545; color: #ffffff; border: none; font-weight: 600;">
-                <i class="bi bi-arrow-counterclockwise me-1"></i>Refund
-              </button>
+            <td class="py-3 px-3 align-middle">
+              <div class="action-wrapper">
 
-              <span *ngIf="tx.status === 'REFUNDED'"
-                class="badge bg-secondary px-3 py-2"
-                style="font-size: 13px;">
-                <i class="bi bi-check-circle me-1"></i>Refunded on {{ tx.refundedAt | date:'short' }}
-              </span>
+                <button *ngIf="tx.status === 'SUCCESS'" class="btn btn-sm action-btn" (click)="refund(tx)" style="background-color: #e8e8e8;">
+                  <i class="bi bi-arrow-counterclockwise me-1"></i>Refund
+                </button>
+
+                <ng-container *ngIf="tx.status === 'PARTIALLY_REFUNDED'">
+                  <span class="badge bg-warning text-dark action-badge"style="background-color: #e8e8e8;" >
+                    <i class="bi bi-info-circle me-1"></i>
+                    {{ ((tx.refundedAmount || 0) / 100) | currency }} Refunded
+                  </span>
+
+                  <button class="btn btn-sm action-btn" (click)="refund(tx)" >
+                    <i class="bi bi-plus-circle me-1"></i>Refund More
+                  </button>
+                </ng-container>
+
+                <span *ngIf="tx.status === 'REFUNDED'" class="badge bg-secondary action-badge">
+                  <i class="bi bi-check-circle me-1"></i>
+                  Fully Refunded
+                </span>
+
+                <span *ngIf="tx.status === 'PENDING' || tx.status === 'FAILED'" class="badge action-badge"
+                  [ngClass]="{'bg-info': tx.status === 'PENDING', 'bg-danger': tx.status === 'FAILED'}">
+                  {{ tx.status }}
+                </span>
+
+              </div>
             </td>
+
+
           </tr>
         </tbody>
       </table>
     </div>
+
+    <!-- Pagination (if needed) -->
+    <div class="d-flex justify-content-between align-items-center px-3 py-3 border-top" *ngIf="totalPages >= 1">
+      <div class="text-muted small">
+        Showing page <strong>{{ page }}</strong> of <strong>{{ totalPages }}</strong>
+      </div>
+
+      <nav>
+        <ul class="pagination mb-0">
+
+          <!-- Previous Button -->
+          <li class="page-item" [class.disabled]="page === 1">
+            <a class="px-3 pagenation" (click)="prevPage()">
+             << </a>
+          </li>
+
+          <!-- Page Numbers -->
+          <ng-container *ngFor="let p of [].constructor(totalPages); let i = index">
+            <li class="page-item pagenatio-gap" [class]="page === i + 1">
+              <a class="page-link rounded-pill pagenation-number" (click)="page = i + 1; goToPage(i + 1)">
+                {{ i + 1 }}
+              </a>
+            </li>
+          </ng-container>
+
+          <!-- Next Button -->
+          <li class="page-item" [class.disabled]="page === totalPages">
+            <a class="px-3 pagenation" (click)="nextPage()">>></a>
+          </li>
+
+        </ul>
+      </nav>
+    </div>
+
   </div>
 
   <!-- Empty State -->
   <div *ngIf="transactions.length === 0" class="text-center py-5">
-    <div class="card shadow-sm mx-auto"
-      style="max-width: 500px; border-radius: 12px; border: 1px solid #e8e8e8;">
+    <div class="card shadow-sm mx-auto" style="max-width: 500px; border-radius: 12px; border: 1px solid #e8e8e8;">
       <div class="card-body p-5">
         <i class="bi bi-receipt-cutoff display-1 mb-3 d-block" style="color: #d4af37;"></i>
         <h4 class="fw-bold mb-2" style="color: #1a1a1a;">No Transactions Yet</h4>
@@ -132,10 +189,6 @@
 
 </div>
 
-<ngx-spinner bdColor="rgba(256, 256, 256, 0.8)"
-  size="large"
-  color="#d4af37"
-  type="ball-scale-multiple"
-  [fullScreen]="true"
-  template="<img src='assets/stockify.png' />">
+<ngx-spinner bdColor="rgba(256, 256, 256, 0.8)" size="large" color="#d4af37" type="ball-scale-multiple"
+  [fullScreen]="true" template="<img src='assets/stockify.png' />">
 </ngx-spinner>

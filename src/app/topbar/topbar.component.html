@@ -1,13 +1,12 @@
-<header
-  [ngStyle]="{'height':'60px','display':'flex','align-items':'center','justify-content':'space-between','padding':'0 20px' ,'color' : isDarkMode ? '#fff' : '#000', 'background-color': isDarkMode ? '#333' : '#f8f9fa', 'box-shadow': '0 2px 4px rgba(0,0,0,0.1)'}">
-  <span style="font-weight:bold;font-size:18px;"></span>
+<header class="topbar-header" [class.dark]="isDarkMode">
+  <span class="brand">Admin Panel</span>
 
   <div style="display:flex;align-items:center;gap:15px;">
     <!-- Theme Toggle -->
-    <button (click)="toggleTheme()" class="toggle-button">
-      <div class="icon-wrapper" [ngClass]="{'dark': isDarkMode}">
+    <!-- <button (click)="toggleTheme()" class="toggle-button">
+      <div class="icon-wrapper" [ngClass]="{'dark': isDarkMode}"> -->
         <!-- Sun Icon -->
-        <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <!-- <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="5" fill="orange" />
           <g stroke="orange" stroke-width="2">
             <line x1="12" y1="1" x2="12" y2="4" />
@@ -19,19 +18,55 @@
             <line x1="4.2" y1="19.8" x2="6.5" y2="17.5" />
             <line x1="17.5" y1="6.5" x2="19.8" y2="4.2" />
           </g>
-        </svg>
+        </svg> -->
 
         <!-- Moon Icon -->
-        <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <!-- <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <path fill="yellow" d="M21 12.79A9 9 0 0111.21 3a7 7 0 000 14 9 9 0 019.79-4.21z" />
         </svg>
       </div>
-    </button>
+    </button> -->
 
 
-    <span style="font-size:14px;">Admin Panel</span>
+
+
+    <!-- Notifications -->
+    <div class="notif-wrapper position-relative me-2">
+      <button class="btn btn-link text-decoration-none position-relative" (click)="toggleNotifications($event)" aria-label="Notifications">
+        <i class="bi bi-bell fs-4"></i>
+        <span *ngIf="unreadCount>0" class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">{{ unreadCount }}</span>
+      </button>
+
+      <div *ngIf="showNotifications" class="notifications-dropdown p-2" (click)="$event.stopPropagation()">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <strong>Notifications</strong>
+          <button class="btn btn-sm btn-link" (click)="markAllNotificationsRead()">Mark all as read</button>
+        </div>
+
+        <div class="notif-list">
+          <div *ngFor="let n of notifications" class="notif-item d-flex align-items-start p-2" [class.unread]="!n.read" (click)="markAsRead(n, $event)">
+            <div class="me-2">
+              <i class="bi" [ngClass]="{
+                'bi-check-circle-fill text-success': n.type === 'success',
+                'bi-exclamation-triangle-fill text-warning': n.type === 'warning',
+                'bi-info-circle-fill text-info': n.type === 'info',
+                'bi-x-circle-fill text-danger': n.type === 'danger'
+              }"></i>
+            </div>
+            <div class="flex-grow-1 small">
+              <div class="fw-semibold">{{ n.title }}</div>
+              <div class="text-muted small">{{ n.message }}</div>
+              <div class="text-muted mt-1 very-small">{{ n.createdAt | date:'short' }}</div>
+            </div>
+          </div>
+
+          <div *ngIf="notifications.length === 0" class="text-center p-3 muted-small">No notifications</div>
+        </div>
+      </div>
+    </div>
+
     <!-- User Dropdown -->
-  <div class="user-dropdown" (click)="toggleUserMenu()" style="position:relative;cursor:pointer;">
+  <div class="user-dropdown" (click)="toggleUserMenu()">
 
     <!-- User Email -->
     <div style="display:flex;align-items:center;gap:5px;">
@@ -41,11 +76,9 @@
     </div>
 
     <!-- Dropdown Menu -->
-    <div *ngIf="showUserMenu"
-      style="position:absolute;top:35px;right:0;background:#fff;border-radius:8px;box-shadow:0 4px 10px rgba(0,0,0,0.15);min-width:150px;z-index:999;">
+    <div *ngIf="showUserMenu" class="user-menu">
 
-      <button (click)="logout()"
-        style="width:100%;padding:10px;border:none;background:none;cursor:pointer;text-align:left;">
+      <button (click)="logout()" class="user-menu-btn">
         🚪 Logout
       </button>
 

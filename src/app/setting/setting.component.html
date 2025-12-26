@@ -1,13 +1,13 @@
-<div [ngStyle]="{'background-color': theme==='dark'?'#121212':'#fdf8f0', 'color': theme==='dark'?'#eee':'#222', 'min-height':'100vh', 'padding':'20px'}">
+<div class="setting-wrapper" [class.dark]="theme==='dark'">
 
   <!-- HEADER -->
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+  <div class="header-section">
     <div>
-      <h3 style="margin:0; color: #d4af37;">Settings</h3>
-      <p style="margin:0; font-size:14px; color:gray">Manage system configurations</p>
+      <h3 class="page-title">Settings</h3>
+      <p class="page-subtitle">Manage system configurations</p>
     </div>
 
-    <div style="display:flex; gap:8px; align-items:center;">
+    <div class="header-actions">
       <button (click)="toggleTheme()" class="theme-toggle">
         {{ theme | titlecase }} Mode
       </button>
@@ -15,7 +15,7 @@
       <button (click)="saveAll()" class="gold-btn" title="Save all settings">Save All</button>
       <button (click)="exportSettings()" class="gold-btn" title="Export settings">Export</button>
 
-      <label class="gold-btn" style="cursor:pointer; display:inline-block; padding:6px 10px; background:#fff; border:1px solid #d4af37;">
+      <label class="gold-btn import-label">
         Import
         <input type="file" accept="application/json" (change)="onImportFile($event)" style="display:none">
       </label>
@@ -31,21 +31,13 @@
   <div style="display:flex; gap:20px; flex-wrap:wrap;">
 
     <!-- SIDEBAR -->
-    <div style="flex:1; min-width:200px;">
-      <div style="display:flex; flex-direction:column; border-radius:12px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.1)">
+    <div class="sidebar" style="flex:1; min-width:200px;">
+      <div class="sidebar-card">
         <button *ngFor="let sec of sections"
                 (click)="setSection(sec.key)"
-                [ngStyle]="{
-                  'background-color': section===sec.key?'#d4af37':(theme==='dark'?'#1a1a1a':'#fff'),
-                  'color': section===sec.key?'#111':(theme==='dark'?'#eee':'#222'),
-                  'border':'none',
-                  'padding':'12px',
-                  'text-align':'left',
-                  'cursor':'pointer',
-                  'width':'100%',
-                  'font-weight': section===sec.key?'600':'400'
-                }">
-          <i [class]="'bi '+sec.icon" style="margin-right:10px; color:#d4af37"></i> {{ sec.label }}
+                class="section-btn"
+                [class.active]="section===sec.key">
+          <i [class]="'bi '+sec.icon" class="sec-icon"></i> {{ sec.label }}
         </button>
       </div>
     </div>
@@ -53,15 +45,8 @@
     <!-- CONTENT AREA -->
     <div style="flex:3; min-width:300px;">
       <div *ngFor="let s of sections">
-        <div *ngIf="section===s.key"
-             [ngStyle]="{
-               'background-color': theme==='dark'?'#1e1e1e':'#fff8f0',
-               'padding':'20px',
-               'border-radius':'12px',
-               'margin-bottom':'20px',
-               'box-shadow':'0 3px 10px rgba(212, 175, 55, 0.15)'
-             }">
-          <h5 style="color:#d4af37; margin-bottom:15px;">{{ s.label }}</h5>
+        <div *ngIf="section===s.key" class="content-card" [class.dark]="theme==='dark'">
+          <h5 class="section-title">{{ s.label }}</h5>
 
           <ng-container [ngSwitch]="s.key">
 
@@ -136,14 +121,8 @@
       </div>
 
       <!-- ADVANCED JSON EDITOR -->
-      <div *ngIf="showAdvanced" [ngStyle]="{
-               'background-color': theme==='dark'?'#151515':'#fffef8',
-               'padding':'20px',
-               'border-radius':'12px',
-               'margin-bottom':'20px',
-               'box-shadow':'0 3px 10px rgba(0,0,0,0.06)'
-             }">
-        <h5 style="color:#d4af37; margin-bottom:10px;">Advanced (JSON)</h5>
+      <div *ngIf="showAdvanced" class="modern-card advanced-json" [class.dark]="theme==='dark'">
+        <h5 class="section-title">Advanced (JSON)</h5>
         <p style="font-size:13px; color:gray; margin-top:0;">Edit the full settings JSON. Use Import/Export to move settings between environments. Changes here must be saved with <strong>Save All</strong>.</p>
         <textarea [(ngModel)]="advancedJson" rows="12" [ngStyle]="inputStyle()"></textarea>
         <div style="display:flex; gap:8px; margin-top:10px;">

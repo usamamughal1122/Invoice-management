@@ -9,7 +9,9 @@
   border: 1px solid #f0e6c8; /* Light Gold Border */
   transition: 0.2s ease;
 }
-
+.container-fluid{
+  padding: 40px;
+}
 .stat-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
@@ -78,14 +80,68 @@
 .table thead tr,
 .table thead th {
   /* background: #000 !important; Matte Black */
-  color: #d4af37 !important;   /* Gold Text */
+  color: #000000 !important;   /* Gold Text */
   font-weight: 700;
   text-transform: uppercase;
   font-size: 13px;
   letter-spacing: 0.4px;
-  border-bottom: 2px solid #d4af37 !important; /* Gold Line */
-  border-radius: 21px;
 }
+
+.table thead tr th {
+  background: linear-gradient(135deg, #e3f6fd, #e3f6fd) !important;
+  color: #000000 !important;
+
+}
+
+/* THEME-SPECIFIC TABLE HEADER (match leave-mangement) */
+.theme-table thead {
+  background-color: #000 !important;
+  color: #d4af37 !important; /* Gold Text */
+}
+
+.theme-table thead th {
+  padding: 12px;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  border: none;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #000 !important;
+  color: #d4af37 !important;
+}
+
+/* BUTTONS — match leave-mangement action and header buttons */
+.theme-table tbody td button,
+.theme-action {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: #000000;
+  border: none;
+  transition: all 0.2s ease;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+}
+
+.theme-table tbody td button:hover,
+.theme-action:hover {
+  background-color: #d4af37 !important; /* Gold on hover */
+  color: #000 !important;
+}
+
+.btn-accent {
+  background: #e3f6fd !important;
+  color: #000 !important;
+  border: none !important;
+  font-weight: 600;
+}
+
+
 
 /* STICKY FIRST COLUMN */
 th:first-child,

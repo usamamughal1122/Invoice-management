@@ -58,10 +58,10 @@ export class StripePaymentComponent implements OnInit {
 
   async ngOnInit() {
     const STRIPE_PUBLISHABLE_KEY = 'pk_test_51ShSc3GdisQz8MCdtvgxem1dTIuTkgxArTnaCD1gS9zW76DIMyLbZUyZqOO3Pc9ePXjWPU6F4Heu4B3yqI7FQ85h00EbY64zYs';
-    
+
     try {
       this.stripe = await loadStripe(STRIPE_PUBLISHABLE_KEY);
-      
+
       if (!this.stripe) {
         this.toastr.error('Failed to load Stripe');
         return;
@@ -106,7 +106,7 @@ export class StripePaymentComponent implements OnInit {
 
       // Step 1: Create Payment Intent
       const intentResponse: any = await this.svc.createPaymentIntent(this.invoiceId).toPromise();
-      
+
       if (!intentResponse?.clientSecret) {
         throw new Error('Failed to create payment intent');
       }
@@ -136,19 +136,19 @@ export class StripePaymentComponent implements OnInit {
 
       if (paymentIntent?.status === 'succeeded') {
         console.log('Payment successful, confirming with backend...');
-        
+
         // Step 3: Confirm payment with backend (creates transaction)
         this.svc.confirmPayment(paymentIntent.id, this.invoiceId).subscribe({
           next: (res) => {
             console.log('Backend confirmation successful:', res);
             this.isProcessing = false;
             this.spinner.hide();
-            
-            this.toastr.success('Payment completed successfully!', '', { timeOut: 3000 });
-            
+
+            this.toastr.success('Payment confirmed!', '', { timeOut: 3000 });
+
             // Close modal and pass success result
-            this.activeModal.close({ 
-              success: true, 
+            this.activeModal.close({
+              success: true,
               paymentIntent,
               invoiceId: this.invoiceId,
               transaction: res.data?.transaction
@@ -158,7 +158,7 @@ export class StripePaymentComponent implements OnInit {
             console.error('Backend confirmation error:', err);
             this.isProcessing = false;
             this.spinner.hide();
-            
+
             const errorMsg = err?.error?.message || 'Failed to record payment';
             this.toastr.error(errorMsg, '', { timeOut: 5000 });
           }
@@ -177,7 +177,7 @@ export class StripePaymentComponent implements OnInit {
       this.isProcessing = false;
       this.spinner.hide();
       console.error('Payment process error:', err);
-      
+
       const errorMessage = err?.error?.message || err?.message || 'Payment failed. Please try again.';
       this.toastr.error(errorMessage, '', { timeOut: 5000 });
     }

@@ -2,17 +2,17 @@
     width: 6px;
     height: 6px;
   }
-  
+
   ::-webkit-scrollbar-track {
     background: #f1f1f1;
     border-radius: 10px;
   }
-  
+
   ::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 10px;
   }
-  
+
 
 
   /* Smooth transitions */
@@ -20,7 +20,7 @@
     transition: all 0.2s ease;
   }
 
-  
+
   .card:hover {
     transform: translateY(-2px);
   }
@@ -40,7 +40,7 @@
 .table thead tr th {
   background: linear-gradient(135deg, #e3f6fd, #e3f6fd) !important;
   color: #000000 !important;
-  
+
 }
 
 /* Pagination */
@@ -91,6 +91,8 @@
   color: #000000;
   /* border-color: #d4af37; */
   box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+  background: #eaf8ff;
+  border: none;
   transform: scale(1.1);
 }
 
@@ -118,6 +120,6 @@
   }
 }
 .background{
-  background:  #e3f6fd; 
+  background:  #e3f6fd;
   color: #000000;
 }

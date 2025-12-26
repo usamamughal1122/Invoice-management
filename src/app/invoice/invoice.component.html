@@ -1,5 +1,5 @@
 <div class="container-fluid py-4"
-  style="background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%); min-height: 100vh; font-size: 14px; padding: 20px;">
+  style="background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%); min-height: 100vh; font-size: 14px; padding: 20px;margin-top: 45px;">
 
   <!-- Header Section -->
   <div class="d-flex justify-content-between align-items-center mb-4">
@@ -86,7 +86,7 @@
               </td>
               <td class="py-3 px-3 align-middle">
                 <span class="badge px-2 py-1" [ngStyle]="{'background': inv.statuses === 'Paid' ? '#28a745' :
-                   inv.statuses === 'Pending' ? '#ffc107' : 
+                   inv.statuses === 'Pending' ? '#ffc107' :
                    inv.statuses === 'Overdue' ? '#dc3545' :
                   '#6c757d', 'color': '#ffffff'}">
                   {{ inv.statuses }}
@@ -125,7 +125,7 @@
 
         <nav>
           <ul class="pagination mb-0">
-            <li class="page-item" [class.disabled]="page === 1">
+            <li class="page-item" style="margin-top: 8px;" [class.disabled]="page === 1">
               <a class="px-3 pagenation" (click)="prevPage()">
                 << </a>
             </li>
@@ -138,7 +138,7 @@
               </li>
             </ng-container>
 
-            <li class="page-item" [class.disabled]="page === totalPages">
+            <li class="page-item"style="margin-top: 8px;" [class.disabled]="page === totalPages">
               <a class="px-3 pagenation" (click)="nextPage()">>></a>
             </li>
           </ul>
@@ -171,25 +171,25 @@
 
 <!-- Invoice Details Modal -->
 <ng-template #invoiceDetailsModal let-modal>
-  <div class="modal-header border-0" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  <div class="modal-header border-0" style="background: linear-gradient(135deg, #e3f6fd, #e3f6fd 100%); color: #000000;
            display: flex;
            justify-content: space-between;
            align-items: center;
            padding: 1rem;">
 
     <div style="display: flex; align-items: center;">
-      <h5 class="modal-title fw-bold mb-0" style="font-size: 16px; color: #ffffff;">
-        <i class="bi bi-file-earmark-text-fill me-2" style="color: #d4af37;"></i>
+      <h5 class="modal-title fw-bold mb-0" style="font-size: 16px; color: #000000;">
+        <i class="bi bi-file-earmark-text-fill me-2" style="color: #000000;"></i>
         Invoice Details - #{{ selectedInvoiceForView?.invoiceNumber }}
       </h5>
     </div>
 
     <div style="display: flex; align-items: center; gap: 1rem;">
-      <h5 class="modal-title fw-bold mb-0" style="font-size: 16px; color: #d4af37;">
+      <h5 class="modal-title fw-bold mb-0" style="font-size: 16px; color: #000000;">
         <i class="bi bi-check-circle me-2"></i>{{ selectedInvoiceForView?.statuses }}
       </h5>
 
-      <button type="button" class="btn-close btn-close-white" (click)="modal.dismiss()"></button>
+      <button type="button" class="btn-close btn-close" (click)="modal.dismiss()"></button>
     </div>
   </div>
 
@@ -277,19 +277,19 @@
         <div class="col-md-8"></div>
         <div class="col-md-4">
           <div class="card shadow-sm"
-            style="border-radius: 8px; background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border: 1px solid #d4af37;">
+            style="border-radius: 8px; background: linear-gradient(135deg, #e3f6fd, #e3f6fd 100%); color: #000000;">
             <div class="card-body p-3">
               <div class="d-flex justify-content-between mb-2 pb-2" style="border-bottom: 1px solid #404040;">
-                <span style="font-size: 13px; color: #cccccc;">Subtotal:</span>
-                <span class="fw-bold" style="font-size: 13px; color: #ffffff;">{{ (selectedInvoiceForView?.subTotal / 100) | currency }}</span>
+                <span style="font-size: 13px; color: #000000;">Subtotal:</span>
+                <span class="fw-bold" style="font-size: 13px; color: #000000;">{{ (selectedInvoiceForView?.subTotal / 100) | currency }}</span>
               </div>
               <div class="d-flex justify-content-between mb-2 pb-2" style="border-bottom: 1px solid #404040;">
-                <span style="font-size: 13px; color: #cccccc;">Tax ({{ selectedInvoiceForView?.taxPercent }}%):</span>
-                <span class="fw-bold" style="font-size: 13px; color: #ffffff;">{{ (selectedInvoiceForView?.taxAmount / 100) | currency }}</span>
+                <span style="font-size: 13px; color: #000000;">Tax ({{ selectedInvoiceForView?.taxPercent }}%):</span>
+                <span class="fw-bold" style="font-size: 13px; color: #000000;">{{ (selectedInvoiceForView?.taxAmount / 100) | currency }}</span>
               </div>
               <div class="d-flex justify-content-between align-items-center">
-                <span class="fw-bold" style="font-size: 14px; color: #d4af37;">Total Amount:</span>
-                <span class="fw-bold" style="font-size: 17px; color: #d4af37;">{{ (selectedInvoiceForView?.total / 100) | currency }}</span>
+                <span class="fw-bold" style="font-size: 14px; color: #000000;">Total Amount:</span>
+                <span class="fw-bold" style="font-size: 17px; color: #000000;">{{ (selectedInvoiceForView?.total / 100) | currency }}</span>
               </div>
             </div>
           </div>
@@ -309,7 +309,7 @@
       <i class="bi bi-download me-2"></i>Download PDF
     </button>
 
-    <button class="btn btn-sm px-3 py-3 me-3" (click)="sendInvoiceEmail(selectedInvoiceForView)"
+    <button class="btn btn-sm px-3 py-2 me-3" (click)="sendInvoiceEmail(selectedInvoiceForView)"
       style="border-radius: 5px; background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a; border: none;">
       <i class="bi bi-envelope-fill"></i>
     </button>

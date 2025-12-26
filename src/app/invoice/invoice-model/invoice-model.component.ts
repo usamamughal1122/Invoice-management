@@ -31,17 +31,17 @@ export class InvoiceModelComponent {
   addClientForm!: FormGroup;
   selectedClient: any = null;
   selectedStatus: string = 'Pending';
-  
+
   // Invoice Details
   taxPercent = 0;
   purchaseDate: any = null;
   wrantyExpiry: any = null;
-  
+
   // Calculations
   subtotal = 0;
   taxAmount = 0;
   total = 0;
-  
+
   // UI State
   currentEditingRowIndex: number = -1;
   inventorySearchText: string = '';
@@ -58,11 +58,11 @@ export class InvoiceModelComponent {
   ngOnInit(): void {
     this.loadClients();
     this.loadInventory();
-    
+
     this.addClientForm = this.fb.group({
       name: ['', Validators.required]
     });
-    
+
     this.addNewRow();
   }
 
@@ -139,7 +139,7 @@ export class InvoiceModelComponent {
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, remove it!',
-      confirmButtonColor: '#d4af37',
+      confirmButtonColor: '#0d6efd',
       cancelButtonColor: '#666'
     }).then(result => {
       if (result.isConfirmed) {
@@ -155,7 +155,7 @@ export class InvoiceModelComponent {
   }
 
   updateTotals() {
-    this.subtotal = this.invoiceItems.reduce((sum, item) => 
+    this.subtotal = this.invoiceItems.reduce((sum, item) =>
       sum + (Number(item.subtotal) || 0), 0
     );
     this.taxAmount = (this.subtotal * Number(this.taxPercent || 0)) / 100;
@@ -179,7 +179,7 @@ export class InvoiceModelComponent {
   filterInventory() {
     const search = this.inventorySearchText.toLowerCase().trim();
     this.filteredInventoryList = !search ? [...this.inventoryList] :
-      this.inventoryList.filter(inv => 
+      this.inventoryList.filter(inv =>
         inv.name.toLowerCase().includes(search) ||
         inv.sku?.toLowerCase().includes(search) ||
         inv.serialNumber?.toLowerCase().includes(search)
@@ -192,10 +192,10 @@ export class InvoiceModelComponent {
       return;
     }
 
-    const exists = this.invoiceItems.find((item, idx) => 
+    const exists = this.invoiceItems.find((item, idx) =>
       idx !== this.currentEditingRowIndex && item._id === inv._id
     );
-    
+
     if (exists) {
       Swal.fire('Warning', 'This item is already added', 'warning');
       return;
@@ -232,8 +232,8 @@ export class InvoiceModelComponent {
       return;
     }
 
-    const invalidItems = this.invoiceItems.filter(item => 
-      !item.name?.trim() || !item.price || item.price <= 0 || 
+    const invalidItems = this.invoiceItems.filter(item =>
+      !item.name?.trim() || !item.price || item.price <= 0 ||
       !item.quantity || item.quantity <= 0
     );
 
@@ -244,10 +244,10 @@ export class InvoiceModelComponent {
 
     // Check inventory availability
     for (const item of this.invoiceItems) {
-      if (!item.isCustom && item.availableQty !== null && 
+      if (!item.isCustom && item.availableQty !== null &&
           item.quantity > item.availableQty) {
-        Swal.fire('Warning', 
-          `Only ${item.availableQty} units available for "${item.name}"`, 
+        Swal.fire('Warning',
+          `Only ${item.availableQty} units available for "${item.name}"`,
           'warning'
         );
         return;
@@ -256,7 +256,7 @@ export class InvoiceModelComponent {
 
     // Check if there are custom items
     const customItems = this.invoiceItems.filter(item => item.isCustom);
-    
+
     // Show confirmation if custom items exist
     if (customItems.length > 0) {
       const customItemsList = customItems.map(i => i.name).join(', ');
@@ -266,7 +266,7 @@ export class InvoiceModelComponent {
         icon: 'info',
         showCancelButton: true,
         confirmButtonText: 'Yes, Create Invoice',
-        confirmButtonColor: '#d4af37',
+        confirmButtonColor: '#0d6efd',
         cancelButtonColor: '#666'
       }).then(result => {
         if (result.isConfirmed) {
@@ -298,15 +298,15 @@ export class InvoiceModelComponent {
     this.svc.createInvoice(payload).subscribe({
       next: (res) => {
         this.spinner.hide();
-        
+
         const customCount = this.invoiceItems.filter(i => i.isCustom).length;
-        const message = customCount > 0 
+        const message = customCount > 0
           ? `Invoice created! ${customCount} new item(s) added to inventory.`
           : 'Invoice created successfully!';
-        
+
         Swal.fire('Success', message, 'success');
         this.toastr.success(message);
-        
+
         // Close modal and emit event
         this.modal.close();
         this.invoiceCreated.emit();
@@ -330,7 +330,7 @@ export class InvoiceModelComponent {
         confirmButtonText: 'Yes, Discard',
         cancelButtonText: 'No, Continue Editing',
         confirmButtonColor: '#dc3545',
-        cancelButtonColor: '#d4af37'
+        cancelButtonColor: '#0d6efd'
       }).then(result => {
         if (result.isConfirmed) {
           this.modal.dismiss();
@@ -340,5 +340,5 @@ export class InvoiceModelComponent {
       this.modal.dismiss();
     }
   }
-  
+
 }
