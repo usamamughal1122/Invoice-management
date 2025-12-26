@@ -8,7 +8,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class EmployeeService {
   // private API_BASE = 'http://localhost:3000';
-private API_BASE = 'https://invoice-management-backend-gamma.vercel.app/api';
+private API_BASE = 'https://invoice-management-backend-gamma.vercel.app';
   constructor(private http: HttpClient) {}
 
   private getRole(): string {
