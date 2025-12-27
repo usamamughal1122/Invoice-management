@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+// transactions.component.ts
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
@@ -14,11 +15,31 @@ import Swal from 'sweetalert2';
   styleUrls: ['./transactions.component.css']
 })
 export class TransactionsComponent implements OnInit {
+  // Filter toggles
+  showInvoiceFilter = false;
+  showClientFilter = false;
+  showStatusFilter = false;
+  showDateFilter = false;
+
+  // Data
   transactions: any[] = [];
+  allTransactions: any[] = [];
+
+  // Filter values
+  searchInvoice = '';
+  searchClient = '';
+  selectedStatus = '';
+  selectedDate = '';
+  statusList: string[] = ['SUCCESS', 'REFUNDED', 'PARTIALLY_REFUNDED', 'PENDING', 'FAILED'];
+
+  // Pagination
   page: number = 1;
   limit: number = 5;
   totalPages: number = 0;
   total: number = 0;
+
+  @ViewChild('invoiceFilterInput') invoiceFilterInput!: ElementRef;
+  @ViewChild('clientFilterInput') clientFilterInput!: ElementRef;
 
   constructor(
     private svc: EmployeeService,
@@ -30,14 +51,26 @@ export class TransactionsComponent implements OnInit {
     this.loadTransactions();
   }
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    const isFilterButton = target.closest('.filter-btn');
+    const isFilterPopover = target.closest('.filter-popover');
+
+    if (!isFilterButton && !isFilterPopover) {
+      this.closeAllFilters();
+    }
+  }
+
   loadTransactions() {
     this.spinner.show();
     this.svc.getTransactions(this.page, this.limit).subscribe({
       next: (res) => {
-        console.log('Transactions loaded:', res);
-        this.transactions = res.data || [];
+        this.allTransactions = res.data || [];
         this.total = res.total || 0;
         this.totalPages = res.totalPages || 0;
+        this.transactions = [...this.allTransactions];
+        this.applyFilters();
         this.spinner.hide();
       },
       error: (err) => {
@@ -48,7 +81,91 @@ export class TransactionsComponent implements OnInit {
     });
   }
 
-  // Pagination methods
+  closeAllFilters() {
+    this.showInvoiceFilter = false;
+    this.showClientFilter = false;
+    this.showStatusFilter = false;
+    this.showDateFilter = false;
+  }
+
+  toggleInvoiceFilter() {
+    const wasOpen = this.showInvoiceFilter;
+    this.closeAllFilters();
+    this.showInvoiceFilter = !wasOpen;
+
+    if (this.showInvoiceFilter) {
+      setTimeout(() => {
+        try {
+          this.invoiceFilterInput?.nativeElement?.focus();
+        } catch {}
+      }, 0);
+    }
+  }
+
+  toggleClientFilter() {
+    const wasOpen = this.showClientFilter;
+    this.closeAllFilters();
+    this.showClientFilter = !wasOpen;
+
+    if (this.showClientFilter) {
+      setTimeout(() => {
+        try {
+          this.clientFilterInput?.nativeElement?.focus();
+        } catch {}
+      }, 0);
+    }
+  }
+
+  toggleStatusFilter() {
+    const wasOpen = this.showStatusFilter;
+    this.closeAllFilters();
+    this.showStatusFilter = !wasOpen;
+  }
+
+  toggleDateFilter() {
+    const wasOpen = this.showDateFilter;
+    this.closeAllFilters();
+    this.showDateFilter = !wasOpen;
+  }
+
+  applyFilters() {
+    let filtered = [...this.allTransactions];
+
+    // Filter by invoice number
+    if (this.searchInvoice && this.searchInvoice.trim() !== '') {
+      const searchLower = this.searchInvoice.toLowerCase();
+      filtered = filtered.filter(tx =>
+        (tx.invoiceNumber || '').toString().toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Filter by client name
+    if (this.searchClient && this.searchClient.trim() !== '') {
+      const searchLower = this.searchClient.toLowerCase();
+      filtered = filtered.filter(tx =>
+        (tx.invoiceId?.client?.name || '').toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Filter by status
+    if (this.selectedStatus && this.selectedStatus.trim() !== '') {
+      const statusUpper = this.selectedStatus.toUpperCase();
+      filtered = filtered.filter(tx =>
+        (tx.status || '').toUpperCase() === statusUpper
+      );
+    }
+
+    // Filter by date
+    if (this.selectedDate && this.selectedDate.trim() !== '') {
+      filtered = filtered.filter(tx => {
+        const txDate = new Date(tx.createdAt).toISOString().split('T')[0];
+        return txDate === this.selectedDate;
+      });
+    }
+
+    this.transactions = filtered;
+  }
+
   goToPage(p: number) {
     if (p >= 1 && p <= this.totalPages) {
       this.page = p;
@@ -85,9 +202,6 @@ export class TransactionsComponent implements OnInit {
   }
 
   refund(transaction: any) {
-    console.log('Refund clicked for:', transaction);
-
-    //  Check if already refunded
     if (transaction.status === 'REFUNDED') {
       this.toastr.info('This transaction is already fully refunded');
       return;
@@ -95,13 +209,11 @@ export class TransactionsComponent implements OnInit {
 
     const items = transaction.invoiceId?.items || [];
 
-    //  Validate items exist
     if (!items || items.length === 0) {
       this.toastr.error('No items found in invoice');
       return;
     }
 
-    //  Filter out already refunded items
     const availableItems = items.filter((item: any) => !item.refunded);
 
     if (availableItems.length === 0) {
@@ -114,13 +226,11 @@ export class TransactionsComponent implements OnInit {
       return;
     }
 
-    //  If only one item available, show confirmation directly
     if (availableItems.length === 1) {
       this.confirmSingleItemRefund(transaction, availableItems[0]);
       return;
     }
 
-    //  Multiple items - show selection modal
     this.showItemSelectionModal(transaction, availableItems);
   }
 
@@ -145,7 +255,6 @@ export class TransactionsComponent implements OnInit {
       cancelButtonColor: '#666'
     }).then(result => {
       if (result.isConfirmed) {
-        //  Format item correctly
         const formattedItem = {
           itemId: item._id,
           name: item.name,
@@ -287,18 +396,10 @@ export class TransactionsComponent implements OnInit {
 
     const totalRefund = items.reduce((sum, item) => sum + (item.subtotal || 0), 0);
 
-    //  Format items correctly - backend expects {itemId, amount}
     const formattedItems = items.map(item => ({
-      itemId: item.itemId || item._id,  // Handle both formats
+      itemId: item.itemId || item._id,
       amount: item.subtotal
     }));
-
-    console.log('Sending refund payload:', {
-      transactionId: transaction._id,
-      invoiceId: transaction.invoiceId._id,
-      items: formattedItems,
-      amount: totalRefund
-    });
 
     this.svc.partialRefund({
       transactionId: transaction._id,
@@ -307,7 +408,6 @@ export class TransactionsComponent implements OnInit {
       amount: totalRefund
     }).subscribe({
       next: (res) => {
-        console.log('Partial refund successful:', res);
         this.spinner.hide();
 
         const responseData = res.data || res;
@@ -341,7 +441,6 @@ export class TransactionsComponent implements OnInit {
     });
   }
 
-  // Helper methods for status badges
   getStatusBadgeClass(status: string): string {
     switch(status) {
       case 'SUCCESS':

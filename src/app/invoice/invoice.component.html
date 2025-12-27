@@ -37,21 +37,57 @@
     <div class="card shadow-sm"
       style="border-radius: 12px; overflow: hidden; border: 1px solid #e8e8e8; background: #ffffff;">
       <div class="table-responsive">
-        <table class=" table table-hover mb-0" style="font-size: 14px; background: linear-gradient(135deg, #e3f6fd, #e3f6fd 100%); color: #000000;">
+        <table class="table table-hover mb-0" style="font-size: 14px; background: linear-gradient(135deg, #e3f6fd, #e3f6fd 100%); color: #000000;">
           <thead class="background">
             <tr>
               <th class="py-3 px-3 border-0">
                 <i class="bi bi-hash me-2" style="color: #000000;"></i>Invoice #
               </th>
+
+              <!-- Client with Filter -->
               <th class="py-3 px-3 border-0">
-                <i class="bi bi-person-circle me-2" style="color: #000000;"></i>Client
+                <div class="header-content d-flex align-items-center">
+                  <i class="bi bi-person-circle me-2" style="color: #000000;"></i>Client
+                  <button class="filter-btn ms-2 btn btn-sm" (click)="toggleClientFilter(); $event.stopPropagation()"
+                    style="background: transparent; border: none; padding: 0;">
+                    <i class="bi bi-funnel" style="color: #000000;"></i>
+                  </button>
+                </div>
+                <div *ngIf="showClientFilter" class="filter-popover mt-2" (click)="$event.stopPropagation()"
+                  style="position: absolute; background: white; border: 1px solid #ddd; border-radius: 5px; padding: 8px; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                  <input #clientFilterInput
+                         type="text"
+                         class="form-control form-control-sm"
+                         placeholder="Filter Client..."
+                         [(ngModel)]="searchClient"
+                         (input)="applyFilters()">
+                </div>
               </th>
+
               <th class="py-3 px-3 border-0">
                 <i class="bi bi-calendar-event me-2" style="color: #000000;"></i>Date
               </th>
+
+              <!-- Status with Filter -->
               <th class="py-3 px-3 border-0">
-                <i class="bi bi-check-circle me-2" style="color: #010101;"></i>Status
+                <div class="header-content d-flex align-items-center">
+                  <i class="bi bi-check-circle me-2" style="color: #010101;"></i>Status
+                  <button class="filter-btn ms-2 btn btn-sm" (click)="toggleStatusFilter(); $event.stopPropagation()"
+                    style="background: transparent; border: none; padding: 0;">
+                    <i class="bi bi-funnel" style="color: #000000;"></i>
+                  </button>
+                </div>
+                <div *ngIf="showStatusFilter" class="filter-popover mt-2" (click)="$event.stopPropagation()"
+                  style="position: absolute; background: white; border: 1px solid #ddd; border-radius: 5px; padding: 8px; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                  <select class="form-select form-select-sm"
+                          [(ngModel)]="selectedStatus"
+                          (ngModelChange)="applyFilters()">
+                    <option value="">All Status</option>
+                    <option *ngFor="let st of statusList" [value]="st">{{ st }}</option>
+                  </select>
+                </div>
               </th>
+
               <th class="py-3 px-3 border-0">
                 <i class="bi bi-cart3 me-2" style="color: #000000;"></i>Items
               </th>
@@ -98,20 +134,14 @@
                 </span>
               </td>
               <td class="py-3 px-3 align-middle">
-                <span class="fw-bold" style="font-size: 15px; color: #000000;"> {{ (inv.total / 100) | currency }}</span>
+                <span class="fw-bold" style="font-size: 15px; color: #000000;">{{ (inv.total / 100) | currency }}</span>
               </td>
               <td class="py-3 px-3 align-middle text-center">
-                <!-- <button class="btn btn-sm px-2 py-2 me-2" (click)="sendInvoiceEmail(inv)"
-                style="border-radius: 5px; background: #d4af37; color: #1a1a1a; border: none;">
-                <i class="bi bi-envelope-fill"></i>
-              </button> -->
-
                 <button class="btn btn-sm px-3" (click)="openInvoiceDetailsModal(invoiceDetailsModal, inv)"
                   style="border-radius: 5px; background: #e8e8e8cc; color: #000000cc; border: none;">
                   <i class="bi bi-eye-fill me-1"></i>View
                 </button>
               </td>
-
             </tr>
           </tbody>
         </table>
