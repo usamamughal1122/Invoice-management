@@ -7,8 +7,8 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class EmployeeService {
-  // private API_BASE = 'http://localhost:3000';
-private API_BASE = 'https://invoice-management-backend-gamma.vercel.app';
+   private API_BASE = 'http://localhost:3000';
+//private API_BASE = 'https://invoice-management-backend-gamma.vercel.app';
   constructor(private http: HttpClient) {}
 
   private getRole(): string {
@@ -33,10 +33,14 @@ private API_BASE = 'https://invoice-management-backend-gamma.vercel.app';
   }
 
   // Roles / Products
-  getRoles(): Observable<any> {
-    const params = this.getUserIdParam();
+  getRoles(page: number = 1, limit: number = 0): Observable<any> {
+    let params = this.getUserIdParam() || new HttpParams();
+    if (limit && limit > 0) {
+      params = params.set('page', page.toString()).set('limit', limit.toString());
+    }
+    const options = params.keys().length ? { params } : {};
     return this.http
-      .get<any>(`${this.API_BASE}/api/products`, params ? { params } : {})
+      .get<any>(`${this.API_BASE}/api/products`, options)
       .pipe(catchError(this.handleError('getRoles')));
   }
 
@@ -68,10 +72,14 @@ private API_BASE = 'https://invoice-management-backend-gamma.vercel.app';
   }
 
   // Leave Management
-  getAllLeaves(): Observable<any> {
-    const params = this.getUserIdParam();
+  getAllLeaves(page: number = 1, limit: number = 0): Observable<any> {
+    let params = this.getUserIdParam() || new HttpParams();
+    if (limit && limit > 0) {
+      params = params.set('page', page.toString()).set('limit', limit.toString());
+    }
+    const options = params.keys().length ? { params } : {};
     return this.http
-      .get<any>(`${this.API_BASE}/api/leave-management`, params ? { params } : {})
+      .get<any>(`${this.API_BASE}/api/leave-management`, options)
       .pipe(catchError(this.handleError('getAllLeaves')));
   }
 

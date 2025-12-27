@@ -1,7 +1,7 @@
 <div class="inventory-wrapper container-fluid px-4 py-4">
 
   <!-- Header -->
-  <div class="page-header mb-4 d-flex justify-content-between align-items-center flex-wrap">
+  <div class="page-header d-flex justify-content-between align-items-center flex-wrap">
     <div>
       <h3 class="fw-bold m-0">Products</h3>
       <p class="small m-0">Manage, track & monitor all assets</p>
@@ -11,59 +11,162 @@
     </button>
   </div>
 
-  <!-- Filters -->
-  <div class="filter-bar shadow-sm p-3 rounded mb-3 bg-white">
-    <div class="row g-2 space">
-      <div class="col-md-4">
-        <input type="text" class="form-control form-control-sm" placeholder="🔍 Search item..." [(ngModel)]="searchTerm"
-           />
 
-        <select class="form-select form-select-sm" [(ngModel)]="selectedCategory" (change)="applyFilters()">
-          <option value="">All Categories</option>
-          <option *ngFor="let cat of categoryList" [value]="cat.category">{{ cat.category }}</option>
-        </select>
-
-      </div>
-      <div class="col-md-2 refesh-spacing">
-        <button class="btn btn-outline-dark btn-sm w-100" (click)="allTechInventory()">
-          <i class="bi bi-arrow-clockwise me-1"></i> Refresh
-        </button>
-      </div>
-
-    </div>
-  </div>
 
   <!-- Inventory Table -->
-  <div class="card card-modern shadow-sm border-0 rounded-4">
+  <div class="card card-modern shadow-sm border-0 rounded-4" (click)="handleTableClick($event)">
     <div class="inventory-table-wrapper">
       <table class="table table-hover align-middle mb-0 inventory-grid">
         <thead class="table-dark-header">
           <tr>
-            <th>#</th>
-            <th>Item Name</th>
-            <th>Brand</th>
-            <th>Category</th>
-            <th>Stock Keeping Unit(SKU)</th>
-            <th>Price</th>
-            <th>Available / Total</th>
-            <th>Supplier</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <!-- # Column -->
+            <th class="col-num sticky-col first-col">
+              <div class="header-content justify-center">
+                #
+              </div>
+            </th>
+
+            <!-- Item Name -->
+            <th class="col-item-name">
+              <div class="header-content justify-start">
+                Item Name
+                <button class="filter-btn" (click)="toggleNameFilter(); $event.stopPropagation()">
+                  <i class="bi bi-funnel"></i>
+                </button>
+              </div>
+              <div *ngIf="showNameFilter" class="filter-popover" (click)="$event.stopPropagation()">
+                <input #nameFilterInputHeader
+                       type="text"
+                       class="form-control form-control-sm"
+                       placeholder="Filter Name..."
+                       [(ngModel)]="searchTerm"
+                       (input)="applyFilters()">
+              </div>
+            </th>
+
+            <!-- Brand -->
+            <th class="col-brand">
+              <div class="header-content justify-start">
+                Brand
+                <button class="filter-btn" (click)="toggleBrandFilter(); $event.stopPropagation()">
+                  <i class="bi bi-funnel"></i>
+                </button>
+              </div>
+              <div *ngIf="showBrandFilter" class="filter-popover" (click)="$event.stopPropagation()">
+                <select class="form-select form-select-sm"
+                        [(ngModel)]="selectedBrand"
+                        (ngModelChange)="applyFilters()">
+                  <option value="">All Brands</option>
+                  <option *ngFor="let b of brandsList" [value]="b.brand">{{ b.brand }}</option>
+                </select>
+              </div>
+            </th>
+
+            <!-- Category -->
+            <th class="col-category">
+              <div class="header-content justify-start">
+                Category
+                <button class="filter-btn" (click)="toggleCategoryFilter(); $event.stopPropagation()">
+                  <i class="bi bi-funnel"></i>
+                </button>
+              </div>
+              <div *ngIf="showCategoryFilter" class="filter-popover" (click)="$event.stopPropagation()">
+                <select class="form-select form-select-sm"
+                        [(ngModel)]="selectedCategory"
+                        (ngModelChange)="applyFilters()">
+                  <option value="">All Categories</option>
+                  <option *ngFor="let cat of categoryList" [value]="cat.category">{{ cat.category }}</option>
+                </select>
+              </div>
+            </th>
+
+            <!-- SKU -->
+            <th class="col-sku">
+              <div class="header-content justify-center">
+                SKU
+                <button class="filter-btn" (click)="toggleSkuFilter(); $event.stopPropagation()">
+                  <i class="bi bi-funnel"></i>
+                </button>
+              </div>
+              <div *ngIf="showSkuFilter" class="filter-popover" (click)="$event.stopPropagation()">
+                <input type="text"
+                       class="form-control form-control-sm"
+                       placeholder="Filter SKU..."
+                       [(ngModel)]="selectedSku"
+                       (input)="applyFilters()">
+              </div>
+            </th>
+
+            <!-- Price -->
+            <th class="col-price">
+              <div class="header-content justify-center">
+                Price
+              </div>
+            </th>
+
+            <!-- Available / Total -->
+            <th class="col-quantity">
+              <div class="header-content justify-center">
+                Available / Total
+              </div>
+            </th>
+
+            <!-- Supplier -->
+            <th class="col-supplier">
+              <div class="header-content justify-start">
+                Supplier
+                <button class="filter-btn" (click)="toggleSupplierFilter(); $event.stopPropagation()">
+                  <i class="bi bi-funnel"></i>
+                </button>
+              </div>
+              <div *ngIf="showSupplierFilter" class="filter-popover" (click)="$event.stopPropagation()">
+                <select class="form-select form-select-sm"
+                        [(ngModel)]="selectedSupplier"
+                        (ngModelChange)="applyFilters()">
+                  <option value="">All Suppliers</option>
+                  <option *ngFor="let s of suppliersList" [value]="s.name">{{ s.name }}</option>
+                </select>
+              </div>
+            </th>
+
+            <!-- Status -->
+            <th class="col-status">
+              <div class="header-content justify-center">
+                Status
+                <button class="filter-btn" (click)="toggleStatusFilter(); $event.stopPropagation()">
+                  <i class="bi bi-funnel"></i>
+                </button>
+              </div>
+              <div *ngIf="showStatusFilter" class="filter-popover" (click)="$event.stopPropagation()">
+                <select class="form-select form-select-sm"
+                        [(ngModel)]="selectedStatus"
+                        (ngModelChange)="applyFilters()">
+                  <option value="">All Status</option>
+                  <option *ngFor="let st of statusList" [value]="st">{{ st }}</option>
+                </select>
+              </div>
+            </th>
+
+            <!-- Actions -->
+            <th class="col-actions sticky-col last-col">
+              <div class="header-content justify-center">
+                Actions
+              </div>
+            </th>
           </tr>
         </thead>
+
         <tbody>
           <tr *ngFor="let item of inventoryList; let i = index" class="table-row-hover">
-            <td class="sticky-col first-col">{{ (page - 1) * limit + (i + 1) }}</td>
-            <td (click)="editItem(item)"><strong>{{ item.name }}</strong></td>
-            <td>{{ item.brand?.brand }}</td>
-            <td>{{ item.category?.category }}</td>
-            <td>{{ item.sku }}</td>
-            <td>{{ item.price }}</td>
-            <td class="text-center">{{ item.quantity_available }} / {{ item.quantity_total }}</td>
-            <td>{{ item.supplier?.name }}</td>
-
-
-            <td>
+            <td class="col-num sticky-col first-col">{{ (page - 1) * limit + (i + 1) }}</td>
+            <td class="col-item-name" (click)="editItem(item)"><strong>{{ item.name }}</strong></td>
+            <td class="col-brand">{{ item.brand?.brand }}</td>
+            <td class="col-category">{{ item.category?.category }}</td>
+            <td class="col-sku">{{ item.sku }}</td>
+            <td class="col-price">{{ item.price }}</td>
+            <td class="col-quantity">{{ item.quantity_available }} / {{ item.quantity_total }}</td>
+            <td class="col-supplier">{{ item.supplier?.name }}</td>
+            <td class="col-status">
               <span class="modern-badge" [ngClass]="{
                   'badge-success': item.status === 'Available',
                   'badge-primary': item.status === 'UnAvailable',
@@ -74,40 +177,42 @@
                 {{ item.status }}
               </span>
             </td>
-            <td class="sticky-col last-col text-center">
+            <td class="col-actions sticky-col last-col">
               <button class="btn btn-sm btn-outline-black" (click)="deleteItem(item._id)" title="Delete">
                 <i class="bi bi-trash"></i>
               </button>
             </td>
           </tr>
           <tr *ngIf="inventoryList.length === 0">
-            <td colspan="9" class="text-center text-muted py-4">
+            <td colspan="10" class="text-center text-muted py-4">
               <i class="bi bi-inbox"></i> No records found
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <!-- Modern Pagination -->
-    <div class="d-flex justify-content-between align-items-center px-3 py-3 border-top">
 
+    <!-- Pagination -->
+    <div class="pagination-wrapper">
       <div class="text-muted small">
         Showing page <strong>{{ page }}</strong> of <strong>{{ totalPages }}</strong>
       </div>
 
       <nav>
         <ul class="pagination mb-0">
-
           <!-- Prev Button -->
           <li class="page-item" [class.disabled]="page === 1">
-            <a class="px-3 pagenation" (click)="prevPage()">
-              << </a>
+            <a class="page-link-custom" (click)="prevPage()">
+              &lt;&lt;
+            </a>
           </li>
 
           <!-- Number Buttons -->
           <ng-container *ngFor="let p of [].constructor(totalPages); let i = index">
-            <li class="page-item pagenatio-gap" [class.active]="page === i + 1">
-              <a class="page-link rounded-pill pagenation-number" (click)="page = i + 1; goToPage(i+1)">
+            <li class="page-item">
+              <a class="page-number"
+                 [class.active]="page === i + 1"
+                 (click)="goToPage(i + 1)">
                 {{ i + 1 }}
               </a>
             </li>
@@ -115,22 +220,22 @@
 
           <!-- Next Button -->
           <li class="page-item" [class.disabled]="page === totalPages">
-            <a class="px-3 pagenation" (click)="nextPage()">
-              >>
+            <a class="page-link-custom" (click)="nextPage()">
+              &gt;&gt;
             </a>
           </li>
-
         </ul>
-
-
       </nav>
     </div>
   </div>
 </div>
-<ngx-spinner bdColor="rgba(256, 256, 256, 0.8)" size="large" color="#fff" type="ball-scale-multiple" [fullScreen]="true"
-  template="<img src='assets/stockify.png' />">
-  <!-- Centered Logo -->
-  <div class="spinner-logo" *ngIf="isLoading">
 
-  </div>
+<!-- Spinner -->
+<ngx-spinner bdColor="rgba(256, 256, 256, 0.8)"
+             size="large"
+             color="#fff"
+             type="ball-scale-multiple"
+             [fullScreen]="true"
+             template="<img src='assets/stockify.png' />">
+  <div class="spinner-logo" *ngIf="isLoading"></div>
 </ngx-spinner>

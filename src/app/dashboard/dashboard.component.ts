@@ -41,7 +41,7 @@ export class DashboardComponent implements OnInit {
   totalSoldItems: number = 0;
   isMouseOver = false;
 
-  //  CHART DATA 
+  //  CHART DATA
 
   statusChartData: ChartData<'doughnut'> = {
     labels: [],
@@ -78,8 +78,8 @@ export class DashboardComponent implements OnInit {
     }]
   };
 
- 
-  //  CHART OPTIONS 
+
+  //  CHART OPTIONS
 
   doughnutChartOptions: ChartConfiguration['options'] = {
     responsive: true,
@@ -116,7 +116,7 @@ export class DashboardComponent implements OnInit {
     }
   };
 
-  //  CONSTRUCTOR 
+  //  CONSTRUCTOR
 
   constructor(
     private svc: EmployeeService,
@@ -124,11 +124,11 @@ export class DashboardComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) {}
 
-  //  INIT 
+  //  INIT
 
   ngOnInit(): void {
     this.loadDashboardData();
-    this.loadInvoices();  
+    this.loadInvoices();
     this.brands();
     this.category();
     this.allSuppliers();
@@ -137,7 +137,7 @@ export class DashboardComponent implements OnInit {
     }, 2000);
   }
 
-  //  LOAD DATA 
+  //  LOAD DATA
 
   loadDashboardData() {
     this.spinner.show();
@@ -146,7 +146,7 @@ export class DashboardComponent implements OnInit {
       this.spinner.hide();
      console.log('Dashboard List:', this.dashboardList);
       this.dashboardList = res?.data || [];
-      
+
       this.calculateTotals();
       this.prepareChartData();
 
@@ -154,7 +154,7 @@ export class DashboardComponent implements OnInit {
       this.statusChartData = { ...this.statusChartData };
       this.categoryChartData = { ...this.categoryChartData };
       this.brandChartData = { ...this.brandChartData };
-      
+
 
       // Top products
       this.topProducts = this.dashboardList
@@ -164,7 +164,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  //  CALCULATE TOTALS 
+  //  CALCULATE TOTALS
 
   calculateTotals() {
     let purchase = 0;
@@ -172,7 +172,8 @@ export class DashboardComponent implements OnInit {
     let soldItems = 0;
 
     this.dashboardList.forEach(item => {
-      const price = item.price || 0;
+      // inventory prices are stored in minor units (e.g., cents) — convert to major units
+      const price = (item.price || 0) / 100;
       const totalQty = item.quantity_total || 0;
       const availableQty = item.quantity_available || 0;
 
@@ -188,7 +189,7 @@ export class DashboardComponent implements OnInit {
     this.totalSoldItems = soldItems;
   }
 
-  //  PREPARE CHART DATA 
+  //  PREPARE CHART DATA
 
   prepareChartData() {
 
@@ -248,7 +249,7 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  //  OTHER METHODS 
+  //  OTHER METHODS
 
   brands() {
     this.svc.getBrands().subscribe({
@@ -310,7 +311,8 @@ calculateInvoiceTotals() {
 
   this.invoices.forEach((inv: any) => {
     inv.items?.forEach((item: any) => {
-      const price = item.price || 0;
+      // invoice item.price is in minor units — convert to major units
+      const price = (item.price || 0) / 100;
       const qty = item.quantity || 0;
 
       sales += price * qty;
@@ -325,19 +327,20 @@ calculateInvoiceTotals() {
 // Add these methods to your DashboardComponent class
 
 getTotalInvoiceAmount(): number {
-  return this.invoices.reduce((sum, invoice) => sum + (invoice.total || 0), 0);
+  // invoice.total is stored in minor units — return major units for display
+  return this.invoices.reduce((sum, invoice) => sum + ((invoice.total || 0) / 100), 0);
 }
 
 getPaidAmount(): number {
   return this.invoices
     .filter(invoice => invoice.statuses === 'Paid')
-    .reduce((sum, invoice) => sum + (invoice.total || 0), 0);
+    .reduce((sum, invoice) => sum + ((invoice.total || 0) / 100), 0);
 }
 
 getUnpaidAmount(): number {
   return this.invoices
     .filter(invoice => invoice.statuses !== 'Paid')
-    .reduce((sum, invoice) => sum + (invoice.total || 0), 0);
+    .reduce((sum, invoice) => sum + ((invoice.total || 0) / 100), 0);
 }
 onMouseEnter() {
     this.isMouseOver = true;

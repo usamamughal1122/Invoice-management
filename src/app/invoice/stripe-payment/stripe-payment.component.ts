@@ -19,8 +19,6 @@ export class StripePaymentComponent implements OnInit {
   @Input() invoiceNumber: string = '';
   @Input() invoiceId: string = '';
 
-
-
   paymentForm: FormGroup;
   isProcessing = false;
 

@@ -15,11 +15,25 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './leave-mangement.component.css'
 })
 export class LeaveMangementComponent implements OnInit {
-approvedLeaves=0; 
-pendingRequests=0; 
+approvedLeaves=0;
+pendingRequests=0;
 rejectedLeaves=0;
 leaves:any=[]
 modalRef!: NgbModalRef;
+
+  // Pagination
+  page: number = 1;
+  limit: number = 5;
+  totalPages: number = 0;
+  totalLeaves: number = 0;
+
+  get startEntry(): number {
+    return this.totalLeaves === 0 ? 0 : (this.page - 1) * this.limit + 1;
+  }
+
+  get endEntry(): number {
+    return Math.min(this.page * this.limit, this.totalLeaves);
+  }
 
 constructor(private svc: EmployeeService,   private modalService: NgbModal,private spinner: NgxSpinnerService,private toastr: ToastrService){}
 
@@ -30,14 +44,29 @@ ngOnInit(){
 
 allLeave(){
   this.spinner.show();
-  this.svc.getAllLeaves().subscribe({
+  this.svc.getAllLeaves(this.page, this.limit).subscribe({
     next:(res)=>{
-      this.leaves=res.data
-      this.approvedLeaves=res.data.filter((leave: any) => leave.status === 'Approved').length
-       this.pendingRequests=res.data.filter((leave: any) => leave.status === 'Pending').length
-      this.rejectedLeaves=res.data.filter((leave: any) => leave.status === 'Rejected').length
-     this.spinner.hide();
-     
+      if (res && res.data) {
+        this.leaves = res.data;
+        this.totalLeaves = res.total || res.totalItems || (res.totalPages ? res.totalPages * this.limit : this.leaves.length);
+        this.totalPages = res.totalPages || Math.ceil((this.totalLeaves || this.leaves.length) / this.limit) || 1;
+      } else if (Array.isArray(res)) {
+        const all = res;
+        this.totalLeaves = all.length;
+        this.totalPages = Math.ceil(this.totalLeaves / this.limit) || 1;
+        const start = (this.page - 1) * this.limit;
+        this.leaves = all.slice(start, start + this.limit);
+      } else {
+        this.leaves = [];
+        this.totalLeaves = 0;
+        this.totalPages = 0;
+      }
+
+      this.approvedLeaves = this.leaves.filter((leave: any) => leave.status === 'Approved').length;
+      this.pendingRequests = this.leaves.filter((leave: any) => leave.status === 'Pending').length;
+      this.rejectedLeaves = this.leaves.filter((leave: any) => leave.status === 'Rejected').length;
+      this.spinner.hide();
+
     },
     error:(err)=>{
       this.spinner.hide();
@@ -45,6 +74,21 @@ allLeave(){
     }
   })
 }
+
+  goToPage(p: number) {
+    if (p >= 1 && p <= this.totalPages) {
+      this.page = p;
+      this.allLeave();
+    }
+  }
+
+  prevPage() {
+    if (this.page > 1) this.goToPage(this.page - 1);
+  }
+
+  nextPage() {
+    if (this.page < this.totalPages) this.goToPage(this.page + 1);
+  }
 
 
 approvalUpdateLeave(leave: any) {
@@ -113,7 +157,7 @@ onApplyLeave() {
       scrollable: true,
     });
 
-   
+
 
     //  After modal closes, refresh lists
     this.modalRef.result.finally(() => {

@@ -43,17 +43,17 @@ export class TechInventoryFormComponent implements OnInit {
   brand: Brand[] = [];
   categories: category[] = [];
   suppliers: Supplier[] = [];
-  departments = [
-    'HR',
-    'IT',
-    'Finance',
-    'Admin',
-    'Management',
-    'Operations',
-    'Marketing',
-    'Support',
-    'Logistics',
-  ];
+  // departments = [
+  //   'HR',
+  //   'IT',
+  //   'Finance',
+  //   'Admin',
+  //   'Management',
+  //   'Operations',
+  //   'Marketing',
+  //   'Support',
+  //   'Logistics',
+  // ];
   statuses = ['Available', 'UnAvailable', 'Repair', 'Retired', 'Lost'];
 
   employees: any[] = [];
@@ -74,7 +74,7 @@ export class TechInventoryFormComponent implements OnInit {
       serialNumber: [''],
       price: [0, Validators.required],
       supplier: [''],
-      department: [''],
+     // department: [''],
       purchaseDate: ['', Validators.required],
       warrantyExpiry: [''],
       status: ['Available', Validators.required],

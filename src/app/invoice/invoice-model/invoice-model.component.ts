@@ -205,10 +205,12 @@ export class InvoiceModelComponent {
       _id: inv._id,
       inventory: inv._id,
       name: inv.name,
-      price: inv.price || 0,
+      // inventory.store prices in minor units (e.g., cents), convert to major units for the form
+      price: inv.price ? (inv.price / 100) : 0,
       quantity: 1,
       availableQty: inv.quantity_available,
-      subtotal: inv.price || 0,
+      // keep subtotal in major units for display
+      subtotal: inv.price ? (inv.price / 100) : 0,
       isCustom: false,
       sku: inv.sku,
       serialNumber: inv.serialNumber
@@ -288,7 +290,8 @@ export class InvoiceModelComponent {
       items: this.invoiceItems.map(item => ({
         inventory: item.inventory,
         name: item.name,
-        price: item.price,
+        // convert to minor units (e.g., cents) expected by the backend
+        price: Math.round(Number(item.price || 0) * 100),
         quantity: item.quantity,
         isCustom: item.isCustom
       }))
